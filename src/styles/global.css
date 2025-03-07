@@ -1,0 +1,123 @@
+/* Fonts */
+
+@font-face {
+	font-family: 'Inter';
+	src: url('/fonts/Inter.ttf') format('truetype');
+	font-style: normal;
+	font-weight: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('/fonts/JetBrainsMono.ttf') format('truetype');
+	font-style: normal;
+	font-weight: normal;
+	font-display: swap;
+}
+
+:root {
+	--slate-10: hsl(234, 20%, 10%);
+	--slate-17: hsl(236, 20%, 17%);
+	--slate-20: hsl(234, 20%, 20%);
+	--slate-30: hsl(234, 20%, 30%);
+	--slate-40: hsl(234, 20%, 40%);
+	--slate-50: hsl(234, 20%, 50%);
+	--slate-60: hsl(234, 20%, 60%);
+	--slate-70: hsl(234, 20%, 70%);
+	--slate-80: hsl(234, 20%, 80%);
+	--slate-90: hsl(234, 20%, 90%);
+
+	--gray-10: hsl(258, 7%, 10%);
+	--gray-20: hsl(258, 7%, 20%);
+	--gray-30: hsl(258, 7%, 30%);
+	--gray-40: hsl(258, 7%, 40%);
+	--gray-50: hsl(258, 7%, 50%);
+	--gray-60: hsl(258, 7%, 60%);
+	--gray-70: hsl(258, 7%, 70%);
+	--gray-80: hsl(258, 7%, 80%);
+	--gray-90: hsl(258, 7%, 90%);
+
+	--cyan-10: hsl(188, 86%, 10%);
+	--cyan-20: hsl(188, 86%, 20%);
+	--cyan-30: hsl(188, 86%, 30%);
+	--cyan-40: hsl(188, 86%, 40%);
+	--cyan-50: hsl(188, 86%, 50%);
+	--cyan-60: hsl(188, 86%, 60%);
+	--cyan-70: hsl(188, 86%, 70%);
+	--cyan-80: hsl(188, 86%, 80%);
+	--cyan-90: hsl(188, 86%, 90%);
+
+	--lavender-10: hsl(298, 100%, 10%);
+	--lavender-20: hsl(298, 100%, 20%);
+	--lavender-30: hsl(298, 100%, 30%);
+	--lavender-40: hsl(298, 100%, 40%);
+	--lavender-50: hsl(298, 100%, 50%);
+	--lavender-60: hsl(298, 100%, 60%);
+	--lavender-70: hsl(298, 100%, 70%);
+	--lavender-80: hsl(298, 100%, 80%);
+	--lavender-90: hsl(298, 100%, 90%);
+	--lavender-100: hsl(298, 100%, 100%);
+
+	--font-sans: 'Inter', system-ui, sans-serif;
+	--font-serif: serif;
+	--font-mono: 'JetBrains Mono', monospace;
+
+	--text-color: white;
+	--link-color: var(--cyan-50);
+	--code-color: var(--text-color);
+	--code-background: var(--slate-30);
+}
+
+/* Styles */
+
+body {
+	font-family: var(--font-sans);
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--slate-60);
+	border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--slate-50);
+}
+
+::-webkit-scrollbar-track {
+	background-color: var(--slate-20);
+}
+
+a {
+	color: var(--link-color);
+}
+
+a:hover,
+a:active {
+	color: var(--link-color-hover);
+}
+
+code {
+	font-family: var(--font-mono);
+}
+
+hr {
+	border: none;
+	height: 1px;
+	width: 98%;
+	background: var(--text-color);
+	opacity: 0.2;
+	margin: 2rem auto;
+}
+
+.text-gradient {
+	background-image: linear-gradient(90deg, var(--cyan-50), var(--lavender-80));
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
