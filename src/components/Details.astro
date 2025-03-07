@@ -1,0 +1,81 @@
+---
+interface Props {
+	subheading: string; // the subheading to display
+	heading: string; // the heading to display
+	img: string; // the image to display
+	side?: "left" | "right"; // the side the text is on
+}
+
+const { subheading, heading, img, side = "left" } = Astro.props;
+---
+
+<div class={`detail ${side === "left" ? "detail-left" : "detail-right"}`}>
+	<div class="image">
+		<img src={img} alt="" />
+	</div>
+	<div class="content">
+		<p class="subheading">{subheading}</p>
+		<h2 class="heading">{heading}</h2>
+		<div class="text">
+			<slot />
+		</div>
+	</div>
+</div>
+
+<style>
+	.detail {
+		display: flex;
+		align-items: stretch;
+		gap: 40px;
+		padding: 40px 0px;
+	}
+
+	.detail-left {
+		flex-direction: row-reverse;
+	}
+
+	.detail-right {
+		flex-direction: row;
+	}
+
+	.image,
+	.content {
+		width: 50%;
+		max-width: 50%;
+		box-sizing: border-box;
+	}
+
+	.image {
+		display: flex;
+	}
+
+	.image img {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		border-radius: 12px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.content .subheading {
+		font-size: 1rem;
+		color: #9655ff;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		margin-bottom: 8px;
+	}
+
+	.content .heading {
+		font-size: 2rem;
+		color: #222;
+		font-weight: bold;
+		margin-bottom: 16px;
+	}
+</style>
