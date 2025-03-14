@@ -13,9 +13,6 @@
 
 	--clr-background: 95, 75%, 97%;
 	--clr-text: 96, 17%, 6%;
-	--clr-link: var(--clr-text);
-	--clr-code: var(--clr-text);
-	--clr-code-background: var(--clr-background);
 
 	--ff: 'Inter', system-ui, sans-serif;
 }
