@@ -1,4 +1,13 @@
 ---
+interface Props {
+	links: {
+		href: string;
+		label: string;
+	}[];
+}
+
+const { links } = Astro.props as Props;
+
 import logo from "../assets/logo.png";
 ---
 
@@ -7,9 +16,7 @@ import logo from "../assets/logo.png";
 		<a href="/"><img src={logo.src} alt="Intertyp Logo" /></a>
 	</div>
 	<div class="links">
-		<a href="#header">Home</a>
-		<a href="#about">Über Uns</a>
-		<a href="#projects">Projekte</a>
+		{links.map((link) => <a href={link.href}>{link.label}</a>)}
 	</div>
 	<div class="nav-button">
 		<a href="#" class="btn">&#35;</a>
