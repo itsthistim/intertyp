@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 ---
 
+<Layout title="Intertyp GmbH &ndash; Ihr Spezialist für Außenwerbung">
+	<Nav
 		links={[
 			{ href: "#header", label: "Start" },
 			{ href: "#products", label: "Produkte" },
@@ -12,12 +14,40 @@ import Nav from "../components/Nav.astro";
 	/>
 	<main>
 		<section id="header"></section>
-		<section id="about"></section>
+		<section id="products"></section>
 		<section id="projects"></section>
+		<section id="contact"></section>
 	</main>
-	<footer></footer>
+	<footer>
+		<div class="footer-content">
+			<p>&copy; 2025 Intertyp GmbH. Alle Rechte vorbehalten.</p>
+			<p><a href="/impressum">Impressum</a> | <a href="/datenschutz">Datenschutz</a></p>
+		</div>
+	</footer>
 </Layout>
 
 <style>
+	main {
+		max-width: 1200px;
+		min-height: calc(100vh - 215px);
+		margin: 0 auto;
+		padding: 2rem;
+	}
 
+	section {
+		margin-bottom: 4rem;
+	}
+
+	footer {
+		background-color: #333;
+		color: white;
+		padding: 1rem 0;
+		text-align: center;
+	}
+
+	.footer-content {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 2rem;
+	}
 </style>
