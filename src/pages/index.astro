@@ -1,80 +1,18 @@
 ---
-import Details from "../components/Details.astro";
 import Layout from "../layouts/Layout.astro";
-
-import bwSand from "../assets/sand.jpg";
-import bSand from "../assets/black_sand.avif";
+import Nav from "../components/Nav.astro";
 ---
 
-<Layout title="Hello World!">
+<Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
+	<Nav />
 	<main>
-		<div class="details">
-			<Details subheading="Dolor sit amet" heading="Lorem Ipsum" img={bwSand.src} side="left">
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna
-					aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus sed quibusdam animi iste officia fuga quasi,
-					perspiciatis suscipit eligendi accusantium nulla tenetur obcaecati quia magnam ad? Aspernatur voluptatem nobis sequi.
-				</p>
-			</Details>
-			<Details subheading="Dolor sit amet" heading="Lorem Ipsum" img={bSand.src} side="right">
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna
-					aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur sequi maxime assumenda obcaecati optio
-					consectetur ex nam velit, facere aperiam?
-				</p>
-			</Details>
-		</div>
+		<section id="header"></section>
+		<section id="about"></section>
+		<section id="projects"></section>
 	</main>
+	<footer></footer>
 </Layout>
 
 <style>
-	main {
-		margin: 0 auto;
-		padding: 20px; /* Adding padding for better spacing */
-		max-width: 1200px; /* Setting a maximum width for better layout */
-	}
 
-	/* Adding a responsive design */
-	@media (max-width: 768px) {
-		main {
-			padding: 10px; /* Adjusting padding for smaller screens */
-		}
-	}
-
-	/* Adding a mobile-friendly design */
-	@media (max-width: 480px) {
-		main {
-			padding: 5px; /* Further adjusting padding for very small screens */
-		}
-	}
-
-	/* Adding a consistent padding for Details component */
-	.details {
-		padding: 15px; /* Adding padding for better layout */
-	}
-
-	.details p {
-		padding-bottom: 10px; /* Adding bottom padding for paragraphs */
-	}
-
-	.details p:last-child {
-		padding-bottom: 0; /* Removing bottom padding for the last paragraph */
-	}
-
-	/* Adding a consistent color and font style for paragraphs */
-	.details p {
-		color: #333; /* Setting a darker color for better readability */
-		font-family: "Arial", sans-serif; /* Using a sans-serif font for a clean look */
-		line-height: 1.5; /* Adding line height for better text spacing */
-		text-align: justify; /* Justifying text for a cleaner layout */
-		margin-bottom: 1em; /* Adding bottom margin for spacing between paragraphs */
-		color: #444; /* Setting a slightly lighter color for better contrast */
-		font-size: 1rem; /* Ensuring consistent font size across different resolutions */
-	}
 </style>
