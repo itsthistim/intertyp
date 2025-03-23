@@ -1,16 +1,10 @@
-/* Fonts */
-
-@font-face {
-	font-family: 'Inter';
-	src: url('/fonts/Inter.ttf') format('truetype');
-	font-display: swap;
-}
+@import url('reset.css');
+@import url('fonts.css');
 
 :root {
 	--clr-primary: 120, 98%, 25%;
 	--clr-secondary: 183, 77%, 71%;
 	--clr-accent: 227, 60%, 44%;
-
 	--clr-background: 95, 75%, 97%;
 	--clr-text: 96, 17%, 6%;
 
@@ -22,6 +16,7 @@
 body {
 	font-family: var(--ff);
 	background-color: hsl(var(--clr-background));
+	color: hsl(var(--clr-text));
 }
 
 a {
