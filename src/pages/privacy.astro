@@ -1,0 +1,205 @@
+---
+import Footer from "../components/Footer.astro";
+import Nav from "../components/Nav.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Datenschutz">
+	<Nav
+		links={[
+			{ href: "/", label: "Start" },
+			{ href: "/products", label: "Produkte" },
+			{ href: "/projects", label: "Projekte" },
+			{ href: "/about", label: "Kontakt" }
+		]}
+	/>
+	<main>
+		<h1>Datenschutzerklärung</h1>
+		<p>
+			Personenbezogene Daten (nachfolgend zumeist nur „Daten“ genannt) werden von uns nur im Rahmen der Erforderlichkeit sowie zum
+			Zwecke der Bereitstellung eines funktionsfähigen und nutzerfreundlichen Internetauftritts, inklusive seiner Inhalte und der dort
+			angebotenen Leistungen, verarbeitet.
+		</p>
+		<p>
+			Gemäß Art. 4 Ziffer 1. der Verordnung (EU) 2016/679, also der Datenschutz-Grundverordnung (nachfolgend nur „DSGVO“ genannt),
+			gilt als „Verarbeitung“ jeder mit oder ohne Hilfe automatisierter Verfahren ausgeführter Vorgang oder jede solche Vorgangsreihe
+			im Zusammenhang mit personenbezogenen Daten, wie das Erheben, das Erfassen, die Organisation, das Ordnen, die Speicherung, die
+			Anpassung oder Veränderung, das Auslesen, das Abfragen, die Verwendung, die Offenlegung durch Übermittlung, Verbreitung oder
+			eine andere Form der Bereitstellung, den Abgleich oder die Verknüpfung, die Einschränkung, das Löschen oder die Vernichtung.
+		</p>
+		<p>
+			Mit der nachfolgenden Datenschutzerklärung informieren wir Sie insbesondere über Art, Umfang, Zweck, Dauer und Rechtsgrundlage
+			der Verarbeitung personenbezogener Daten, soweit wir entweder allein oder gemeinsam mit anderen über die Zwecke und Mittel der
+			Verarbeitung entscheiden. Zudem informieren wir Sie nachfolgend über die von uns zu Optimierungszwecken sowie zur Steigerung der
+			Nutzungsqualität eingesetzten Fremdkomponenten, soweit hierdurch Dritte Daten in wiederum eigener Verantwortung verarbeiten.
+		</p>
+		<p>Unsere Datenschutzerklärung ist wie folgt gegliedert:</p>
+		<ol>
+			<li>Informationen über uns als Verantwortliche</li>
+			<li>Rechte der Nutzer und Betroffenen</li>
+			<li>Informationen zur Datenverarbeitung</li>
+		</ol>
+
+		<h2>1. Informationen über uns als Verantwortliche</h2>
+		<p>Verantwortlicher Anbieter dieses Internetauftritts im datenschutzrechtlichen Sinne ist:</p>
+		<address>
+			Intertyp GmbH<br />
+			Stockhofstraße 11<br />
+			4020 Linz<br /><br />
+			Telefon: +43 732 66 30 00<br />
+			E-Mail: <a href="mailto:stempel@intertyp.at">stempel@intertyp.at</a>
+		</address>
+
+		<h2>2. Rechte der Nutzer und Betroffenen</h2>
+		<p>Mit Blick auf die nachfolgend noch näher beschriebene Datenverarbeitung haben die Nutzer und Betroffenen das Recht</p>
+		<ul>
+			<li>
+				auf Bestätigung, ob sie betreffende Daten verarbeitet werden, auf Auskunft über die verarbeiteten Daten, auf weitere
+				Informationen über die Datenverarbeitung sowie auf Kopien der Daten (vgl. auch <i>Art. 15 DSGVO</i>);
+			</li>
+			<li>auf Berichtigung oder Vervollständigung unrichtiger bzw. unvollständiger Daten (vgl. auch <i>Art. 16 DSGVO</i>);</li>
+			<li>
+				auf unverzügliche Löschung der sie betreffenden Daten (vgl. auch <i>Art. 17 DSGVO</i>), oder, alternativ, soweit eine
+				weitere Verarbeitung gemäß <i>Art. 17 Abs. 3 DSGVO</i> erforderlich ist, auf Einschränkung der Verarbeitung nach Maßgabe von
+				<i>Art. 18 DSGVO</i>;
+			</li>
+			<li>
+				auf Erhalt der sie betreffenden und von ihnen bereitgestellten Daten und auf Übermittlung dieser Daten an andere
+				Anbieter/Verantwortliche (vgl. auch <i>Art. 20 DSGVO</i>);
+			</li>
+			<li>
+				auf Beschwerde gegenüber der Aufsichtsbehörde, sofern sie der Ansicht sind, dass die sie betreffenden Daten durch den
+				Anbieter unter Verstoß gegen datenschutzrechtliche Bestimmungen verarbeitet werden (vgl. auch <i>Art. 77 DSGVO</i>).
+			</li>
+		</ul>
+		<p>
+			Darüber hinaus ist der Anbieter dazu verpflichtet, alle Empfänger, denen gegenüber Daten durch den Anbieter offengelegt worden
+			sind, über jedwede Berichtigung oder Löschung von Daten oder die Einschränkung der Verarbeitung, die aufgrund deren
+			<i>Art. 16, 17 Abs. 1, 18 DSGVO</i> erfolgt, zu unterrichten. Diese Verpflichtung besteht jedoch nicht, soweit diese Mitteilung unmöglich
+			oder mit einem unverhältnismäßigen Aufwand verbunden ist. Unbeschadet dessen hat der Nutzer ein Recht auf Auskunft über diese Empfänger.
+		</p>
+
+		<p>
+			<strong>
+				Ebenfalls haben die Nutzer und Betroffenen nach <i>Art. 21 DSGVO</i> das Recht auf Widerspruch gegen die künftige Verarbeitung der
+				sie betreffenden Daten, sofern die Daten durch den Anbieter nach Maßgabe von <i>Art. 6 Abs. 1 lit. f) DSGVO</i> verarbeitet werden.
+				Insbesondere ist ein Widerspruch gegen die Datenverarbeitung zum Zwecke der Direktwerbung statthaft.
+			</strong>
+		</p>
+
+		<h2>3. Informationen zur Datenverarbeitung</h2>
+		<p>
+			Ihre bei Nutzung unseres Internetauftritts verarbeiteten Daten werden gelöscht oder gesperrt, sobald der Zweck der Speicherung
+			entfällt, der Löschung der Daten keine gesetzlichen Aufbewahrungspflichten entgegenstehen und nachfolgend keine anderslautenden
+			Angaben zu einzelnen Verarbeitungsverfahren gemacht werden.
+		</p>
+
+		<h3>Kontaktanfragen / Kontaktmöglichkeit</h3>
+		<p>
+			Sofern Sie per Kontaktformular oder E-Mail mit uns in Kontakt treten, werden die dabei von Ihnen angegebenen Daten zur
+			Bearbeitung Ihrer Anfrage genutzt. Die Angabe der Daten ist zur Bearbeitung und Beantwortung Ihre Anfrage erforderlich – ohne
+			deren Bereitstellung können wir Ihre Anfrage nicht oder allenfalls eingeschränkt beantworten.
+		</p>
+		<p>Rechtsgrundlage für diese Verarbeitung ist Art. 6 Abs. 1 lit. b) DSGVO.</p>
+		<p>
+			Ihre Daten werden gelöscht, sofern Ihre Anfrage abschließend beantwortet worden ist und der Löschung keine gesetzlichen
+			Aufbewahrungspflichten entgegenstehen, wie bspw. bei einer sich etwaig anschließenden Vertragsabwicklung.
+		</p>
+		<h3>Serverdaten</h3>
+		<p>
+			Aus technischen Gründen, insbesondere zur Gewährleistung eines sicheren und stabilen Internetauftritts, werden Daten durch Ihren
+			Internet-Browser an uns bzw. an unseren Webspace-Provider übermittelt. Mit diesen sog. Server-Logfiles werden u.a. Typ und
+			Version Ihres Internetbrowsers, das Betriebssystem, die Website, von der aus Sie auf unseren Internetauftritt gewechselt haben
+			(Referrer URL), die Website(s) unseres Internetauftritts, die Sie besuchen, Datum und Uhrzeit des jeweiligen Zugriffs sowie die
+			IP-Adresse des Internetanschlusses, von dem aus die Nutzung unseres Internetauftritts erfolgt, erhoben.
+		</p>
+		<p>Diese so erhobenen Daten werden vorrübergehend gespeichert, dies jedoch nicht gemeinsam mit anderen Daten von Ihnen.</p>
+		<p>
+			Diese Speicherung erfolgt auf der Rechtsgrundlage von Art. 6 Abs. 1 lit. f) DSGVO. Unser berechtigtes Interesse liegt in der
+			Verbesserung, Stabilität, Funktionalität und Sicherheit unseres Internetauftritts.
+		</p>
+		<p>
+			Die Daten werden spätestens nach sieben Tage wieder gelöscht, soweit keine weitere Aufbewahrung zu Beweiszwecken erforderlich
+			ist. Andernfalls sind die Daten bis zur endgültigen Klärung eines Vorfalls ganz oder teilweise von der Löschung ausgenommen.
+		</p>
+		<h3>Google Maps</h3>
+		<p>
+			In unserem Internetauftritt setzen wir Google Maps zur Darstellung unseres Standorts sowie zur Erstellung einer
+			Anfahrtsbeschreibung ein. Es handelt sich hierbei um einen Dienst der Google Ireland Limited, Gordon House, Barrow Street,
+			Dublin 4, Irland, nachfolgend nur „Google“ genannt.
+		</p>
+		<p>
+			Um die Darstellung bestimmter Schriften in unserem Internetauftritt zu ermöglichen, wird bei Aufruf unseres Internetauftritts
+			eine Verbindung zu dem Google-Server in den USA aufgebaut.
+		</p>
+		<p>
+			Sofern Sie die in unseren Internetauftritt eingebundene Komponente Google Maps aufrufen, speichert Google über Ihren
+			Internet-Browser ein Cookie auf Ihrem Endgerät. Um unseren Standort anzuzeigen und eine Anfahrtsbeschreibung zu erstellen,
+			werden Ihre Nutzereinstellungen und -daten verarbeitet. Hierbei können wir nicht ausschließen, dass Google Server in den USA
+			einsetzt.
+		</p>
+		<p>
+			Im Falle einer von Ihnen erteilten Einwilligung für diese Verarbeitung ist Rechtsgrundlage Art. 6 Abs. 1 lit. a DSGVO.
+			Rechtsgrundlage kann auch Art. 6 Abs. 1 lit. f DSGVO sein. Unser berechtigtes Interesse liegt in der Optimierung der
+			Funktionalität unseres Internetauftritts.
+		</p>
+		<p>
+			Durch die so hergestellte Verbindung zu Google kann Google ermitteln, von welcher Website Ihre Anfrage gesendet worden ist und
+			an welche IP-Adresse die Anfahrtsbeschreibung zu übermitteln ist.
+		</p>
+		<p>
+			Sofern Sie mit dieser Verarbeitung nicht einverstanden sind, haben Sie die Möglichkeit, die Installation der Cookies durch die
+			entsprechenden Einstellungen in Ihrem Internet-Browser zu verhindern. Einzelheiten hierzu finden Sie vorstehend unter dem Punkt
+			„Cookies“.
+		</p>
+		<p>
+			Zudem erfolgt die Nutzung von Google Maps sowie der über Google Maps erlangten Informationen nach den
+			<a href="https://policies.google.com/terms?gl=DE&hl=de">Google-Nutzungsbedingungen</a> und den
+			<a href="https://www.google.com/intl/de_de/help/terms_maps.html">Geschäftsbedingungen für Google Maps</a>.
+		</p>
+		<p>
+			Überdies bietet Google unter <a href="https://policies.google.com/privacy">hier</a> weitergehende Informationen an.
+		</p>
+		<p>
+			<i>
+				<a href="https://www.ratgeberrecht.eu/leistungen/muster-datenschutzerklaerung/">
+					Muster-Datenschutzerklärung der Anwaltskanzlei Weiß & Partner
+				</a>
+			</i>
+		</p>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 2rem;
+	}
+
+	h1 {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	h3 {
+		font-size: 1.25rem;
+		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	p {
+		margin-bottom: 1rem;
+	}
+
+	address {
+		font-style: normal;
+	}
+</style>
