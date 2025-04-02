@@ -1,12 +1,22 @@
 ---
-interface Props {
-	links: {
-		href: string;
-		label: string;
-	}[];
-}
+// interface Props {
+// 	links: {
+// 		href: string;
+// 		label: string;
+// 	}[];
+// }
 
-const { links } = Astro.props as Props;
+// const { links } = Astro.props as Props;
+
+/*
+links={[
+			{ href: "/", label: "Start" },
+			{ href: "/products", label: "Produkte" },
+			{ href: "/projects", label: "Projekte" },
+			{ href: "/about", label: "Kontakt" }
+		]}
+*/
+
 
 import logo from "../assets/logo.png";
 ---
@@ -16,7 +26,10 @@ import logo from "../assets/logo.png";
 		<a href="/"><img src={logo.src} alt="Intertyp Logo" /></a>
 	</div>
 	<div class="links">
-		{links.map((link) => <a href={link.href}>{link.label}</a>)}
+		<a href='/'>Start</a>
+		<a href='/products'>Produkte</a>
+		<a href='/projects'>Projekte</a>
+		<a href='/about'>Kontakt</a>
 	</div>
 	<div class="nav-button">
 		<a href="#" class="btn">&#35;</a>
