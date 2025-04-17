@@ -1,12 +1,12 @@
 ---
 interface Props {
-	subheading: string; // the subheading to display
+	subheading?: string; // the subheading to display
 	heading: string; // the heading to display
 	img: string; // the image to display
 	side?: "left" | "right"; // the side the text is on
 }
 
-const { subheading, heading, img, side = "left" } = Astro.props;
+const { subheading = "", heading, img, side = "left" } = Astro.props;
 ---
 
 <div class={`detail ${side === "left" ? "detail-left" : "detail-right"}`}>
@@ -15,7 +15,7 @@ const { subheading, heading, img, side = "left" } = Astro.props;
 	</div>
 	<div class="content">
 		<p class="subheading">{subheading}</p>
-		<h2 class="heading">{heading}</h2>
+		<h3 class="heading">{heading}</h3>
 		<div class="text">
 			<slot />
 		</div>
@@ -40,8 +40,8 @@ const { subheading, heading, img, side = "left" } = Astro.props;
 
 	.image,
 	.content {
-		width: 50%;
 		max-width: 50%;
+		max-height: 350px;
 		box-sizing: border-box;
 	}
 
@@ -60,12 +60,13 @@ const { subheading, heading, img, side = "left" } = Astro.props;
 	.content {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		text-align: left;
+		padding: 0 2rem;
 	}
 
 	.content .subheading {
 		font-size: 1rem;
-		color: #9655ff;
+		color: hsl(var(--clr-accent));
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 1px;
@@ -74,7 +75,7 @@ const { subheading, heading, img, side = "left" } = Astro.props;
 
 	.content .heading {
 		font-size: 2rem;
-		color: #222;
+		color: hsl(var(--clr-text));
 		font-weight: bold;
 		margin-bottom: 16px;
 	}
