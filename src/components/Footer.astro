@@ -29,17 +29,16 @@ import { Icon } from "astro-icon/components";
 	</div>
 	<div class="quicklinks">
 		<ul>
-			<li><a href="/projects">Produkte</a></li>
-			<li><a href="/projects">Kunden</a></li>
-			<li><a href="/about">Im Geschäft</a></li>
-			<li><a href="/contact">Kontakt</a></li>
+			<li><a href="/">Start</a></li>
+			<li><a href="/produkte">Produkte</a></li>
+			<li><a href="/projekte">Kunden</a></li>
+			<li><a href="/kontakt">Kontakt</a></li>
 		</ul>
 	</div>
 	<div class="policies">
 		<ul>
 			<li><a href="/impressum">Impressum</a></li>
 			<li><a href="/privacy">Datenschutz</a></li>
-			<li><a href="/agb">AGB</a></li>
 		</ul>
 	</div>
 </footer>
@@ -58,11 +57,14 @@ import { Icon } from "astro-icon/components";
 	}
 
 	.wave .shape-fill {
-		fill: hsl(var(--clr-primary), 0.8);
+		/* fill: hsl(var(--clr-primary), 0.8); */
+		fill: #329831;
+
 	}
 
 	footer {
-		background-color: hsl(var(--clr-primary), 0.8);
+		/* background-color: hsl(var(--clr-primary), 0.8); */
+		background-color: #329831;
 		color: white;
 		padding: 4rem 4rem;
 		display: flex;
