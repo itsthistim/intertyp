@@ -2,15 +2,67 @@
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import Details from "../components/Details.astro";
+
+import pylonImg from "../assets/images/pylon_mc3.jpg";
+import innenbschrImg from "../assets/images/innenbeschriftung.jpg";
+import pokaleImg from "../assets/images/Pokale.jpg";
 ---
 
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
 	<Nav />
 	<main>
 		<section id="header"></section>
-		<section id="products"></section>
+
+		<section id="products">
+			<h2>Unsere <span>Dienstleistungen</span></h2>
+			<Details heading="Innen- und Außenbeschriftung" side="right" img={innenbschrImg.src}>
+				<p>
+					Für Ihre Beschriftungen im Innen- und Außenbereich bieten wir maßgeschneiderte Lösungen in Form von Folierungen, Schildern und Buchstaben. Unsere Werbetechnik bringt Ihre
+					Unternehmensidentität sichtbar und einzigartig zur Geltung.
+				</p>
+				<p>Wir beraten Sie gerne und erstellen Ihnen ein individuelles Angebot.</p>
+				<a class="button">Mehr erfahren</a>
+			</Details>
+
+			<Details heading="Pylon- und Lichtwerbung" side="left" img={pylonImg.src}>
+				<p>
+					Pylone setzen ein starkes Zeichen – sie dienen als Orientierungshilfe, Firmenhinweis oder Blickfang im Außenbereich. Ob ein- oder doppelseitig, freistehend oder
+					integriert: Wir gestalten und fertigen Ihre Pylone individuell nach Ihren Anforderungen.
+				</p>
+				<p>Wir machen Ihnen gerne ein individuelles Angebot.</p>
+				<a class="button">Mehr erfahren</a>
+			</Details>
+
+			<Details heading="Schilder, Stempel, Pokale" side="right" img={pokaleImg.src}>
+				<p>
+					Von Geschoss- und Türbeschriftungen, Verkehrszeichen, ÖNORM- und Brandschutzschildern über Stempel für Büro und Werkstatt bis hin zu Pokalen – wir bieten Ihnen alles aus
+					einer Hand.
+				</p>
+				<a class="button">Mehr erfahren</a>
+			</Details>
+		</section>
+
 		<section id="projects"></section>
 		<section id="contact"></section>
+		<svg class="floater floater-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M48.5,-54.1C63.5,-45.2,76.8,-30.6,78.8,-14.6C80.8,1.4,71.6,18.7,60.9,33.2C50.2,47.7,38.1,59.5,22,69.1C6,78.7,-14,86.1,-28.5,80C-43,74,-52,54.6,-61.7,36.4C-71.4,18.1,-81.7,0.9,-80.3,-15.4C-78.9,-31.7,-65.7,-47.2,-50.4,-55.9C-35.1,-64.7,-17.5,-66.7,-0.4,-66.2C16.8,-65.8,33.5,-62.9,48.5,-54.1Z"
+				transform="translate(100 100)">
+			</path>
+		</svg>
+		<svg class="floater floater-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M57.4,-67.9C72.5,-55.7,81.6,-35.8,80,-18C78.5,-0.2,66.3,15.5,55.6,30.3C44.9,45,35.6,58.7,22.3,65.2C9,71.7,-8.3,71,-26.9,67.2C-45.5,63.3,-65.4,56.3,-76.5,41.8C-87.6,27.4,-89.8,5.6,-84.6,-13.3C-79.4,-32.3,-66.7,-48.3,-51.4,-60.5C-36,-72.6,-18,-80.9,1.6,-82.7C21.1,-84.6,42.3,-80.1,57.4,-67.9Z"
+				transform="translate(100 100)">
+			</path>
+		</svg>
+		<svg class="floater floater-3" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M45.8,-45.9C56.4,-35.3,59.8,-17.6,58.9,-0.9C57.9,15.8,52.7,31.6,42.2,41.7C31.6,51.7,15.8,55.9,-2.2,58.1C-20.2,60.3,-40.4,60.4,-53.7,50.4C-67,40.4,-73.4,20.2,-69.9,3.5C-66.4,-13.3,-53.1,-26.5,-39.8,-37.2C-26.5,-47.8,-13.3,-55.8,2.2,-58C17.6,-60.2,35.3,-56.6,45.8,-45.9Z"
+				transform="translate(100 100)">
+			</path>
+		</svg>
 	</main>
 	<Footer />
 </Layout>
@@ -21,5 +73,101 @@ import Footer from "../components/Footer.astro";
 		min-height: 60vh;
 		margin: 0 auto;
 		padding: 0 2rem;
+	}
+
+	.floater {
+		position: absolute;
+		z-index: -1;
+		fill: hsl(var(--clr-primary), 0.1);
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.floater-1 {
+		top: -200px;
+		right: -50px;
+		height: 600px;
+		width: auto;
+		animation-delay: 0s;
+	}
+
+	.floater-2 {
+		bottom: 0;
+		left: 0;
+		height: 400px;
+		width: auto;
+		animation-delay: 1s;
+	}
+
+	.floater-3 {
+		bottom: -400px;
+		right: 0;
+		height: 600px;
+		width: auto;
+		animation-delay: 1s;
+	}
+
+	h2 {
+		text-align: center;
+		font-size: 2.2rem;
+		margin: 2rem 0;
+		margin-bottom: 15px;
+	}
+
+	h2 span {
+		color: hsl(var(--clr-text));
+		text-decoration: underline;
+		text-decoration-color: hsl(var(--clr-primary));
+		text-decoration-thickness: 2px;
+		text-underline-offset: 3px;
+	}
+
+	.button {
+		display: inline-flex;
+		align-items: center;
+		padding: 10px 20px;
+		background-color: hsl(var(--clr-text), 0.1);
+		color: hsl(var(--clr-text));
+		text-decoration: none;
+		border-radius: 20px;
+		font-size: 16px;
+		margin-top: 20px;
+		transition: background-color 0.5s ease;
+		cursor: pointer;
+		position: relative;
+	}
+
+	.button::after {
+		content: "→";
+		display: inline-block;
+		margin-left: 0.5em;
+		font-size: 1em;
+		transition: transform 0.3s ease;
+	}
+
+	.button:hover {
+		background-color: hsla(var(--clr-primary), 0.3);
+	}
+
+	.button:hover::after {
+		transform: translateX(4px);
+	}
+	.button:active {
+		background-color: hsla(var(--clr-primary), 0.5);
+	}
+
+	#products p {
+		margin-bottom: 0.5rem;
+	}
+
+	@keyframes float {
+		0% {
+			transform: translate(0, 0) rotate(0deg);
+		}
+		50% {
+			transform: translate(-10px, -10px) rotate(5deg);
+		}
+		100% {
+			transform: translate(0, 0) rotate(0deg);
+		}
 	}
 </style>
