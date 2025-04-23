@@ -78,7 +78,7 @@ import pokaleImg from "../assets/images/Pokale.jpg";
 	.floater {
 		position: absolute;
 		z-index: -1;
-		fill: hsl(var(--clr-primary), 0.1);
+		fill: rgb(var(--clr-primary), 0.1);
 		animation: float 6s ease-in-out infinite;
 	}
 
@@ -114,9 +114,9 @@ import pokaleImg from "../assets/images/Pokale.jpg";
 	}
 
 	h2 span {
-		color: hsl(var(--clr-text));
+		color: rgb(var(--clr-text));
 		text-decoration: underline;
-		text-decoration-color: hsl(var(--clr-primary));
+		text-decoration-color: rgb(var(--clr-primary));
 		text-decoration-thickness: 2px;
 		text-underline-offset: 3px;
 	}
@@ -125,8 +125,8 @@ import pokaleImg from "../assets/images/Pokale.jpg";
 		display: inline-flex;
 		align-items: center;
 		padding: 10px 20px;
-		background-color: hsl(var(--clr-text), 0.1);
-		color: hsl(var(--clr-text));
+		background-color: rgb(var(--clr-text), 0.1);
+		color: rgb(var(--clr-text));
 		text-decoration: none;
 		border-radius: 20px;
 		font-size: 16px;
@@ -145,14 +145,14 @@ import pokaleImg from "../assets/images/Pokale.jpg";
 	}
 
 	.button:hover {
-		background-color: hsla(var(--clr-primary), 0.3);
+		background-color: rgba(var(--clr-primary), 0.3);
 	}
 
 	.button:hover::after {
 		transform: translateX(4px);
 	}
 	.button:active {
-		background-color: hsla(var(--clr-primary), 0.5);
+		background-color: rgba(var(--clr-primary), 0.5);
 	}
 
 	#products p {

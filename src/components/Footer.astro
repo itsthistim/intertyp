@@ -1,13 +1,4 @@
 ---
-// interface Props {
-// 	links: {
-// 		href: string;
-// 		label: string;
-// 	}[];
-// }
-
-// const { links } = Astro.props as Props;
-
 import { Icon } from "astro-icon/components";
 ---
 
@@ -46,7 +37,6 @@ import { Icon } from "astro-icon/components";
 <style>
 	.wave {
 		width: 100%;
-		overflow: hidden;
 		line-height: 0;
 		transform: rotate(180deg);
 	}
@@ -57,14 +47,11 @@ import { Icon } from "astro-icon/components";
 	}
 
 	.wave .shape-fill {
-		/* fill: hsl(var(--clr-primary), 0.8); */
-		fill: #329831;
-
+		fill: #70a25f;
 	}
 
 	footer {
-		/* background-color: hsl(var(--clr-primary), 0.8); */
-		background-color: #329831;
+		background-color: #70a25f;
 		color: white;
 		padding: 4rem 4rem;
 		display: flex;
