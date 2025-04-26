@@ -1,0 +1,88 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"button">, Omit<HTMLAttributes<"a">, "type"> {
+	variant?: "primary" | "secondary" | "outline" | "ghost";
+	forward?: boolean;
+}
+
+const Tag = Astro.props.href ? "a" : "button";
+
+const { variant = "primary", forward = false, class: className = "", ...rest } = Astro.props;
+---
+
+<Tag class:list={[`button ${variant}`, { forward }, className]} {...rest}>
+	<slot />
+</Tag>
+
+<style>
+	.button {
+		display: inline-flex;
+		align-items: center;
+		margin-top: 20px;
+		padding: 10px 20px;
+		text-decoration: none;
+		border-radius: 20px;
+		border: 0;
+		font-size: 16px;
+		cursor: pointer;
+		position: relative;
+		transition: background-color 0.5s ease;
+	}
+
+	.button.forward::after {
+		content: "→";
+		display: inline-block;
+		margin-left: 0.5em;
+		font-size: 1em;
+		transition: transform 0.3s ease;
+	}
+	.button.forward:hover::after {
+		transform: translateX(4px);
+	}
+
+	.button.primary {
+		background-color: rgb(var(--clr-primary), 0.8);
+		color: rgb(var(--clr-background));
+	}
+	.button.primary:hover {
+		background-color: rgba(var(--clr-primary), 0.9);
+	}
+	.button.primary:active {
+		background-color: rgba(var(--clr-primary), 1);
+	}
+
+	.button.secondary {
+		background-color: rgb(var(--clr-text), 0.1);
+		color: rgb(var(--clr-text));
+	}
+	.button.secondary:hover {
+		background-color: rgba(var(--clr-primary), 0.3);
+	}
+	.button.secondary:active {
+		background-color: rgba(var(--clr-primary), 0.5);
+	}
+
+	.button.outline {
+		background-color: transparent;
+		color: rgb(var(--clr-text));
+		border: 1px solid rgb(var(--clr-text));
+	}
+	.button.outline:hover {
+		background-color: rgba(var(--clr-text), 0.2);
+	}
+	.button.outline:active {
+		background-color: rgba(var(--clr-text), 0.4);
+	}
+
+	.button.ghost {
+		background-color: transparent;
+		color: rgb(var(--clr-text));
+	}
+	.button.ghost:hover {
+		background-color: rgba(var(--clr-text), 0.1);
+	}
+	.button.ghost:active {
+		background-color: rgba(var(--clr-text), 0.3);
+	}
+</style>
