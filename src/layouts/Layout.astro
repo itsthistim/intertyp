@@ -15,7 +15,10 @@ const { title, transitions = true } = Astro.props;
 	<head>
 		{transitions && <ClientRouter fallback="none" />}
 		<meta charset="UTF-8" />
-		<meta name="description" content="Ihr Spezialist für Buchstaben, Schilder, Folien & Stempel. Wir bieten unseren Kunden eine maßgeschneiderte Lösung für Beschriftung, Buchstaben, Folierung & Stempel." />
+		<meta
+			name="description"
+			content="Ihr Spezialist für Buchstaben, Schilder, Folien & Stempel. Wir bieten unseren Kunden eine maßgeschneiderte Lösung für Beschriftung, Buchstaben, Folierung & Stempel."
+		/>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="darkreader-lock" />
@@ -24,7 +27,68 @@ const { title, transitions = true } = Astro.props;
 	</head>
 	<body>
 		<slot />
+		<svg class="floater floater-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M48.5,-54.1C63.5,-45.2,76.8,-30.6,78.8,-14.6C80.8,1.4,71.6,18.7,60.9,33.2C50.2,47.7,38.1,59.5,22,69.1C6,78.7,-14,86.1,-28.5,80C-43,74,-52,54.6,-61.7,36.4C-71.4,18.1,-81.7,0.9,-80.3,-15.4C-78.9,-31.7,-65.7,-47.2,-50.4,-55.9C-35.1,-64.7,-17.5,-66.7,-0.4,-66.2C16.8,-65.8,33.5,-62.9,48.5,-54.1Z"
+				transform="translate(100 100)">
+			</path>
+		</svg>
+		<svg class="floater floater-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M57.4,-67.9C72.5,-55.7,81.6,-35.8,80,-18C78.5,-0.2,66.3,15.5,55.6,30.3C44.9,45,35.6,58.7,22.3,65.2C9,71.7,-8.3,71,-26.9,67.2C-45.5,63.3,-65.4,56.3,-76.5,41.8C-87.6,27.4,-89.8,5.6,-84.6,-13.3C-79.4,-32.3,-66.7,-48.3,-51.4,-60.5C-36,-72.6,-18,-80.9,1.6,-82.7C21.1,-84.6,42.3,-80.1,57.4,-67.9Z"
+				transform="translate(100 100)">
+			</path>
+		</svg>
+		<svg class="floater floater-3" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M45.8,-45.9C56.4,-35.3,59.8,-17.6,58.9,-0.9C57.9,15.8,52.7,31.6,42.2,41.7C31.6,51.7,15.8,55.9,-2.2,58.1C-20.2,60.3,-40.4,60.4,-53.7,50.4C-67,40.4,-73.4,20.2,-69.9,3.5C-66.4,-13.3,-53.1,-26.5,-39.8,-37.2C-26.5,-47.8,-13.3,-55.8,2.2,-58C17.6,-60.2,35.3,-56.6,45.8,-45.9Z"
+				transform="translate(100 100)">
+			</path>
+		</svg>
 	</body>
 </html>
 
-<style></style>
+<style>
+	.floater {
+		position: fixed;
+		z-index: -1;
+		fill: rgb(var(--clr-primary), 0.1);
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.floater-1 {
+		top: -200px;
+		right: -50px;
+		height: 600px;
+		width: auto;
+		animation-delay: 0s;
+	}
+
+	.floater-2 {
+		bottom: 0;
+		left: 0;
+		height: 400px;
+		width: auto;
+		animation-delay: 1s;
+	}
+
+	.floater-3 {
+		bottom: -400px;
+		right: 0;
+		height: 600px;
+		width: auto;
+		animation-delay: 1s;
+	}
+
+	@keyframes float {
+		0% {
+			transform: translate(0, 0) rotate(0deg);
+		}
+		50% {
+			transform: translate(-10px, -10px) rotate(5deg);
+		}
+		100% {
+			transform: translate(0, 0) rotate(0deg);
+		}
+	}
+</style>
