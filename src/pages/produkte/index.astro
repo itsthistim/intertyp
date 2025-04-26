@@ -7,6 +7,7 @@ import Details from "../../components/Details.astro";
 import pylonImg from "../../assets/images/pylon_mc3.jpg";
 import innenbschrImg from "../../assets/images/innenbeschriftung.jpg";
 import pokaleImg from "../../assets/images/Pokale.jpg";
+import Button from "../../components/ui/Button.astro";
 ---
 
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
@@ -22,7 +23,7 @@ import pokaleImg from "../../assets/images/Pokale.jpg";
 					Unternehmensidentität sichtbar und einzigartig zur Geltung.
 				</p>
 				<p>Wir beraten Sie gerne und erstellen Ihnen ein individuelles Angebot.</p>
-				<a class="button">Mehr erfahren</a>
+				<Button variant="secondary" forward>Mehr erfahren</Button>
 			</Details>
 
 			<Details heading="Pylon- und Lichtwerbung" side="left" img={pylonImg.src}>
@@ -31,7 +32,7 @@ import pokaleImg from "../../assets/images/Pokale.jpg";
 					integriert: Wir gestalten und fertigen Ihre Pylone individuell nach Ihren Anforderungen.
 				</p>
 				<p>Wir machen Ihnen gerne ein individuelles Angebot.</p>
-				<a class="button">Mehr erfahren</a>
+				<Button variant="secondary" forward>Mehr erfahren</Button>
 			</Details>
 
 			<Details heading="Schilder, Stempel, Pokale" side="right" img={pokaleImg.src}>
@@ -39,7 +40,7 @@ import pokaleImg from "../../assets/images/Pokale.jpg";
 					Von Geschoss- und Türbeschriftungen, Verkehrszeichen, ÖNORM- und Brandschutzschildern über Stempel für Büro und Werkstatt bis hin zu Pokalen – wir bieten Ihnen alles aus
 					einer Hand.
 				</p>
-				<a class="button">Mehr erfahren</a>
+				<Button variant="secondary" forward>Mehr erfahren</Button>
 			</Details>
 		</section>
 
@@ -70,40 +71,6 @@ import pokaleImg from "../../assets/images/Pokale.jpg";
 		text-decoration-color: rgb(var(--clr-primary));
 		text-decoration-thickness: 2px;
 		text-underline-offset: 3px;
-	}
-
-	.button {
-		display: inline-flex;
-		align-items: center;
-		padding: 10px 20px;
-		background-color: rgb(var(--clr-text), 0.1);
-		color: rgb(var(--clr-text));
-		text-decoration: none;
-		border-radius: 20px;
-		font-size: 16px;
-		margin-top: 20px;
-		transition: background-color 0.5s ease;
-		cursor: pointer;
-		position: relative;
-	}
-
-	.button::after {
-		content: "→";
-		display: inline-block;
-		margin-left: 0.5em;
-		font-size: 1em;
-		transition: transform 0.3s ease;
-	}
-
-	.button:hover {
-		background-color: rgba(var(--clr-primary), 0.3);
-	}
-
-	.button:hover::after {
-		transform: translateX(4px);
-	}
-	.button:active {
-		background-color: rgba(var(--clr-primary), 0.5);
 	}
 
 	#products p {
