@@ -1,6 +1,24 @@
 ---
+import { Icon } from "astro-icon/components";
+import Button from "./ui/Button.astro";
+
 import logo from "../assets/logo.png";
 ---
+
+<script>
+	document.addEventListener("astro:page-load", () => {
+		const currentPath = window.location.pathname;
+		const links = document.querySelectorAll("nav .links a");
+
+		links.forEach((link) => {
+			if (link.getAttribute("href") === currentPath) {
+				link.classList.add("active");
+			} else {
+				link.classList.remove("active");
+			}
+		});
+	});
+</script>
 
 <nav>
 	<div class="logo">
@@ -12,9 +30,10 @@ import logo from "../assets/logo.png";
 		<a href="/projekte">Projekte</a>
 		<a href="/kontakt">Kontakt</a>
 	</div>
-	<div class="nav-button">
-		<a href="#" class="btn">&#35;</a>
-	</div>
+
+	<Button variant="ghost">
+		<Icon name="ph:list" size="1.5rem" />
+	</Button>
 </nav>
 
 <style>
@@ -47,16 +66,13 @@ import logo from "../assets/logo.png";
 		color: #666;
 	}
 
-	.nav-button .btn {
-		background-color: #333;
-		color: white;
-		padding: 0.5rem 1rem;
-		border-radius: 4px;
-		text-decoration: none;
-	}
-
-	.nav-button .btn:hover {
-		background-color: #555;
+	.links a.active {
+		color: #000;
+		font-weight: 700;
+		text-decoration: underline;
+		text-decoration-color: rgb(var(--clr-primary));
+		text-decoration-thickness: 2px;
+		text-underline-offset: 3px;
 	}
 
 	@media (max-width: 768px) {
