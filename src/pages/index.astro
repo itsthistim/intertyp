@@ -28,37 +28,6 @@ import pokaleImg from "../assets/images/Pokale.jpg";
 		padding: 0 2rem;
 	}
 
-	.floater {
-		position: absolute;
-		z-index: -1;
-		fill: rgb(var(--clr-primary), 0.1);
-		animation: float 6s ease-in-out infinite;
-	}
-
-	.floater-1 {
-		top: -200px;
-		right: -50px;
-		height: 600px;
-		width: auto;
-		animation-delay: 0s;
-	}
-
-	.floater-2 {
-		bottom: 0;
-		left: 0;
-		height: 400px;
-		width: auto;
-		animation-delay: 1s;
-	}
-
-	.floater-3 {
-		bottom: -400px;
-		right: 0;
-		height: 600px;
-		width: auto;
-		animation-delay: 1s;
-	}
-
 	h2 {
 		text-align: center;
 		font-size: 2.2rem;
@@ -110,17 +79,5 @@ import pokaleImg from "../assets/images/Pokale.jpg";
 
 	#products p {
 		margin-bottom: 0.5rem;
-	}
-
-	@keyframes float {
-		0% {
-			transform: translate(0, 0) rotate(0deg);
-		}
-		50% {
-			transform: translate(-10px, -10px) rotate(5deg);
-		}
-		100% {
-			transform: translate(0, 0) rotate(0deg);
-		}
 	}
 </style>
