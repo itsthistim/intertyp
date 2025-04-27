@@ -1,32 +1,22 @@
 ---
-import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+
 const path = Astro.url.pathname;
 import logo from "../assets/logo.png";
 ---
 
-<main class="center">
-	<a href="/">
-		<img class="logo" src={logo.src} alt="Intertyp Logo" />
-	</a>
-
-	<h1><span class="statusCode">404: </span> <span class="statusMessage">Not found</span></h1>
-	<pre>Path: {path}</pre>
-</main>
+<Layout title="404: Not found">
+	<main class="center">
+		<a href="/">
+			<img class="logo" src={logo.src} alt="Intertyp Logo" />
+		</a>
+		<h1><span class="statusCode">404: </span> <span class="statusMessage">Not found</span></h1>
+		<p>Die URL, die Sie aufgerufen haben, ist ungültig oder ist nicht mehr verfügbar.</p>
+		<p>Bitte überprüfen Sie die URL oder gehen Sie zurück zur <a href="/">Startseite</a>.</p>
+	</main>
+</Layout>
 
 <style>
-	* {
-		box-sizing: border-box;
-	}
-
-	body {
-		background-color: rgb(var(--clr-background));
-		color: rgb(var(--clr-text));
-		font-family: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro", "Fira Mono", "Droid Sans Mono",
-			"Courier New", monospace;
-		line-height: 1.5;
-		margin: 0;
-	}
-
 	.center {
 		display: flex;
 		flex-direction: column;
@@ -38,7 +28,6 @@ import logo from "../assets/logo.png";
 
 	h1 {
 		margin-bottom: 8px;
-		font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 		font-weight: 700;
 		margin-top: 1rem;
 		margin-bottom: 0;
@@ -52,16 +41,5 @@ import logo from "../assets/logo.png";
 		position: relative;
 		top: -3rem;
 		height: 200px;
-	}
-
-	pre,
-	code {
-		padding: 2px 8px;
-		background: rgba(0, 0, 0, 0.25);
-		border: 1px solid rgba(255, 255, 255, 0.25);
-		border-radius: 4px;
-		font-size: 1.2em;
-		margin-top: 0;
-		max-width: 60em;
 	}
 </style>
