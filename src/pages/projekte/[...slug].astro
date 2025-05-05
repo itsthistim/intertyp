@@ -1,10 +1,10 @@
 ---
+import "glightbox/dist/css/glightbox.min.css";
+
 import Layout from "../../layouts/Layout.astro";
 
 const { slug } = Astro.params;
-
 const acceptedSlugs = ["eurotherme", "eurotherme-bad-schallerbach", "eurotherme-bad-schallerbach-2023"];
-
 const slugStr = typeof slug === "string" ? slug : undefined;
 
 if (!slugStr || !acceptedSlugs.includes(slugStr)) {
@@ -31,14 +31,22 @@ import img4 from "../../assets/images/eurotherme/4.jpg";
 		<div class="content">
 			<p>{description}</p>
 			<div class="gallery">
-				<img src={img1.src} alt="Eurotherme 1" loading="lazy" />
-				<img src={img2.src} alt="Eurotherme 2" loading="lazy" />
-				<img src={img3.src} alt="Eurotherme 3" loading="lazy" />
-				<img src={img4.src} alt="Eurotherme 4" loading="lazy" />
+				<a href={img1.src} class="glightbox"><img src={img1.src} alt="Eurotherme 1" /></a>
+				<a href={img2.src} class="glightbox"><img src={img2.src} alt="Eurotherme 2" /></a>
+				<a href={img3.src} class="glightbox"><img src={img3.src} alt="Eurotherme 3" /></a>
+				<a href={img4.src} class="glightbox"><img src={img4.src} alt="Eurotherme 4" /></a>
 			</div>
 		</div>
 	</main>
 </Layout>
+
+<script>
+	import GLightbox from "glightbox";
+	GLightbox({
+		selector: ".glightbox",
+		loop: true
+	});
+</script>
 
 <style>
 	main {
@@ -78,11 +86,12 @@ import img4 from "../../assets/images/eurotherme/4.jpg";
 	}
 
 	.gallery {
-		columns: 380px 3;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 	}
 
 	.gallery img {
-		width: 100%;
+		max-width: 350px;
 		margin-bottom: 1rem;
 		border-radius: 0.2rem;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

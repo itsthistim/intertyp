@@ -1,1 +1,48 @@
-Projects
+---
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+---
+
+<Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
+	<Nav />
+	<main>
+		<section id="header"></section>
+		<section id="products"></section>
+		<section id="projects"></section>
+		<section id="contact"></section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	main {
+		max-width: 1200px;
+		min-height: 60vh;
+		margin: 0 auto;
+		padding: 0 2rem;
+	}
+
+	h2 {
+		text-align: center;
+		font-size: 2.2rem;
+		margin: 2rem 0;
+		margin-bottom: 15px;
+	}
+
+	h2 span {
+		color: rgb(var(--clr-text));
+		text-decoration: underline;
+		text-decoration-color: rgb(var(--clr-primary));
+		text-decoration-thickness: 2px;
+		text-underline-offset: 3px;
+	}
+
+	.button {
+		margin-top: 20px;
+	}
+
+	#products p {
+		margin-bottom: 0.5rem;
+	}
+</style>

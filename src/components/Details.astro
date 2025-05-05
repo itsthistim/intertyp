@@ -1,17 +1,21 @@
 ---
+import "glightbox/dist/css/glightbox.min.css";
+
 interface Props {
-	subheading?: string; // the subheading to display
-	heading: string; // the heading to display
-	img: string; // the image to display
-	side?: "left" | "right"; // the side the text is on
+	subheading?: string;
+	heading: string;
+	img: string;
+	side?: "left" | "right";
+	class?: string;
 }
 
-const { subheading = "", heading, img, side = "left" } = Astro.props;
+const { subheading = "", heading, img, side = "left", class: className = "" } = Astro.props;
+const uniqueGalleryId = `gallery-${crypto.randomUUID()}`; // Generate unique ID
 ---
 
-<div class={`detail ${side === "left" ? "detail-left" : "detail-right"}`}>
+<div class:list={[`detail ${side === "left" ? "detail-left" : "detail-right"}`, className]}>
 	<div class="image">
-		<img src={img} alt="" />
+		<a href={img} class="glightbox" data-gallery={uniqueGalleryId}><img src={img} /></a>
 	</div>
 	<div class="content">
 		<p class="subheading">{subheading}</p>
@@ -21,6 +25,13 @@ const { subheading = "", heading, img, side = "left" } = Astro.props;
 		</div>
 	</div>
 </div>
+
+<script>
+	import GLightbox from "glightbox";
+	GLightbox({
+		selector: ".glightbox"
+	});
+</script>
 
 <style>
 	.detail {
@@ -49,12 +60,21 @@ const { subheading = "", heading, img, side = "left" } = Astro.props;
 		display: flex;
 	}
 
-	.image img {
+	.image a.glightbox {
+		display: block;
+		position: relative;
+		overflow: hidden;
 		width: 100%;
-		height: auto;
-		object-fit: cover;
+		height: 100%;
 		border-radius: 12px;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+	}
+
+	img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	.content {
@@ -66,10 +86,9 @@ const { subheading = "", heading, img, side = "left" } = Astro.props;
 
 	.content .subheading {
 		font-size: 1rem;
-		color: rgb(var(--clr-accent));
+		color: rgb(var(--clr-primary));
 		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 1px;
 		margin-bottom: 8px;
 	}
 
