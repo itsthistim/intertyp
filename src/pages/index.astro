@@ -1,44 +1,142 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Nav from "../components/Nav.astro";
-import Footer from "../components/Footer.astro";
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import Button from "@/components/ui/Button.astro";
+import Details from "@/components/Details.astro";
+
+import pylonImg from "@/assets/images/pylon_mc3.jpg";
+import innenbschrImg from "@/assets/images/innenbeschriftung.jpg";
+import pokaleImg from "@/assets/images/Pokale.jpg";
+
+import plotterVid from "@/assets/videos/plotter 1.mp4";
 ---
 
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
 	<Nav />
+
 	<main>
-		<section id="header"></section>
-		<section id="products"></section>
+		<section id="header">
+			<video autoplay loop muted playsinline>
+				<source src={plotterVid} type="video/mp4" />
+				Your browser does not support the video tag.
+			</video>
+			<div class="header-content">
+				<h1>InterTyp</h1>
+				<p>Ihr Spezialist für Außenwerbung</p>
+				<!-- Optional: Add a call to action button -->
+				<!-- <Button variant="primary" size="lg">Kontakt aufnehmen</Button> -->
+			</div>
+		</section>
+
+		<section id="products">
+			<h2>Unsere <span>Dienstleistungen</span></h2>
+
+			<Details heading="Innen- und Außenbeschriftung" side="left" img={innenbschrImg.src}>
+				<p>
+					Für Ihre Beschriftungen im Innen- und Außenbereich bieten wir maßgeschneiderte Lösungen in Form von Folierungen, Schildern und Buchstaben. Unsere Werbetechnik bringt Ihre
+					Unternehmensidentität sichtbar und einzigartig zur Geltung.
+				</p>
+				<p>Wir beraten Sie gerne und erstellen Ihnen ein individuelles Angebot.</p>
+				<Button variant="secondary" forward>Mehr erfahren</Button>
+			</Details>
+
+			<Details heading="Schilder, Stempel, Pokale" side="right" img={pokaleImg.src}>
+				<p>
+					Von Geschoss- und Türbeschriftungen, Verkehrszeichen, ÖNORM- und Brandschutzschildern über Stempel für Büro und Werkstatt bis hin zu Pokalen – wir bieten Ihnen alles aus
+					einer Hand.
+				</p>
+				<Button variant="secondary" forward>Mehr erfahren</Button>
+			</Details>
+
+			<Details heading="Pylon- und Lichtwerbung" side="left" img={pylonImg.src}>
+				<p>
+					Pylone setzen ein starkes Zeichen – sie dienen als Orientierungshilfe, Firmenhinweis oder Blickfang im Außenbereich. Ob ein- oder doppelseitig, freistehend oder
+					integriert: Wir gestalten und fertigen Ihre Pylone individuell nach Ihren Anforderungen.
+				</p>
+				<p>Wir machen Ihnen gerne ein individuelles Angebot.</p>
+				<Button variant="secondary" forward>Mehr erfahren</Button>
+			</Details>
+		</section>
+
 		<section id="projects"></section>
-		<section id="contact"></section>
+		<Footer />
+
+		<style>
+			main {
+				min-height: 60vh;
+				margin: 0 auto;
+				padding: 0; /* Remove horizontal padding */
+			}
+
+			h2 {
+				text-align: center;
+				font-size: 2.2rem;
+				margin-top: 2rem;
+			}
+
+			h2 span {
+				color: rgb(var(--clr-text));
+				text-decoration: underline rgb(var(--clr-primary)) 2px;
+				text-underline-offset: 3px;
+			}
+
+			/* Add new header styles */
+			#header {
+				position: relative; /* Needed for absolute positioning of children */
+				overflow: hidden; /* Hide parts of the video that might overflow */
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				min-height: 70vh; /* Set a minimum height for the header */
+			}
+
+			#header video {
+				position: absolute; /* Position video absolutely within the header */
+				top: 50%; /* Center vertically */
+				left: 50%; /* Center horizontally */
+				width: 100%; /* Full width of the header */
+				height: 100%; /* Full height of the header */
+				object-fit: cover; /* Cover the entire header area */
+				transform: translate(-50%, -50%); /* Center the video */
+				z-index: 10; /* Place video behind content */
+			}
+
+			.header-content {
+				position: relative;
+				z-index: 1;
+				color: white;
+				padding: 2rem;
+				border-radius: 8px;
+			}
+
+			#header h1 {
+				font-size: 4rem;
+				font-weight: 700;
+				text-align: center;
+				margin: 0 0 0.5rem 0;
+				padding: 0;
+				color: white;
+				text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+			}
+
+			.header-content p {
+				font-size: 1.5rem;
+				margin-bottom: 1.5rem;
+				color: rgba(255, 255, 255, 0.9);
+			}
+
+			#products,
+			#projects {
+				max-width: 1200px;
+				margin: 2rem auto;
+				padding: 0 2rem;
+			}
+
+			#products p {
+				margin-bottom: 1rem;
+			}
+		</style>
 	</main>
-	<Footer />
 </Layout>
-
-<style>
-	main {
-		max-width: 1200px;
-		min-height: 60vh;
-		margin: 0 auto;
-		padding: 0 2rem;
-	}
-
-	h2 {
-		text-align: center;
-		font-size: 2.2rem;
-		margin: 2rem 0;
-		margin-bottom: 15px;
-	}
-
-	h2 span {
-		color: rgb(var(--clr-text));
-		text-decoration: underline;
-		text-decoration-color: rgb(var(--clr-primary));
-		text-decoration-thickness: 2px;
-		text-underline-offset: 3px;
-	}
-
-	#products p {
-		margin-bottom: 0.5rem;
-	}
-</style>
