@@ -12,6 +12,7 @@
     "@astrojs/node": "^9.2.1",
     "astro": "^5.7.5",
     "astro-icon": "^1.1.5",
+    "gsap": "^3.13.0",
     "photoswipe": "^5.4.4"
   },
   "devDependencies": {
