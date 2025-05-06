@@ -1,7 +1,7 @@
 ---
-import "glightbox/dist/css/glightbox.min.css";
+import "photoswipe/dist/photoswipe.css";
 
-import Layout from "../../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
 
 const { slug } = Astro.params;
 const acceptedSlugs = ["eurotherme", "eurotherme-bad-schallerbach", "eurotherme-bad-schallerbach-2023"];
@@ -15,10 +15,10 @@ const date = new Date("2023-05-15");
 const title = "Eurotherme";
 const description = "Folierung der Eurotherme Bad Schallerbach";
 
-import img1 from "../../assets/images/eurotherme/1.jpg";
-import img2 from "../../assets/images/eurotherme/2.jpg";
-import img3 from "../../assets/images/eurotherme/3.jpg";
-import img4 from "../../assets/images/eurotherme/4.jpg";
+import img1 from "@/assets/images/eurotherme/1.jpg";
+import img2 from "@/assets/images/eurotherme/2.jpg";
+import img3 from "@/assets/images/eurotherme/3.jpg";
+import img4 from "@/assets/images/eurotherme/4.jpg";
 ---
 
 <Layout title={`Projekt ${title}`}>
@@ -31,20 +31,30 @@ import img4 from "../../assets/images/eurotherme/4.jpg";
 		<div class="content">
 			<p>{description}</p>
 			<div class="gallery">
-				<a href={img1.src} class="glightbox"><img src={img1.src} alt="Eurotherme 1" /></a>
-				<a href={img2.src} class="glightbox"><img src={img2.src} alt="Eurotherme 2" /></a>
-				<a href={img3.src} class="glightbox"><img src={img3.src} alt="Eurotherme 3" /></a>
-				<a href={img4.src} class="glightbox"><img src={img4.src} alt="Eurotherme 4" /></a>
+				<a href={img1.src} class="photoswipe-trigger" data-pswp-width={img1.width} data-pswp-height={img1.height}><img src={img1.src} alt="Eurotherme 1" /></a>
+				<a href={img2.src} class="photoswipe-trigger" data-pswp-width={img2.width} data-pswp-height={img2.height}><img src={img2.src} alt="Eurotherme 2" /></a>
+				<a href={img3.src} class="photoswipe-trigger" data-pswp-width={img3.width} data-pswp-height={img3.height}><img src={img3.src} alt="Eurotherme 3" /></a>
+				<a href={img4.src} class="photoswipe-trigger" data-pswp-width={img4.width} data-pswp-height={img4.height}><img src={img4.src} alt="Eurotherme 4" /></a>
 			</div>
 		</div>
 	</main>
 </Layout>
 
 <script>
-	import GLightbox from "glightbox";
-	GLightbox({
-		selector: ".glightbox",
-		loop: true
+	import PhotoSwipeLightbox from "photoswipe/lightbox";
+
+	document.addEventListener("astro:page-load", () => {
+		let lightbox = (window as any).photoSwipeLightboxInstance;
+		if (!lightbox) {
+			lightbox = new PhotoSwipeLightbox({
+				gallery: ".gallery",
+				children: "a.photoswipe-trigger",
+				pswpModule: () => import("photoswipe"),
+				bgOpacity: 0.8
+			});
+			lightbox.init();
+			(window as any).photoSwipeLightboxInstance = lightbox;
+		}
 	});
 </script>
 
@@ -95,5 +105,6 @@ import img4 from "../../assets/images/eurotherme/4.jpg";
 		margin-bottom: 1rem;
 		border-radius: 0.2rem;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		display: block;
 	}
 </style>

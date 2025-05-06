@@ -17,9 +17,9 @@ importers:
       astro-icon:
         specifier: ^1.1.5
         version: 1.1.5
-      glightbox:
-        specifier: ^3.3.1
-        version: 3.3.1
+      photoswipe:
+        specifier: ^5.4.4
+        version: 5.4.4
     devDependencies:
       '@iconify-json/ph':
         specifier: ^1.2.2
@@ -956,9 +956,6 @@ packages:
   github-slugger@2.0.0:
     resolution: {integrity: sha512-IaOQ9puYtjrkq7Y0Ygl9KDZnrf/aiUJYUpVf89y8kyaxbRG7Y1SrX/jaumrv81vc61+kiMempujsM3Yw7w5qcw==}
 
-  glightbox@3.3.1:
-    resolution: {integrity: sha512-nXoKfJRnQTDaAFAw5799hjpfAAHx5aLvOLG0SIGudeMCwtHgO3P2/avNYapJ+SL4UEZxO2YNBPtq6pzMhSx42g==}
-
   globals@15.15.0:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
@@ -1381,6 +1378,10 @@ packages:
 
   pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
+
+  photoswipe@5.4.4:
+    resolution: {integrity: sha512-WNFHoKrkZNnvFFhbHL93WDkW3ifwVOXSW3w1UuZZelSmgXpIGiZSNlZJq37rR8YejqME2rHs9EhH9ZvlvFH2NA==}
+    engines: {node: '>= 0.12.0'}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -2817,8 +2818,6 @@ snapshots:
 
   github-slugger@2.0.0: {}
 
-  glightbox@3.3.1: {}
-
   globals@15.15.0: {}
 
   gopd@1.2.0: {}
@@ -3467,6 +3466,8 @@ snapshots:
   pathe@2.0.3: {}
 
   pend@1.2.0: {}
+
+  photoswipe@5.4.4: {}
 
   picocolors@1.1.1: {}
 

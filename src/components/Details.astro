@@ -1,21 +1,22 @@
 ---
-import "glightbox/dist/css/glightbox.min.css";
+import "photoswipe/dist/photoswipe.css";
 
 interface Props {
 	subheading?: string;
 	heading: string;
-	img: string;
+	img: ImageMetadata;
 	side?: "left" | "right";
 	class?: string;
 }
 
 const { subheading = "", heading, img, side = "left", class: className = "" } = Astro.props;
-const uniqueGalleryId = `gallery-${crypto.randomUUID()}`; // Generate unique ID
 ---
 
 <div class:list={[`detail ${side === "left" ? "detail-left" : "detail-right"}`, className]}>
 	<div class="image">
-		<a href={img} class="glightbox" data-gallery={uniqueGalleryId}><img src={img} /></a>
+		<a href={img.src} class="photoswipe-trigger" data-pswp-width={img.width} data-pswp-height={img.height} target="_blank">
+			<img src={img.src} alt="" />
+		</a>
 	</div>
 	<div class="content">
 		<p class="subheading">{subheading}</p>
@@ -27,9 +28,18 @@ const uniqueGalleryId = `gallery-${crypto.randomUUID()}`; // Generate unique ID
 </div>
 
 <script>
-	import GLightbox from "glightbox";
-	GLightbox({
-		selector: ".glightbox"
+	import PhotoSwipeLightbox from "photoswipe/lightbox";
+
+	document.addEventListener("astro:page-load", () => {
+		if (!document.documentElement.dataset.photoswipeInitialized) {
+			const lightbox = new PhotoSwipeLightbox({
+				gallery: "body",
+				children: "a.photoswipe-trigger",
+				pswpModule: () => import("photoswipe")
+			});
+			lightbox.init();
+			document.documentElement.dataset.photoswipeInitialized = "true";
+		}
 	});
 </script>
 
@@ -60,7 +70,7 @@ const uniqueGalleryId = `gallery-${crypto.randomUUID()}`; // Generate unique ID
 		display: flex;
 	}
 
-	.image a.glightbox {
+	.image a.photoswipe-trigger {
 		display: block;
 		position: relative;
 		overflow: hidden;

@@ -24,15 +24,13 @@ import plotterVid from "@/assets/videos/plotter 1.mp4";
 			<div class="header-content">
 				<h1>InterTyp</h1>
 				<p>Ihr Spezialist für Außenwerbung</p>
-				<!-- Optional: Add a call to action button -->
-				<!-- <Button variant="primary" size="lg">Kontakt aufnehmen</Button> -->
 			</div>
 		</section>
 
 		<section id="products">
 			<h2>Unsere <span>Dienstleistungen</span></h2>
 
-			<Details heading="Innen- und Außenbeschriftung" side="left" img={innenbschrImg.src}>
+			<Details heading="Innen- und Außenbeschriftung" side="left" img={innenbschrImg}>
 				<p>
 					Für Ihre Beschriftungen im Innen- und Außenbereich bieten wir maßgeschneiderte Lösungen in Form von Folierungen, Schildern und Buchstaben. Unsere Werbetechnik bringt Ihre
 					Unternehmensidentität sichtbar und einzigartig zur Geltung.
@@ -41,7 +39,7 @@ import plotterVid from "@/assets/videos/plotter 1.mp4";
 				<Button variant="secondary" forward>Mehr erfahren</Button>
 			</Details>
 
-			<Details heading="Schilder, Stempel, Pokale" side="right" img={pokaleImg.src}>
+			<Details heading="Schilder, Stempel, Pokale" side="right" img={pokaleImg}>
 				<p>
 					Von Geschoss- und Türbeschriftungen, Verkehrszeichen, ÖNORM- und Brandschutzschildern über Stempel für Büro und Werkstatt bis hin zu Pokalen – wir bieten Ihnen alles aus
 					einer Hand.
@@ -49,7 +47,7 @@ import plotterVid from "@/assets/videos/plotter 1.mp4";
 				<Button variant="secondary" forward>Mehr erfahren</Button>
 			</Details>
 
-			<Details heading="Pylon- und Lichtwerbung" side="left" img={pylonImg.src}>
+			<Details heading="Pylon- und Lichtwerbung" side="left" img={pylonImg}>
 				<p>
 					Pylone setzen ein starkes Zeichen – sie dienen als Orientierungshilfe, Firmenhinweis oder Blickfang im Außenbereich. Ob ein- oder doppelseitig, freistehend oder
 					integriert: Wir gestalten und fertigen Ihre Pylone individuell nach Ihren Anforderungen.
@@ -81,50 +79,43 @@ import plotterVid from "@/assets/videos/plotter 1.mp4";
 				text-underline-offset: 3px;
 			}
 
-			/* Add new header styles */
 			#header {
-				position: relative; /* Needed for absolute positioning of children */
-				overflow: hidden; /* Hide parts of the video that might overflow */
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				text-align: center;
-				min-height: 70vh; /* Set a minimum height for the header */
+				flex-direction: column;
+				position: relative;
+				overflow: hidden;
 			}
 
 			#header video {
-				position: absolute; /* Position video absolutely within the header */
-				top: 50%; /* Center vertically */
-				left: 50%; /* Center horizontally */
-				width: 100%; /* Full width of the header */
-				height: 100%; /* Full height of the header */
-				object-fit: cover; /* Cover the entire header area */
-				transform: translate(-50%, -50%); /* Center the video */
-				z-index: 10; /* Place video behind content */
+				width: 95vw;
+				height: auto;
+				border-radius: 12px;
+				max-height: 60vh;
+				object-fit: cover;
+				filter: brightness(0.8);
+				-webkit-filter: brightness(0.8);
 			}
 
 			.header-content {
-				position: relative;
-				z-index: 1;
+				position: absolute;
+				top: 150px;
+				left: 350px;
+				transform: translate(-50%, -50%);
+				text-align: center;
 				color: white;
-				padding: 2rem;
-				border-radius: 8px;
 			}
 
-			#header h1 {
-				font-size: 4rem;
-				font-weight: 700;
-				text-align: center;
-				margin: 0 0 0.5rem 0;
-				padding: 0;
-				color: white;
-				text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+			.header-content h1 {
+				font-size: 8rem;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 			}
 
 			.header-content p {
-				font-size: 1.5rem;
-				margin-bottom: 1.5rem;
-				color: rgba(255, 255, 255, 0.9);
+				font-size: 2rem;
+				margin-top: 1rem;
+				text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 			}
 
 			#products,
