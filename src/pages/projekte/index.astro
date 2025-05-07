@@ -2,6 +2,9 @@
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
+
+const res = await fetch(new URL("/api/projects", Astro.url));
+const projects = await res.json();
 ---
 
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
@@ -9,7 +12,11 @@ import Footer from "@/components/Footer.astro";
 	<main>
 		<section id="header"></section>
 		<section id="products"></section>
-		<section id="projects"></section>
+		<section id="projects">
+			<ul>
+				{projects.map((project: any) => <li>{project.title}</li>)}
+			</ul>
+		</section>
 		<section id="contact"></section>
 	</main>
 	<Footer />
