@@ -3,7 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 
-const res = await fetch(new URL("/api/projects", Astro.url));
+const res = await fetch(new URL("/api/projekte", Astro.url));
 let projects = await res.json();
 ---
 
