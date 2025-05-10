@@ -1,48 +1,38 @@
-# Astro Starter Kit: Basics
+# Intertyp Website – Matura Projekt
+
+Dies ist das Matura-Projekt zur Erstellung einer neuen Website für die Firma [Intertyp](https://intertyp.at/).
+Ziel ist es, eine moderne Landing Page mit einem individuell entwickelten Headless CMS bereitzustellen, das es dem Kunden ermöglicht, Inhalte wie Bilder, Texte und Produkte selbstständig zu verwalten.
+
+## 🚀 Technologien
+
+-   **[Astro](https://astro.build/)** – Frontend-Framework für schnelle und suchmaschinenfreundliche Seiten
+-   **Node.js** & **Express** – Backend und REST API für das Headless CMS
+-   **JavaScript** – Für dynamische Funktionen und API-Logik
+-   **CSS** – Eigene Gestaltung ohne CSS-Framework
+-   **[PhotoSwipe](https://photoswipe.com/)** – Für Lightbox-Galerien auf Projekt- und Produktseiten
+
+---
+
+## ✅ Features
+
+-   Vollständig **statistische Website mit View Transitions**
+-   Eigenes **CMS** via einer **REST API**
+-   Einfache **Verwaltung von Produkten, Projekten und Öffnungszeiten**
+-   **Moderne Lightbox-Galerien** mit PhotoSwipe
+-   Mobile- und performanceoptimiert
+
+---
+
+## 📖 Installation
 
 ```sh
-pnpm create astro@latest -- --template basics
+# 1. Repo klonen
+git clone https://github.com/itsthistim/intertyp.git
+cd intertyp
+
+# 2. Dependencies installieren
+npm install
+
+# 3. Project starten
+npm run dev
 ```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
