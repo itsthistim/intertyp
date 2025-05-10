@@ -19,6 +19,7 @@ import img1 from "@/assets/images/eurotherme/1.jpg";
 import img2 from "@/assets/images/eurotherme/2.jpg";
 import img3 from "@/assets/images/eurotherme/3.jpg";
 import img4 from "@/assets/images/eurotherme/4.jpg";
+import PhotoSwipeLightbox from "photoswipe/lightbox";
 ---
 
 <Layout title={`Projekt ${title}`}>
@@ -31,10 +32,18 @@ import img4 from "@/assets/images/eurotherme/4.jpg";
 		<div class="content">
 			<p>{description}</p>
 			<div class="gallery">
-				<a href={img1.src} class="photoswipe-trigger" data-pswp-width={img1.width} data-pswp-height={img1.height}><img src={img1.src} alt="Eurotherme 1" /></a>
-				<a href={img2.src} class="photoswipe-trigger" data-pswp-width={img2.width} data-pswp-height={img2.height}><img src={img2.src} alt="Eurotherme 2" /></a>
-				<a href={img3.src} class="photoswipe-trigger" data-pswp-width={img3.width} data-pswp-height={img3.height}><img src={img3.src} alt="Eurotherme 3" /></a>
-				<a href={img4.src} class="photoswipe-trigger" data-pswp-width={img4.width} data-pswp-height={img4.height}><img src={img4.src} alt="Eurotherme 4" /></a>
+				<a href={img1.src} class="photoswipe-trigger" data-pswp-width={img1.width} data-pswp-height={img1.height}>
+					<img src={img1.src} alt="Eurotherme 1" />
+				</a>
+				<a href={img2.src} class="photoswipe-trigger" data-pswp-width={img2.width} data-pswp-height={img2.height}>
+					<img src={img2.src} alt="Eurotherme 2" />
+				</a>
+				<a href={img3.src} class="photoswipe-trigger" data-pswp-width={img3.width} data-pswp-height={img3.height}>
+					<img src={img3.src} alt="Eurotherme 3" />
+				</a>
+				<a href={img4.src} class="photoswipe-trigger" data-pswp-width={img4.width} data-pswp-height={img4.height}>
+					<img src={img4.src} alt="Eurotherme 4" />
+				</a>
 			</div>
 		</div>
 	</main>
@@ -49,8 +58,8 @@ import img4 from "@/assets/images/eurotherme/4.jpg";
 			lightbox = new PhotoSwipeLightbox({
 				gallery: ".gallery",
 				children: "a.photoswipe-trigger",
-				pswpModule: () => import("photoswipe"),
-				bgOpacity: 0.8
+				bgOpacity: 0.8,
+				pswpModule: () => import("photoswipe")
 			});
 			lightbox.init();
 			(window as any).photoSwipeLightboxInstance = lightbox;
