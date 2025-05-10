@@ -1,6 +1,6 @@
 # Intertyp Website – Matura Projekt
 
-Dies ist das Matura-Projekt zur Erstellung einer neuen Website für die Firma [Intertyp](https://intertyp.at/).
+Dies ist das Matura-Projekt zur Erstellung einer neuen Website für die Firma InterTyp.
 Ziel ist es, eine moderne Landing Page mit einem individuell entwickelten Headless CMS bereitzustellen, das es dem Kunden ermöglicht, Inhalte wie Bilder, Texte und Produkte selbstständig zu verwalten.
 
 ## 🚀 Technologien
