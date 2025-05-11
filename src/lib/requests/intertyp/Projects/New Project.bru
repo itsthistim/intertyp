@@ -1,0 +1,19 @@
+meta {
+  name: New Project
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:4321/api/projekte/test
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Test Project",
+    "description": "Test Project Description",
+    "project_date": "2025-05-11 00:00:00"
+  }
+}
