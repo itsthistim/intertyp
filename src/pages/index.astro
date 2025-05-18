@@ -9,21 +9,42 @@ import pylonImg from "@/assets/images/pylon_mc3.jpg";
 import innenbschrImg from "@/assets/images/innenbeschriftung.jpg";
 import pokaleImg from "@/assets/images/Pokale.jpg";
 
-import plotterVid from "@/assets/videos/plotter 1.mp4";
+import plotterVid1 from "@/assets/videos/plotter 1.mp4";
+import plotterVid2 from "@/assets/videos/plotter 2.mp4";
 ---
+
+<script>
+	document.addEventListener("astro:page-load", () => {
+		let videoIndex = 0;
+		const videoElement = document.querySelector("#header video") as HTMLVideoElement;
+		const videoSources = document.querySelectorAll("#header video source") as NodeListOf<HTMLSourceElement>;
+
+		function changeVideo() {
+			videoIndex = (videoIndex + 1) % videoSources.length;
+			const nextSource = videoSources[videoIndex];
+			if (videoElement && nextSource) {
+				videoElement.prepend(nextSource);
+				videoElement.load();
+				videoElement.play();
+			}
+		}
+
+		setInterval(changeVideo, 5000);
+	});
+</script>
 
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
 	<Nav />
-
 	<main>
 		<section id="header">
 			<video autoplay loop muted playsinline>
-				<source src={plotterVid} type="video/mp4" />
-				Your browser does not support the video tag.
+				<source src={plotterVid1} type="video/mp4" />
+				<source src={plotterVid2} type="video/mp4" />
 			</video>
 			<div class="header-content">
-				<h1>InterTyp</h1>
-				<p>Ihr Spezialist für Außenwerbung</p>
+				<h1>Schilder, Stempel, Pokale und mehr</h1>
+				<p>Wir sind Ihr Partner für individuelle Beschriftungen und Werbetechnik.</p>
+				<Button forward>Jetzt anfragen</Button>
 			</div>
 		</section>
 
@@ -59,75 +80,86 @@ import plotterVid from "@/assets/videos/plotter 1.mp4";
 
 		<section id="projects"></section>
 		<Footer />
-
-		<style>
-			main {
-				min-height: 60vh;
-				margin: 0 auto;
-				padding: 0; /* Remove horizontal padding */
-			}
-
-			h2 {
-				text-align: center;
-				font-size: 2.2rem;
-				margin-top: 2rem;
-			}
-
-			h2 span {
-				color: rgb(var(--clr-text));
-				text-decoration: underline rgb(var(--clr-primary)) 2px;
-				text-underline-offset: 3px;
-			}
-
-			#header {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				flex-direction: column;
-				position: relative;
-				overflow: hidden;
-			}
-
-			#header video {
-				width: 95vw;
-				height: auto;
-				border-radius: 12px;
-				max-height: 60vh;
-				object-fit: cover;
-				filter: brightness(0.8);
-				-webkit-filter: brightness(0.8);
-			}
-
-			.header-content {
-				position: absolute;
-				top: 150px;
-				left: 350px;
-				transform: translate(-50%, -50%);
-				text-align: center;
-				color: white;
-			}
-
-			.header-content h1 {
-				font-size: 8rem;
-				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-			}
-
-			.header-content p {
-				font-size: 2rem;
-				margin-top: 1rem;
-				text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-			}
-
-			#products,
-			#projects {
-				max-width: 1200px;
-				margin: 2rem auto;
-				padding: 0 2rem;
-			}
-
-			#products p {
-				margin-bottom: 1rem;
-			}
-		</style>
 	</main>
 </Layout>
+
+<style>
+	main {
+		min-height: 60vh;
+		margin: 0 auto;
+		padding: 0;
+	}
+
+	h2 {
+		text-align: center;
+		font-size: 2.2rem;
+		margin-top: 2rem;
+	}
+
+	h2 span {
+		color: rgb(var(--clr-text));
+		text-decoration: underline rgb(var(--clr-primary)) 2px;
+		text-underline-offset: 3px;
+	}
+
+	#header {
+		margin-top: 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		position: relative;
+		overflow: hidden;
+	}
+
+	#header video {
+		width: 100vw;
+		z-index: 1;
+		max-height: 50vh;
+		object-fit: cover;
+	}
+
+	#header::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.7) 100%);
+		z-index: 2;
+	}
+
+	#header .header-content {
+		position: absolute;
+		transform: translate(-50%, -50%);
+		top: 50%;
+		left: 50%;
+		z-index: 3;
+		text-align: center;
+		color: white;
+		max-width: 800px;
+		line-height: 1.1;
+	}
+
+	#header .header-content h1 {
+		font-size: 5rem;
+		margin-bottom: 1rem;
+	}
+
+	#header .header-content p {
+		font-size: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	#products,
+	#projects {
+		max-width: 1200px;
+		margin: 2rem auto;
+		padding: 0 2rem;
+	}
+
+	#products p {
+		margin-bottom: 1rem;
+	}
+</style>
