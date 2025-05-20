@@ -15,7 +15,7 @@ Ziel ist es, eine moderne Landing Page mit einem individuell entwickelten Headle
 
 ## ✅ Features
 
--   Vollständig **statistische Website mit View Transitions**
+-   Webseite mit **View Transitions**
 -   Eigenes **CMS** via einer **REST API**
 -   Einfache **Verwaltung von Produkten, Projekten und Öffnungszeiten**
 -   **Moderne Lightbox-Galerien** mit PhotoSwipe
@@ -36,3 +36,5 @@ npm install
 # 3. Project starten
 npm run dev
 ```
+
+Unter http://localhost:4321/ kann die Seite nun aufgerufen werden.
