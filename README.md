@@ -1,9 +1,9 @@
-# Intertyp Website – Matura Projekt
+# Intertyp – Webseite mit auf REST-API basierendem CMS
 
 Dies ist das Matura-Projekt zur Erstellung einer neuen Website für die Firma InterTyp.
 Ziel ist es, eine moderne Landing Page mit einem individuell entwickelten Headless CMS bereitzustellen, das es dem Kunden ermöglicht, Inhalte wie Bilder, Texte und Produkte selbstständig zu verwalten.
 
-## 🚀 Technologien
+## Technologien
 
 -   **[Astro](https://astro.build/)** – Frontend-Framework für schnelle und suchmaschinenfreundliche Seiten
 -   **REST API** – Für das erstellen und abrufen von Daten
@@ -13,9 +13,9 @@ Ziel ist es, eine moderne Landing Page mit einem individuell entwickelten Headle
 
 ---
 
-## ✅ Features
+## Features
 
--   Vollständig **statistische Website mit View Transitions**
+-   Webseite mit **View Transitions**
 -   Eigenes **CMS** via einer **REST API**
 -   Einfache **Verwaltung von Produkten, Projekten und Öffnungszeiten**
 -   **Moderne Lightbox-Galerien** mit PhotoSwipe
@@ -23,7 +23,7 @@ Ziel ist es, eine moderne Landing Page mit einem individuell entwickelten Headle
 
 ---
 
-## 📖 Installation
+## Installation
 
 ```sh
 # 1. Repo klonen
@@ -36,3 +36,5 @@ npm install
 # 3. Project starten
 npm run dev
 ```
+
+Unter http://localhost:4321/ kann die Seite nun aufgerufen werden.
