@@ -11,20 +11,29 @@ if (!res.ok) {
 
 let [project] = await res.json();
 
-const date = new Date(project.project_date);
+let date = null;
 
+if (project.project_date) {
+	date = new Date(project.project_date);
+}
+
+// TODO get images from project.images
+// @/assets + $`project.gallery.images`
 import img1 from "@/assets/images/eurotherme/1.jpg";
 import img2 from "@/assets/images/eurotherme/2.jpg";
 import img3 from "@/assets/images/eurotherme/3.jpg";
 import img4 from "@/assets/images/eurotherme/4.jpg";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
 ---
 
 <Layout title={`Projekt ${project.project_title}`}>
+	<Nav />
 	<main>
 		<div class="header">
 			<p>Projekt</p>
 			<h1>{project.project_title}</h1>
-			<p class="date">{date.toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}</p>
+			{project.project_date && <p class="date">{new Date(project.project_date).toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}</p>}
 		</div>
 		<div class="content">
 			<p>{project.project_description}</p>
@@ -44,6 +53,7 @@ import img4 from "@/assets/images/eurotherme/4.jpg";
 			</div>
 		</div>
 	</main>
+	<Footer />
 </Layout>
 
 <script>

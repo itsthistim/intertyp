@@ -6,12 +6,12 @@ export async function GET({ request, params }) {
 	try {
 		const [rows] = await db.query(
 			`SELECT p.project_id, p.title "project_title", p.description "project_description", p.project_date, i.url "cover_url", i.alt "cover_alt", l.slug "link_slug", l.name "link_name", g.title "gallery_title"
-                                     FROM project p
-                                     JOIN link l ON l.link_id = p.link_id
-                                     LEFT JOIN image i ON i.image_id = p.cover_image_id
-                                     LEFT JOIN gallery g ON g.gallery_id = p.gallery_id
-																		 WHERE l.slug = ?
-																		 LIMIT 1`,
+			   FROM project p
+			   JOIN link l ON l.link_id = p.link_id
+			   LEFT JOIN image i ON i.image_id = p.cover_image_id
+			   LEFT JOIN gallery g ON g.gallery_id = p.gallery_id
+			  WHERE l.slug = ?
+			  LIMIT 1`,
 			[path]
 		);
 
@@ -34,24 +34,6 @@ export async function GET({ request, params }) {
 	}
 }
 
-/**
- * POST /api/projekte/<slug>
- * Creates a new project in the database if it doesn't exist yet.
- * Following fields are required:
- * {string} title - The title of the project
- * {string} description - The description of the project
- * {date} project_date - The date of the project (Optional)
- * {string} cover_image_url - The URL of the cover image
- * {string} gallery_id - The ID of the gallery that belongs to the project
- * {[string]} gallery.images - The URLs of the images that belong to the project
- *
- * If the url to the cover image already exists in the database, it will be used as the cover image for the project.
- * If no cover image is provided, the project will be created without a cover image.
- *
- * If the gallery_id is provided and the gallery exists, the project will be created with the specified gallery. Any images in gallery.images will be added to the gallery if their URLs do not already exist in the database.
- * If the gallery_id is provided, but the gallery does not exist yet, a new gallery will be created with all the images in gallery.images.
- * If the gallery_id is not provided, the project will be created without a gallery and gallery.images will be ignored.
- */
 export async function POST({ request, params }) {
 	const path = new URL(request.url).pathname.replace("/api", "");
 
