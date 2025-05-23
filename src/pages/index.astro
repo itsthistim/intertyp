@@ -8,26 +8,6 @@ import Products from "@/components/Products.astro";
 import Projects from "@/components/Projects.astro";
 ---
 
-<script>
-	document.addEventListener("astro:page-load", () => {
-		let videoIndex = 0;
-		const videoElement = document.querySelector("#header video") as HTMLVideoElement;
-		const videoSources = document.querySelectorAll("#header video source") as NodeListOf<HTMLSourceElement>;
-
-		function changeVideo() {
-			videoIndex = (videoIndex + 1) % videoSources.length;
-			const nextSource = videoSources[videoIndex];
-			if (videoElement && nextSource) {
-				videoElement.prepend(nextSource);
-				videoElement.load();
-				videoElement.play();
-			}
-		}
-
-		setInterval(changeVideo, 5000);
-	});
-</script>
-
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
 	<Nav />
 	<Header />
