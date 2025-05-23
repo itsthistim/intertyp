@@ -18,7 +18,7 @@ let projects = await res.json();
 					<ul>
 						{projects.map((project: any) => (
 							<li>
-								<a href={project.link_slug}>{project.project_title}</a>
+								<a href={project.link.slug}>{project.link.alt}</a>
 							</li>
 						))}
 					</ul>
