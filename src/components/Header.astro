@@ -34,7 +34,7 @@ import plotterVid2 from "@/assets/videos/plotter 1.mp4";
 	<div class="header-content">
 		<h1>Schilder, Stempel, Pokale und mehr</h1>
 		<p>Wir sind Ihr Partner für individuelle Beschriftungen und Werbetechnik.</p>
-		<Button forward>Jetzt anfragen</Button>
+		<Button class="button" href="/kontakt" forward>Jetzt anfragen</Button>
 	</div>
 </section>
 
@@ -46,13 +46,16 @@ import plotterVid2 from "@/assets/videos/plotter 1.mp4";
 		justify-content: center;
 		flex-direction: column;
 		position: relative;
-		overflow: hidden;
 	}
+
 	video {
 		width: 100vw;
 		z-index: 1;
 		max-height: 50vh;
 		object-fit: cover;
+		box-shadow:
+			0 -30px 50px rgba(0, 20, 0, 0.3),
+			0 30px 50px rgba(0, 20, 0, 0.3);
 	}
 
 	.overlay {
@@ -88,7 +91,7 @@ import plotterVid2 from "@/assets/videos/plotter 1.mp4";
 		margin-bottom: 2rem;
 	}
 
-	button {
+	.header-content .button {
 		font-size: 1.4rem;
 	}
 </style>

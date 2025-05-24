@@ -11,7 +11,8 @@ import logo from "../assets/logo.png";
 		const links = document.querySelectorAll("nav .links a");
 
 		links.forEach((link) => {
-			if (link.getAttribute("href") === currentPath) {
+			const href = link.getAttribute("href");
+			if (href && (href === currentPath || (href !== "/" && currentPath.startsWith(href)))) {
 				link.classList.add("active");
 			} else {
 				link.classList.remove("active");
