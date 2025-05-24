@@ -54,13 +54,14 @@ import plotterVid2 from "@/assets/videos/plotter 2.mp4";
 	</div>
 </section>
 
-<style>
-	section {
+<style>	section {
 		position: relative;
 		height: 50vh;
 		width: 100vw;
 		margin-top: 2rem;
-		overflow: hidden;
+		box-shadow:
+			0 -30px 50px rgba(0, 20, 0, 0.3),
+			0 30px 50px rgba(0, 20, 0, 0.3);
 	}
 
 	video {
@@ -72,9 +73,6 @@ import plotterVid2 from "@/assets/videos/plotter 2.mp4";
 		object-fit: cover;
 		z-index: 1;
 		transition: opacity 0.5s ease-in-out;
-		box-shadow:
-			0 -30px 50px rgba(0, 20, 0, 0.3),
-			0 30px 50px rgba(0, 20, 0, 0.3);
 	}
 
 	.overlay {
