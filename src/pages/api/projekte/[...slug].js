@@ -4,6 +4,133 @@ import path from "node:path";
 import fs from "node:fs";
 import { Buffer } from "node:buffer";
 
+async function getImageDimensions(image) {
+	// check if image is already defined with dimensions
+	if (image.width && image.height) {
+		if (image.width !== 0 && image.height !== 0) {
+			return image;
+		}
+	}
+
+	try {
+		let dimensions;
+		image.url = image.url.replace(/\\\\/g, "/"); // normalize backslashes to forward slashes
+
+		if (image.url.startsWith("/")) {
+			// handle local images
+			const imagePath = path.join(process.cwd(), "public", image.url);
+			if (fs.existsSync(imagePath)) {
+				const fileBuffer = fs.readFileSync(imagePath);
+				dimensions = sizeOf(fileBuffer);
+			} else {
+				console.warn(`Local image for dimension check not found: ${imagePath} (URL: ${image.url})`);
+			}
+		} else if (image.url.startsWith("http")) {
+			// handle remote images
+			const response = await fetch(image.url);
+			if (response.ok) {
+				const arrayBuffer = await response.arrayBuffer();
+				const buffer = Buffer.from(arrayBuffer);
+				dimensions = sizeOf(buffer);
+			} else {
+				console.warn(`Failed to fetch remote image for dimension check: ${image.url}, status: ${response.status}`);
+			}
+		}
+
+		if (dimensions) {
+			image.width = dimensions.width;
+			image.height = dimensions.height;
+
+			// save dimensions to the database
+			try {
+				await db.query(`UPDATE image SET width = ?, height = ? WHERE url = ?`, [image.width, image.height, image.url]);
+			} catch (dbError) {
+				console.error(`Error updating image dimensions in database for ${image.url}:`, dbError.message);
+			}
+		} else {
+			image.width = image.width || 0;
+			image.height = image.height || 0;
+		}
+	} catch (e) {
+		console.error(`Error getting dimensions for ${image.url}:`, e.message);
+		image.width = image.width || 0;
+		image.height = image.height || 0;
+	}
+
+	return image;
+}
+
+async function getGallery(galleryId) {
+	if (!galleryId) return null;
+
+	const [galleryRows] = await db.query(`SELECT * FROM gallery WHERE gallery_id = ?`, [galleryId]);
+	if (galleryRows.length === 0) {
+		return null;
+	}
+
+	const gallery = {
+		title: galleryRows[0].title,
+		images: []
+	};
+
+	const [galleryImageRows] = await db.query(`SELECT * FROM gallery_image WHERE gallery_id = ?`, [galleryId]);
+	if (galleryImageRows.length > 0) {
+		gallery.images = await Promise.all(
+			galleryImageRows.map(async (galleryImage) => {
+				const [imageRows] = await db.query(`SELECT url, alt, width, height FROM image WHERE image_id = ?`, [galleryImage.image_id]);
+				let image = imageRows[0];
+				return await getImageDimensions(image);
+			})
+		);
+	}
+
+	return gallery;
+}
+
+async function findOrCreateLink(path, title) {
+	let [linkRows] = await db.query(`SELECT link_id FROM link WHERE slug = ?`, [path]);
+	if (linkRows.length > 0) {
+		return linkRows[0].link_id;
+	}
+
+	const [newLinkResult] = await db.query(`INSERT INTO link (slug, name) VALUES (?, ?)`, [path, title]);
+	if (newLinkResult.insertId) {
+		const [newLinkRows] = await db.query(`SELECT link_id FROM link WHERE link_id = ?`, [newLinkResult.insertId]);
+		if (newLinkRows.length > 0) {
+			return newLinkRows[0].link_id;
+		}
+	}
+	throw new Error("Failed to create or find link");
+}
+
+async function findOrCreateImage(imageUrl, imageAlt) {
+	if (!imageUrl) return null;
+
+	let [imageRows] = await db.query(`SELECT image_id FROM image WHERE url = ?`, [imageUrl]);
+	if (imageRows.length > 0) {
+		return imageRows[0].image_id;
+	}
+
+	const [newImageResult] = await db.query(`INSERT INTO image (url, alt) VALUES (?, ?)`, [imageUrl, imageAlt]);
+	if (newImageResult.insertId) {
+		const [newImageRows] = await db.query(`SELECT image_id FROM image WHERE image_id = ?`, [newImageResult.insertId]);
+		if (newImageRows.length > 0) {
+			return newImageRows[0].image_id;
+		}
+	}
+	throw new Error("Failed to create or find image");
+}
+
+async function getCoverImage(coverUrl, coverAlt) {
+	if (!coverUrl) return null;
+	let coverImage = {
+		url: coverUrl,
+		alt: coverAlt
+	};
+	coverImage = await getImageDimensions(coverImage);
+	return coverImage;
+}
+
 export async function GET({ request, params }) {
 	const slug = new URL(request.url).pathname.replace("/api", "");
 
@@ -15,7 +142,8 @@ export async function GET({ request, params }) {
 	}
 
 	try {
-		const [projectRows] = await db.query(`SELECT * FROM project p JOIN link l ON p.link_id = l.link_id WHERE l.slug = ? LIMIT 1`, [slug]);
+		const [projectRows] = await db.query(`SELECT * FROM project_v WHERE link_slug = ? LIMIT 1`, [slug]);
+
 		if (!projectRows.length) {
 			return new Response(JSON.stringify({ error: "Project not found" }), {
 				status: 404,
@@ -28,77 +156,15 @@ export async function GET({ request, params }) {
 		let project = {
 			title: projectRow.title,
 			description: projectRow.description,
-			project_date: projectRow.project_date
+			project_date: projectRow.project_date,
+			link: {
+				slug: projectRow.link_slug,
+				name: projectRow.link_name
+			}
 		};
 
-		const [linkRows] = await db.query(`SELECT slug, name FROM link WHERE link_id = ?`, [projectRow.link_id]);
-		project.link = linkRows[0];
-
-		const [coverImageRows] = await db.query(`SELECT url, alt, width, height FROM image WHERE image_id = ?`, [projectRow.cover_image_id]);
-		project.cover_image = coverImageRows[0];
-
-		const [galleryRows] = await db.query(`SELECT * FROM gallery WHERE gallery_id = ?`, [projectRow.gallery_id]);
-		if (galleryRows.length > 0) {
-			project.gallery = {};
-			project.gallery.title = galleryRows[0].title;
-			const [galleryImages] = await db.query(`SELECT * FROM gallery_image WHERE gallery_id = ?`, [projectRow.gallery_id]);
-			if (galleryImages.length > 0) {
-				project.gallery.images = await Promise.all(
-					galleryImages.map(async (galleryImage) => {
-						const [imageRows] = await db.query(`SELECT url, alt, width, height FROM image WHERE image_id = ?`, [galleryImage.image_id]);
-						let image = imageRows[0];
-
-						if (image && image.url && (!image.width || !image.height || image.width === 0 || image.height === 0)) {
-							try {
-								let dimensions;
-								image.url = image.url.replace(/\\/g, "/");
-
-								if (image.url.startsWith("/")) {
-									// handle local images
-									const imagePath = path.join(process.cwd(), "public", image.url);
-									if (fs.existsSync(imagePath)) {
-										const fileBuffer = fs.readFileSync(imagePath);
-										dimensions = sizeOf(fileBuffer);
-									} else {
-										console.warn(`Local image for dimension check not found: ${imagePath} (URL: ${image.url})`);
-									}
-								} else if (image.url.startsWith("http")) {
-									// handle remote images
-									const response = await fetch(image.url);
-									if (response.ok) {
-										const arrayBuffer = await response.arrayBuffer();
-										const buffer = Buffer.from(arrayBuffer);
-										dimensions = sizeOf(buffer);
-									} else {
-										console.warn(`Failed to fetch remote image for dimension check: ${image.url}, status: ${response.status}`);
-									}
-								}
-
-								if (dimensions) {
-									image.width = dimensions.width;
-									image.height = dimensions.height;
-								} else if (!image.width || image.width === 0) {
-									image.width = 0;
-									image.height = 0;
-								}
-							} catch (e) {
-								console.error(`Error getting dimensions for ${image.url}:`, e.message);
-								if (image && (image.width === undefined || image.width === null)) image.width = 0;
-								if (image && (image.height === undefined || image.height === null)) image.height = 0;
-							}
-						} else if (image && (!image.width || !image.height)) {
-							if (image.width === undefined || image.width === null) image.width = 0;
-							if (image.height === undefined || image.height === null) image.height = 0;
-						}
-						return image;
-					})
-				);
-			} else {
-				project.gallery.images = [];
-			}
-		} else {
-			project.gallery = null;
-		}
+		project.cover_image = await getCoverImage(projectRow.cover_url, projectRow.cover_alt);
+		project.gallery = await getGallery(projectRow.gallery_id);
 
 		return new Response(JSON.stringify(project), {
 			status: 200,
@@ -114,12 +180,13 @@ export async function GET({ request, params }) {
 }
 
 export async function POST({ request, params }) {
-	const path = new URL(request.url).pathname.replace("/api", "");
+	const slug = new URL(request.url).pathname.replace("/api", "");
 
 	const body = await request.json();
 	const { title, description, project_date, cover_image, gallery } = body;
 
-	if (!title || !description) {
+	// check required fields
+	if (!title || !link) {
 		return new Response(JSON.stringify({ error: "Missing required fields" }), {
 			status: 400,
 			headers: { "Content-Type": "application/json" }
@@ -127,6 +194,7 @@ export async function POST({ request, params }) {
 	}
 
 	try {
+		// check wheter the project already exists
 		const [existingProject] = await db.query(
 			`SELECT p.project_id, p.title "project_title", p.description "project_description", p.project_date, i.url "cover_url", i.alt "cover_alt", l.slug "link_slug", l.name "link_name", g.title "gallery_title"
 			   FROM project p
@@ -135,7 +203,7 @@ export async function POST({ request, params }) {
 			   LEFT JOIN gallery g ON g.gallery_id = p.gallery_id
 			  WHERE l.slug = ?
 			  LIMIT 1`,
-			[path]
+			[slug]
 		);
 
 		if (existingProject.length > 0) {
@@ -145,46 +213,11 @@ export async function POST({ request, params }) {
 			});
 		}
 
-		let [link] = await db.query(`SELECT link_id FROM link WHERE slug = ?`, [path]);
+		const linkId = await findOrCreateLink(slug, title);
 
-		if (link.length === 0) {
-			const [newLink] = await db.query(`INSERT INTO link (slug, name) VALUES (?, ?)`, [path, title]);
-
-			if (newLink.insertId) {
-				[link] = await db.query(`SELECT * FROM link WHERE link_id = ?`, [newLink.insertId]);
-				if (link.length > 0) {
-					link = link[0];
-				} else {
-					return new Response(JSON.stringify({ error: "Failed to create link" }), {
-						status: 500,
-						headers: { "Content-Type": "application/json" }
-					});
-				}
-			} else {
-				return new Response(JSON.stringify({ error: "Failed to create link" }), {
-					status: 500,
-					headers: { "Content-Type": "application/json" }
-				});
-			}
-		}
-
-		const linkId = link.link_id;
-
-		let coverImageId;
+		let coverImageId = null;
 		if (cover_image) {
-			const [image] = await db.query(`SELECT image_id FROM image WHERE url = ?`, [cover_image.url]);
-			if (image.length > 0) {
-				coverImageId = image[0].image_id;
-			} else {
-				const [newCoverImage] = await db.query(`INSERT INTO image (url, alt) VALUES (?, ?)`, [cover_image.url, cover_image.alt]);
-
-				let newCoverImageId = newCoverImage.insertId;
-
-				if (newCoverImageId) {
-					const [newCoverImage] = await db.query(`SELECT * FROM image WHERE image_id = ?`, [newCoverImageId]);
-					coverImageId = newCoverImage[0].image_id;
-				}
-			}
+			coverImageId = await findOrCreateImage(cover_image.url, cover_image.alt);
 		}
 
 		let galleryId;

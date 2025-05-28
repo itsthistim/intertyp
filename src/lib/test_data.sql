@@ -64,10 +64,10 @@ CREATE TABLE IF NOT EXISTS `intertypcms`.`project` (
   `project_id` INT NOT NULL AUTO_INCREMENT,
   `title` TEXT NOT NULL,
   `description` TEXT NULL,
-  `project_date` DATETIME NULL,
   `link_id` INT NOT NULL,
   `cover_image_id` INT NULL,
   `gallery_id` INT NULL,
+  `project_date` DATETIME NULL,
   PRIMARY KEY (`project_id`, `link_id`),
   INDEX `fk_component_image_idx` (`cover_image_id` ASC) VISIBLE,
   INDEX `fk_component_link1_idx` (`link_id` ASC) VISIBLE,
@@ -122,7 +122,7 @@ DROP TABLE IF EXISTS `intertypcms`.`product` ;
 
 CREATE TABLE IF NOT EXISTS `intertypcms`.`product` (
   `product_id` INT NOT NULL AUTO_INCREMENT,
-  `name` TEXT NOT NULL,
+  `title` TEXT NOT NULL,
   `description` TEXT NULL,
   `link_id` INT NOT NULL,
   `cover_image_id` INT NULL,
@@ -153,12 +153,12 @@ USE `intertypcms` ;
 -- -----------------------------------------------------
 -- Placeholder table for view `intertypcms`.`project_v`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `intertypcms`.`project_v` (`"id"` INT, `title` INT, `description` INT, `"date"` INT, `"cover_url"` INT, `"cover_alt"` INT, `"link"` INT, `"link_name"` INT, `"gallery_id"` INT, `"gallery_title"` INT);
+CREATE TABLE IF NOT EXISTS `intertypcms`.`project_v` (`"id"` INT, `title` INT, `description` INT, `"date"` INT, `"cover_id"` INT, `"cover_url"` INT, `"cover_alt"` INT, `"cover_width"` INT, `"cover_heigth"` INT, `link_id` INT, `"link_slug"` INT, `"link_name"` INT, `gallery_id` INT, `"gallery_title"` INT);
 
 -- -----------------------------------------------------
 -- Placeholder table for view `intertypcms`.`product_v`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `intertypcms`.`product_v` (`"id"` INT, `name` INT, `description` INT, `"cover_url"` INT, `"cover_alt"` INT, `"link"` INT, `"link_name"` INT, `"gallery_id"` INT, `"gallery_title"` INT);
+CREATE TABLE IF NOT EXISTS `intertypcms`.`product_v` (`"id"` INT, `title` INT, `description` INT, `"cover_id"` INT, `"cover_url"` INT, `"cover_alt"` INT, `"cover_width"` INT, `"cover_heigth"` INT, `link_id` INT, `"link_slug"` INT, `"link_name"` INT, `gallery_id` INT, `"gallery_title"` INT);
 
 -- -----------------------------------------------------
 -- View `intertypcms`.`project_v`
@@ -167,7 +167,7 @@ DROP TABLE IF EXISTS `intertypcms`.`project_v`;
 DROP VIEW IF EXISTS `intertypcms`.`project_v` ;
 USE `intertypcms`;
 CREATE OR REPLACE VIEW project_v AS
-SELECT p.project_id "id", p.title, p.description, p.project_date "date", i.url "cover_url", i.alt "cover_alt", l.slug "link", l.name "link_name", g.gallery_id "gallery_id", g.title "gallery_title"
+SELECT p.project_id "id", p.title, p.description, p.project_date "date", i.image_id "cover_id", i.url "cover_url", i.alt "cover_alt", i.width "cover_width", i.height "cover_heigth", l.link_id, l.slug "link_slug", l.name "link_name", g.gallery_id, g.title "gallery_title"
 FROM project p
 JOIN link l ON l.link_id = p.link_id
 LEFT JOIN image i ON i.image_id = p.cover_image_id
@@ -180,9 +180,9 @@ DROP TABLE IF EXISTS `intertypcms`.`product_v`;
 DROP VIEW IF EXISTS `intertypcms`.`product_v` ;
 USE `intertypcms`;
 CREATE OR REPLACE VIEW product_v as
-select p.product_id "id", p.name, p.description, i.url "cover_url", i.alt "cover_alt", l.slug "link", l.name "link_name", g.gallery_id "gallery_id", g.title "gallery_title"
- from product p
- JOIN link l ON l.link_id = p.link_id
+SELECT p.product_id "id", p.title, p.description, i.image_id "cover_id", i.url "cover_url", i.alt "cover_alt", i.width "cover_width", i.height "cover_heigth", l.link_id, l.slug "link_slug", l.name "link_name", g.gallery_id, g.title "gallery_title"
+FROM product p
+JOIN link l ON l.link_id = p.link_id
 LEFT JOIN image i ON i.image_id = p.cover_image_id
 LEFT JOIN gallery g ON g.gallery_id = p.gallery_id;
 
@@ -243,15 +243,15 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `intertypcms`;
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Architekten', 'Wir sind Ihr Partner für präzise und hochwertige Beschriftungs-, Beschilderungs- und Folienlösungen in Architekturprojekten. Von klaren Leitsystemen bis zur stilvollen Außenbeschriftung – wir setzen Konzepte professionell um und unterstützen Architekten bei der perfekten Umsetzung ihrer Planungen. Entdecken Sie unsere realisierten Projekte!', NULL, 1, 1, 1);
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Baufirmen', 'Unsere langjährige Erfahrung im Bereich Folierung und Objektbeschriftung macht uns zum verlässlichen Partner für Baufirmen. Wir haben zahlreiche Projekte erfolgreich begleitet – von Baustellenbeschilderungen über Objektbeschriftungen bis hin zu hochwertigen Fenster- und Fassadenfolierungen.', NULL, 2, 1, 1);
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Feuerwehr', 'Feuerwachen benötigen eine klare Kennzeichnung – sowohl im Außenbereich als auch in den Innenräumen. Wir haben verschiedene Projekte mit Fassadenbeschriftungen, Tür- und Raumkennzeichnungen sowie großflächigen Logos umgesetzt. Unsere langlebigen und robusten Lösungen sorgen für eine professionelle Gestaltung.', NULL, 3, 1, 1);
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Gemeinden und öffentliche Gebäude', 'Öffentliche Gebäude und Einrichtungen benötigen durchdachte Beschilderungen für eine klare Orientierung. Wir haben Gemeinden mit individuell gestalteten Beschilderungen, Infotafeln und Fassadenbeschriftungen ausgestattet. Ob Rathäuser, Gemeindezentren oder andere kommunale Einrichtungen – unsere langlebigen Lösungen verbinden Funktionalität mit ansprechendem Design.', NULL, 4, 1, 1);
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Genossenschaften', 'Unsere langjährige Erfahrung in der Beschriftung und Folierung von Wohnbauprojekten macht uns zum verlässlichen Partner für Genossenschaften. Wir haben zahlreiche Projekte erfolgreich umgesetzt – von Gebäude- und Wohnanlagenbeschriftungen bis hin zu hochwertigen Glas- und Fassadenfolierungen.', NULL, 5, 1, 1);
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Gesundheitsbereich', 'Klare Orientierung und ansprechende Gestaltung spielen im Gesundheitsbereich eine zentrale Rolle. Mit hochwertigen Beschriftungen, Leitsystemen und Glasfolierungen haben wir Arztpraxen, Kliniken und Ordinationen ausgestattet. Ob Informationsschilder, Türbeschriftungen oder Sichtschutzfolien – unsere Lösungen sind funktional, langlebig und individuell angepasst.', NULL, 6, 1, 1);
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Bildung', 'Moderne Beschriftungen und langlebige Folierungen tragen zur Struktur und Gestaltung von Schulen bei. Wir haben zahlreiche Bildungseinrichtungen mit Türschildern, Fassadenbeschriftungen und dekorativen Folien ausgestattet. Unsere Lösungen sind funktional, hochwertig und individuell angepasst.', NULL, 7, 1, 1);
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Wellness & Hotels', 'Ein stimmiges Design und eine klare Beschriftung tragen maßgeblich zur Atmosphäre eines Hotels oder einer Wellnesseinrichtung bei. Ob dezente Wegweiser, stilvolle Außenbeschriftungen, hochwertige Folierungen – wir haben bereits zahlreiche Hotels und Thermen mit durchdachten Lösungen ausgestattet. Lassen Sie sich von unseren Projekten inspirieren und entdecken Sie, wie Beschriftung und Design perfekt zusammenspielen, um Ihren Gästen ein unvergessliches Erlebnis zu bieten!', NULL, 8, 1, 1);
-INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `project_date`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Firmen', 'Jedes Unternehmen braucht eine starke Außenwirkung. Wir haben zahlreiche Firmen mit individuellen Lösungen unterstützt. Ob Schilder, Fassadenbeschriftungen oder Glasfolierungen – wir unterstützen Unternehmen dabei, ihre Räumlichkeiten professionell zu gestalten. Mit hochwertigen Materialien und präziser Umsetzung sorgen wir für eine klare, professionelle Gestaltung.', NULL, 9, 1, 1);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Architekten', 'Wir sind Ihr Partner für präzise und hochwertige Beschriftungs-, Beschilderungs- und Folienlösungen in Architekturprojekten. Von klaren Leitsystemen bis zur stilvollen Außenbeschriftung – wir setzen Konzepte professionell um und unterstützen Architekten bei der perfekten Umsetzung ihrer Planungen. Entdecken Sie unsere realisierten Projekte!', 1, 1, 1, NULL);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Baufirmen', 'Unsere langjährige Erfahrung im Bereich Folierung und Objektbeschriftung macht uns zum verlässlichen Partner für Baufirmen. Wir haben zahlreiche Projekte erfolgreich begleitet – von Baustellenbeschilderungen über Objektbeschriftungen bis hin zu hochwertigen Fenster- und Fassadenfolierungen.', 2, 1, 1, NULL);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Feuerwehr', 'Feuerwachen benötigen eine klare Kennzeichnung – sowohl im Außenbereich als auch in den Innenräumen. Wir haben verschiedene Projekte mit Fassadenbeschriftungen, Tür- und Raumkennzeichnungen sowie großflächigen Logos umgesetzt. Unsere langlebigen und robusten Lösungen sorgen für eine professionelle Gestaltung.', 3, 1, 1, NULL);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Gemeinden und öffentliche Gebäude', 'Öffentliche Gebäude und Einrichtungen benötigen durchdachte Beschilderungen für eine klare Orientierung. Wir haben Gemeinden mit individuell gestalteten Beschilderungen, Infotafeln und Fassadenbeschriftungen ausgestattet. Ob Rathäuser, Gemeindezentren oder andere kommunale Einrichtungen – unsere langlebigen Lösungen verbinden Funktionalität mit ansprechendem Design.', 4, 1, 1, NULL);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Genossenschaften', 'Unsere langjährige Erfahrung in der Beschriftung und Folierung von Wohnbauprojekten macht uns zum verlässlichen Partner für Genossenschaften. Wir haben zahlreiche Projekte erfolgreich umgesetzt – von Gebäude- und Wohnanlagenbeschriftungen bis hin zu hochwertigen Glas- und Fassadenfolierungen.', 5, 1, 1, NULL);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Gesundheitsbereich', 'Klare Orientierung und ansprechende Gestaltung spielen im Gesundheitsbereich eine zentrale Rolle. Mit hochwertigen Beschriftungen, Leitsystemen und Glasfolierungen haben wir Arztpraxen, Kliniken und Ordinationen ausgestattet. Ob Informationsschilder, Türbeschriftungen oder Sichtschutzfolien – unsere Lösungen sind funktional, langlebig und individuell angepasst.', 6, 1, 1, NULL);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Bildung', 'Moderne Beschriftungen und langlebige Folierungen tragen zur Struktur und Gestaltung von Schulen bei. Wir haben zahlreiche Bildungseinrichtungen mit Türschildern, Fassadenbeschriftungen und dekorativen Folien ausgestattet. Unsere Lösungen sind funktional, hochwertig und individuell angepasst.', 7, 1, 1, NULL);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Wellness & Hotels', 'Ein stimmiges Design und eine klare Beschriftung tragen maßgeblich zur Atmosphäre eines Hotels oder einer Wellnesseinrichtung bei. Ob dezente Wegweiser, stilvolle Außenbeschriftungen, hochwertige Folierungen – wir haben bereits zahlreiche Hotels und Thermen mit durchdachten Lösungen ausgestattet. Lassen Sie sich von unseren Projekten inspirieren und entdecken Sie, wie Beschriftung und Design perfekt zusammenspielen, um Ihren Gästen ein unvergessliches Erlebnis zu bieten!', 8, 1, 1, NULL);
+INSERT INTO `intertypcms`.`project` (`project_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`, `project_date`) VALUES (DEFAULT, 'Firmen', 'Jedes Unternehmen braucht eine starke Außenwirkung. Wir haben zahlreiche Firmen mit individuellen Lösungen unterstützt. Ob Schilder, Fassadenbeschriftungen oder Glasfolierungen – wir unterstützen Unternehmen dabei, ihre Räumlichkeiten professionell zu gestalten. Mit hochwertigen Materialien und präziser Umsetzung sorgen wir für eine klare, professionelle Gestaltung.', 9, 1, 1, NULL);
 
 COMMIT;
 
@@ -274,17 +274,17 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `intertypcms`;
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Außenbeschilderung', 'Präsentieren Sie Ihr Unternehmen sichtbar und wirkungsvoll – mit Leuchtwerbung, Pylone und großflächigen Außenbeschriftungen.', 10, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Buchstaben', 'Ob einzelne Buchstaben oder komplette Schriftzüge – wir fertigen hochwertige Buchstaben und Einzelbuchstaben aus verschiedenen Materialien für eine prägnante Beschriftung auf jeder Oberfläche.', 11, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Digi Druck', 'Hochwertige Drucklösungen für verschiedenste Anwendungen – von Schildern bis zu individuellen Aufklebern.', 12, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Folien', 'Vielseitig einsetzbar und individuell gestaltbar – unsere Folien bieten Schutz, Sichtschutz oder dekorative Gestaltung für unterschiedlichste Anwendungen.', 13, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Objektbeschriftung', 'Ob Gebäude, Räume oder Türen – mit professioneller Objektbeschriftung sorgen wir für eine klare und ansprechende Kennzeichnung.', 14, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Pokale', 'Auszeichnung mit Stil – unsere hochwertigen Pokale und Trophäen sind individuell gestaltbar und perfekt für Ehrungen und Wettbewerbe. Finden Sie das passende Modell!', 15, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Schilder', 'Von Firmenschildern bis zu Informations- und Hinweisschildern – wir bieten maßgeschneiderte Lösungen für Innen- und Außenbereiche.', 16, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Sonstiges', 'Ob Magnettafeln, Klapprahmen, Schaukästen oder Verkehrsspiegel – hier finden Sie praktische und funktionale Produkte für verschiedenste Einsatzzwecke.', 17, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Stempel', 'Individuelle Stempel für Büro, Unternehmen oder den privaten Gebrauch – präzise, langlebig und in verschiedenen Ausführungen erhältlich.', 18, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Taktile', 'Barrierefreie Orientierung mit tastbaren Schildern und taktilen Beschriftungen – ideal für öffentliche Einrichtungen, Unternehmen und Wohnanlagen.', 19, 2, 2);
-INSERT INTO `intertypcms`.`product` (`product_id`, `name`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Verkehr', 'Von Verkehrsschildern bis zu Spiegeln – wir bieten eine große Auswahl an Produkten für sichere und gut sichtbare Verkehrskennzeichnungen.', 20, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Außenbeschilderung', 'Präsentieren Sie Ihr Unternehmen sichtbar und wirkungsvoll – mit Leuchtwerbung, Pylone und großflächigen Außenbeschriftungen.', 10, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Buchstaben', 'Ob einzelne Buchstaben oder komplette Schriftzüge – wir fertigen hochwertige Buchstaben und Einzelbuchstaben aus verschiedenen Materialien für eine prägnante Beschriftung auf jeder Oberfläche.', 11, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Digi Druck', 'Hochwertige Drucklösungen für verschiedenste Anwendungen – von Schildern bis zu individuellen Aufklebern.', 12, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Folien', 'Vielseitig einsetzbar und individuell gestaltbar – unsere Folien bieten Schutz, Sichtschutz oder dekorative Gestaltung für unterschiedlichste Anwendungen.', 13, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Objektbeschriftung', 'Ob Gebäude, Räume oder Türen – mit professioneller Objektbeschriftung sorgen wir für eine klare und ansprechende Kennzeichnung.', 14, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Pokale', 'Auszeichnung mit Stil – unsere hochwertigen Pokale und Trophäen sind individuell gestaltbar und perfekt für Ehrungen und Wettbewerbe. Finden Sie das passende Modell!', 15, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Schilder', 'Von Firmenschildern bis zu Informations- und Hinweisschildern – wir bieten maßgeschneiderte Lösungen für Innen- und Außenbereiche.', 16, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Sonstiges', 'Ob Magnettafeln, Klapprahmen, Schaukästen oder Verkehrsspiegel – hier finden Sie praktische und funktionale Produkte für verschiedenste Einsatzzwecke.', 17, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Stempel', 'Individuelle Stempel für Büro, Unternehmen oder den privaten Gebrauch – präzise, langlebig und in verschiedenen Ausführungen erhältlich.', 18, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Taktile', 'Barrierefreie Orientierung mit tastbaren Schildern und taktilen Beschriftungen – ideal für öffentliche Einrichtungen, Unternehmen und Wohnanlagen.', 19, 2, 2);
+INSERT INTO `intertypcms`.`product` (`product_id`, `title`, `description`, `link_id`, `cover_image_id`, `gallery_id`) VALUES (DEFAULT, 'Verkehr', 'Von Verkehrsschildern bis zu Spiegeln – wir bieten eine große Auswahl an Produkten für sichere und gut sichtbare Verkehrskennzeichnungen.', 20, 2, 2);
 
 COMMIT;
 
