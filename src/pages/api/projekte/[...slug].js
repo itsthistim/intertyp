@@ -51,11 +51,14 @@ export async function GET({ request, params }) {
 						if (image && image.url && (!image.width || !image.height || image.width === 0 || image.height === 0)) {
 							try {
 								let dimensions;
+								image.url = image.url.replace(/\\/g, "/");
+
 								if (image.url.startsWith("/")) {
 									// handle local images
 									const imagePath = path.join(process.cwd(), "public", image.url);
 									if (fs.existsSync(imagePath)) {
-										dimensions = sizeOf(imagePath);
+										const fileBuffer = fs.readFileSync(imagePath);
+										dimensions = sizeOf(fileBuffer);
 									} else {
 										console.warn(`Local image for dimension check not found: ${imagePath} (URL: ${image.url})`);
 									}
