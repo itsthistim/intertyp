@@ -1,4 +1,8 @@
 import db from "@/lib/db.js";
+import sizeOf from "image-size";
+import path from "node:path";
+import fs from "node:fs";
+import { Buffer } from "node:buffer";
 
 export async function GET({ request, params }) {
 	const slug = new URL(request.url).pathname.replace("/api", "");
@@ -42,7 +46,48 @@ export async function GET({ request, params }) {
 				project.gallery.images = await Promise.all(
 					galleryImages.map(async (galleryImage) => {
 						const [imageRows] = await db.query(`SELECT url, alt, width, height FROM image WHERE image_id = ?`, [galleryImage.image_id]);
-						return imageRows[0];
+						let image = imageRows[0];
+
+						if (image && image.url && (!image.width || !image.height || image.width === 0 || image.height === 0)) {
+							try {
+								let dimensions;
+								if (image.url.startsWith("/")) {
+									// handle local images
+									const imagePath = path.join(process.cwd(), "public", image.url);
+									if (fs.existsSync(imagePath)) {
+										dimensions = sizeOf(imagePath);
+									} else {
+										console.warn(`Local image for dimension check not found: ${imagePath} (URL: ${image.url})`);
+									}
+								} else if (image.url.startsWith("http")) {
+									// handle remote images
+									const response = await fetch(image.url);
+									if (response.ok) {
+										const arrayBuffer = await response.arrayBuffer();
+										const buffer = Buffer.from(arrayBuffer);
+										dimensions = sizeOf(buffer);
+									} else {
+										console.warn(`Failed to fetch remote image for dimension check: ${image.url}, status: ${response.status}`);
+									}
+								}
+
+								if (dimensions) {
+									image.width = dimensions.width;
+									image.height = dimensions.height;
+								} else if (!image.width || image.width === 0) {
+									image.width = 0;
+									image.height = 0;
+								}
+							} catch (e) {
+								console.error(`Error getting dimensions for ${image.url}:`, e.message);
+								if (image && (image.width === undefined || image.width === null)) image.width = 0;
+								if (image && (image.height === undefined || image.height === null)) image.height = 0;
+							}
+						} else if (image && (!image.width || !image.height)) {
+							if (image.width === undefined || image.width === null) image.width = 0;
+							if (image.height === undefined || image.height === null) image.height = 0;
+						}
+						return image;
 					})
 				);
 			} else {

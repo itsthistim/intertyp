@@ -18,14 +18,17 @@ if (project.project_date) {
 	date = new Date(project.project_date);
 }
 
-let images = project.gallery.images.map((img: any) => {
-	return {
-		src: img.url,
-		alt: img.alt,
-		width: img.width,
-		height: img.height
-	};
-});
+let images = [];
+if (project.gallery && project.gallery.images) {
+	images = project.gallery.images.map((img: any) => {
+		return {
+			src: img.url,
+			alt: img.alt,
+			width: img.width,
+			height: img.height
+		};
+	});
+}
 ---
 
 <Layout title={`${project.title} ‐ Intertyp`}>
@@ -37,42 +40,38 @@ let images = project.gallery.images.map((img: any) => {
 		</div>
 		<div class="content">
 			<p>{project.description}</p>
-			<div class="gallery">
-				{
-					images.map((img: any) => (
+			{images.length > 0 && (
+				<div class="gallery">
+					{images.map((img: any) => (
 						<a href={img.src} class="photoswipe-trigger" data-pswp-width={img.width} data-pswp-height={img.height}>
 							<img src={img.src} alt={img.alt} />
 						</a>
-					))
-				}
-			</div>
+					))}
+				</div>
+			)}
 		</div>
 	</main>
 	<Footer />
 </Layout>
 
-<script>
-	import PhotoSwipeLightbox from "photoswipe/lightbox";
+{images.length > 0 && (
+	<script>
+		import PhotoSwipeLightbox from "photoswipe/lightbox";
 
-	const initLightbox = () => {
-		const win = window as typeof window & { photoSwipeLightboxInstance?: any };
-		if (win.photoSwipeLightboxInstance) {
-			win.photoSwipeLightboxInstance.destroy();
-			win.photoSwipeLightboxInstance = undefined;
-		}
-		const lightbox = new PhotoSwipeLightbox({
-			gallery: ".gallery",
-			children: "a.photoswipe-trigger",
-			bgOpacity: 0.8,
-			pswpModule: () => import("photoswipe")
-		});
-		lightbox.init();
-		win.photoSwipeLightboxInstance = lightbox;
-	};
+		const initLightbox = () => {
+			const lightbox = new PhotoSwipeLightbox({
+				gallery: ".gallery",
+				children: "a.photoswipe-trigger",
+				bgOpacity: 0.8,
+				pswpModule: () => import("photoswipe")
+			});
+			lightbox.init();
+		};
 
-	document.addEventListener("astro:page-load", initLightbox);
-	document.addEventListener("astro:after-swap", initLightbox);
-</script>
+		document.addEventListener("astro:page-load", initLightbox);
+		document.addEventListener("astro:after-swap", initLightbox);
+	</script>
+)}
 
 <style>
 	main {
