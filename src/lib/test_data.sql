@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `intertypcms`.`image` (
   `alt` VARCHAR(45) NULL,
   `width` INT NULL,
   `height` INT NULL,
-  PRIMARY KEY (`image_id`))
+  PRIMARY KEY (`image_id`),
+  UNIQUE INDEX `url_UNIQUE` (`url` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -39,7 +40,8 @@ CREATE TABLE IF NOT EXISTS `intertypcms`.`link` (
   `link_id` INT NOT NULL AUTO_INCREMENT,
   `slug` VARCHAR(45) NOT NULL,
   `name` VARCHAR(45) NULL,
-  PRIMARY KEY (`link_id`))
+  PRIMARY KEY (`link_id`),
+  UNIQUE INDEX `slug_UNIQUE` (`slug` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 

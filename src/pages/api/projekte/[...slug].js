@@ -87,40 +87,6 @@ async function getGallery(galleryId) {
 	return gallery;
 }
 
-async function findOrCreateLink(path, title) {
-	let [linkRows] = await db.query(`SELECT link_id FROM link WHERE slug = ?`, [path]);
-	if (linkRows.length > 0) {
-		return linkRows[0].link_id;
-	}
-
-	const [newLinkResult] = await db.query(`INSERT INTO link (slug, name) VALUES (?, ?)`, [path, title]);
-	if (newLinkResult.insertId) {
-		const [newLinkRows] = await db.query(`SELECT link_id FROM link WHERE link_id = ?`, [newLinkResult.insertId]);
-		if (newLinkRows.length > 0) {
-			return newLinkRows[0].link_id;
-		}
-	}
-	throw new Error("Failed to create or find link");
-}
-
-async function findOrCreateImage(imageUrl, imageAlt) {
-	if (!imageUrl) return null;
-
-	let [imageRows] = await db.query(`SELECT image_id FROM image WHERE url = ?`, [imageUrl]);
-	if (imageRows.length > 0) {
-		return imageRows[0].image_id;
-	}
-
-	const [newImageResult] = await db.query(`INSERT INTO image (url, alt) VALUES (?, ?)`, [imageUrl, imageAlt]);
-	if (newImageResult.insertId) {
-		const [newImageRows] = await db.query(`SELECT image_id FROM image WHERE image_id = ?`, [newImageResult.insertId]);
-		if (newImageRows.length > 0) {
-			return newImageRows[0].image_id;
-		}
-	}
-	throw new Error("Failed to create or find image");
-}
-
 async function getCoverImage(coverUrl, coverAlt) {
 	if (!coverUrl) return null;
 	let coverImage = {
@@ -129,6 +95,67 @@ async function getCoverImage(coverUrl, coverAlt) {
 	};
 	coverImage = await getImageDimensions(coverImage);
 	return coverImage;
+}
+
+async function findOrCreateLink(link, slug) {
+	let [linkRows] = await db.query(`SELECT * FROM link WHERE slug = ?`, [slug]);
+	if (linkRows.length > 0) {
+		return linkRows[0];
+	}
+
+	const [newLinkResult] = await db.query(`INSERT INTO link (slug, name) VALUES (?, ?)`, [slug, link?.name || null]);
+	if (newLinkResult.insertId) {
+		const [newLinkRows] = await db.query(`SELECT * FROM link WHERE link_id = ?`, [newLinkResult.insertId]);
+		if (newLinkRows.length > 0) {
+			return newLinkRows[0];
+		}
+	}
+	throw new Error("Failed to create or find link");
+}
+
+async function findOrCreateImage(image) {
+	if (!image || !image?.url) return null;
+
+	let [imageRows] = await db.query(`SELECT * FROM image WHERE url = ?`, [image.url]);
+	if (imageRows.length > 0) {
+		return imageRows[0];
+	}
+
+	const [newImageResult] = await db.query(`INSERT INTO image (url, alt) VALUES (?, ?)`, [image.url, image.alt]);
+	if (newImageResult.insertId) {
+		const [newImageRows] = await db.query(`SELECT * FROM image WHERE image_id = ?`, [newImageResult.insertId]);
+		if (newImageRows.length > 0) {
+			return newImageRows[0];
+		}
+	}
+	throw new Error("Failed to create or find image");
+}
+
+async function findOrCreateGallery(gallery) {
+	if (!gallery) return null;
+
+	if (!Array.isArray(gallery.images) || gallery.images.length === 0) {
+		return null;
+	}
+
+	const [newGalleryResult] = await db.query(`INSERT INTO gallery (title) VALUES (?)`, [gallery.title]);
+
+	if (newGalleryResult.insertId) {
+		const [newGalleryRows] = await db.query(`SELECT * FROM gallery WHERE gallery_id = ?`, [newGalleryResult.insertId]);
+
+		if (newGalleryRows.length > 0) {
+			const newGallery = newGalleryRows[0];
+
+			await Promise.all(
+				gallery.images.map(async (img) => {
+					let image = await findOrCreateImage(img);
+					await db.query(`INSERT INTO gallery_image (gallery_id, image_id) VALUES (?, ?)`, [newGallery.gallery_id, image.image_id]);
+				})
+			);
+
+			return newGallery;
+		}
+	}
 }
 
 export async function GET({ request, params }) {
@@ -183,11 +210,18 @@ export async function POST({ request, params }) {
 	const slug = new URL(request.url).pathname.replace("/api", "");
 
 	const body = await request.json();
-	const { title, description, project_date, cover_image, gallery } = body;
+	const { title, description, project_date, link, cover_image, gallery } = body;
 
 	// check required fields
-	if (!title || !link) {
-		return new Response(JSON.stringify({ error: "Missing required fields" }), {
+	if (!title) {
+		return new Response(JSON.stringify({ error: "Missing required fields: title and link.slug are required." }), {
+			status: 400,
+			headers: { "Content-Type": "application/json" }
+		});
+	}
+
+	if (cover_image && !cover_image.url) {
+		return new Response(JSON.stringify({ error: "Cover image URL is required when setting a cover image." }), {
 			status: 400,
 			headers: { "Content-Type": "application/json" }
 		});
@@ -195,16 +229,7 @@ export async function POST({ request, params }) {
 
 	try {
 		// check wheter the project already exists
-		const [existingProject] = await db.query(
-			`SELECT p.project_id, p.title "project_title", p.description "project_description", p.project_date, i.url "cover_url", i.alt "cover_alt", l.slug "link_slug", l.name "link_name", g.title "gallery_title"
-			   FROM project p
-			   JOIN link l ON l.link_id = p.link_id
-			   LEFT JOIN image i ON i.image_id = p.cover_image_id
-			   LEFT JOIN gallery g ON g.gallery_id = p.gallery_id
-			  WHERE l.slug = ?
-			  LIMIT 1`,
-			[slug]
-		);
+		const [existingProject] = await db.query(`SELECT * FROM project_v WHERE link_slug = ?`, [slug]);
 
 		if (existingProject.length > 0) {
 			return new Response(JSON.stringify({ error: "Project already exists. Update it using a PUT request." }), {
@@ -213,68 +238,46 @@ export async function POST({ request, params }) {
 			});
 		}
 
-		const linkId = await findOrCreateLink(slug, title);
+		// create new project
 
-		let coverImageId = null;
-		if (cover_image) {
-			coverImageId = await findOrCreateImage(cover_image.url, cover_image.alt);
-		}
-
-		let galleryId;
-		if (gallery) {
-			const [dbGallery] = await db.query(`SELECT gallery_id FROM gallery WHERE gallery_id = ?`, [gallery.gallery_id]);
-			if (dbGallery.length > 0) {
-				galleryId = dbGallery[0].gallery_id;
-			}
-
-			if (!galleryId) {
-				const [createGallery] = await db.query(`INSERT INTO gallery (title) VALUES (?)`, [title]);
-				const newGalleryId = createGallery.insertId;
-
-				if (newGalleryId) {
-					const [newGallery] = await db.query(`SELECT * FROM gallery WHERE gallery_id = ?`, [newGalleryId]);
-					galleryId = newGallery[0].gallery_id;
-				} else {
-					return new Response(JSON.stringify({ error: "Failed to create gallery" }), {
-						status: 500,
-						headers: { "Content-Type": "application/json" }
-					});
-				}
-			}
-
-			if (gallery.images.length > 0) {
-				for (const cImage of gallery.images) {
-					const [image] = await db.query(`SELECT image_id FROM image WHERE url = ?`, [cImage.url]);
-					if (image.length === 0) {
-						const [createImage] = await db.query(`INSERT INTO image (url, alt) VALUES (?, ?)`, [cImage.url, cImage.alt]);
-						const newImageId = createImage.insertId;
-						if (newImageId) {
-							const [newImage] = await db.query(`SELECT * FROM image WHERE image_id = ?`, [newImageId]);
-							await db.query(`INSERT INTO gallery_image (gallery_id, image_id) VALUES (?, ?)`, [galleryId, newImage[0].image_id]);
-						}
-					} else {
-						await db.query(`INSERT INTO gallery_image (gallery_id, image_id) VALUES (?, ?)`, [galleryId, image[0].image_id]);
-					}
-				}
-			}
-		}
+		let newLink = await findOrCreateLink(link, slug);
+		let newCoverImage = await findOrCreateImage(cover_image);
+		let newGallery = await findOrCreateGallery(gallery);
 
 		const [newProject] = await db.query(`INSERT INTO project (title, description, project_date, cover_image_id, link_id, gallery_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING project_id`, [
 			title,
-			description,
-			project_date,
-			coverImageId,
-			linkId,
-			galleryId
+			description || null,
+			project_date || null,
+			newCoverImage?.image_id || null,
+			newLink.link_id,
+			newGallery?.gallery_id || null
 		]);
 
-		if (newProject.length > 0) {
-			return new Response(JSON.stringify(newProject), {
-				status: 201,
-				headers: { "Content-Type": "application/json" }
-			});
+		// return the created project
+		if (newProject[0].project_id) {
+			const [createdProjectRows] = await db.query(`SELECT * FROM project_v WHERE id = ?`, [newProject[0].project_id]);
+			if (createdProjectRows.length > 0) {
+				const createdProject = createdProjectRows[0];
+				return new Response(
+					JSON.stringify({
+						title: createdProject.title,
+						description: createdProject.description,
+						project_date: createdProject.project_date,
+						link: {
+							slug: createdProject.link_slug,
+							name: createdProject.link_name
+						},
+						cover_image: await getCoverImage(createdProject.cover_url, createdProject.cover_alt),
+						gallery: await getGallery(createdProject.gallery_id)
+					}),
+					{
+						status: 201,
+						headers: { "Content-Type": "application/json" }
+					}
+				);
+			}
 		} else {
-			return new Response(JSON.stringify({ error: "Failed to create project" }), {
+			return new Response(JSON.stringify({ error: "Failed to create project." }), {
 				status: 500,
 				headers: { "Content-Type": "application/json" }
 			});
