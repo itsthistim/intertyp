@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="Impressum">
+	<Nav />
+	<main>
+		<h1>Impressum</h1>
+		<h2>InterTyp GmbH</h2>
+		<address>
+			Stockhofstraße 11<br />
+			4020 Linz<br />
+		</address>
+		<p>
+			Telefon: <a href="tel:+43732663000">+43 732 66 30 00</a><br />
+			E-Mail: <a href="mailto:stempel@intertyp.at">stempel@intertyp.at</a>
+		</p>
+		<p>
+			Firmenbuchnummer: FN 80007h<br />
+			UID: ATU 23202406<br />
+		</p>
+		<p>
+			Bildernachweis: <br />
+			<a href="https://www.unsplash.com">unsplash.com</a> / <a href="https://www.fotolia.com">fotolia.com</a> / InterTyp GmbH<br />
+		</p>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	main {
+		max-width: 1200px;
+		padding: 0 2rem;
+		margin: 0 auto 4rem;
+	}
+
+	h1 {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	h3 {
+		font-size: 1.25rem;
+		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	p {
+		margin-bottom: 1rem;
+	}
+
+	address {
+		font-style: normal;
+		margin-bottom: 1rem;
+	}
+</style>
