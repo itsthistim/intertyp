@@ -2,6 +2,8 @@
 import { Icon } from "astro-icon/components";
 import Button from "./ui/Button.astro";
 
+const { mode = "dark" } = Astro.props;
+
 import logo from "../assets/logo.png";
 ---
 
@@ -21,7 +23,7 @@ import logo from "../assets/logo.png";
 	});
 </script>
 
-<nav>
+<nav class={mode === "light" ? "light" : undefined}>
 	<div class="logo">
 		<a href="/"><img src={logo.src} alt="Intertyp Logo" /></a>
 	</div>
@@ -61,19 +63,27 @@ import logo from "../assets/logo.png";
 	}
 
 	.links a {
+		color: #111;
 		text-decoration: none;
-		color: #fff;
 		font-weight: 500;
 		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Add shadow for readability */
 		transition: color 0.3s ease;
 	}
 
 	.links a:hover {
+		color: #444;
+	}
+
+	nav.light .links a {
+		color: #fff;
+	}
+
+	nav.light .links a:hover {
 		color: rgba(255, 255, 255, 0.7);
 	}
 
 	.links a.active {
-		color: #fff;
+		color: inherit;
 		font-weight: 700;
 		text-decoration: underline;
 		text-decoration-color: rgb(var(--clr-primary));
@@ -82,6 +92,10 @@ import logo from "../assets/logo.png";
 	}
 
 	[data-icon] {
+		color: #111;
+	}
+
+	nav.light [data-icon] {
 		color: #fff;
 	}
 
