@@ -44,8 +44,10 @@ import logo from "../assets/logo.png";
 		align-items: center;
 		max-width: 1200px;
 		padding: 1rem 2rem;
-		margin: 0 auto;
+		margin: 0 auto 2rem;
 		font-size: 1.2rem;
+		position: relative; /* Ensure nav is on top of other elements */
+		z-index: 10; /* Ensure nav is on top of other elements */
 	}
 
 	.logo img {
@@ -60,16 +62,17 @@ import logo from "../assets/logo.png";
 
 	.links a {
 		text-decoration: none;
-		color: #333;
+		color: #fff;
 		font-weight: 500;
+		text-shadow: 0 2px 8px rgba(0,0,0,0.5); /* Add shadow for readability */
 	}
 
 	.links a:hover {
-		color: #666;
+		color: #ffd700;
 	}
 
 	.links a.active {
-		color: #000;
+		color: #fff;
 		font-weight: 700;
 		text-decoration: underline;
 		text-decoration-color: rgb(var(--clr-primary));

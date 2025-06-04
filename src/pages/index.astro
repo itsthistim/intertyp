@@ -1,16 +1,20 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/Nav.astro";
-import Hero from "@/components/Hero.astro";
+import VideoHeader from "@/components/VideoHeader.astro";
+import About from "@/components/About.astro";
 import Products from "@/components/Products.astro";
 import Projects from "@/components/Projects.astro";
 import Footer from "@/components/Footer.astro";
+import Hero from "@/components/Hero.astro";
 ---
 
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
 	<Nav />
-	<Hero />
+	<!-- <VideoHeader title="InterTyp" subtitle="Ihr Spezialist für Außenwerbung" /> -->
+	 <Hero title="InterTyp" subtitle="Ihr Spezialist für Außenwerbung" />
 	<main>
+		<About />
 		<Products />
 		<Projects />
 	</main>
@@ -20,9 +24,10 @@ import Footer from "@/components/Footer.astro";
 <style>
 	main {
 		min-height: 60vh;
-		margin: 4rem auto;
+		margin: 0 auto;
 		padding: 0;
 		max-width: 1200px;
+		margin-top: 76vh; /* Reduce the gap below the hero section */
 	}
 
 	h2 {

@@ -1,11 +1,124 @@
 ---
+import Button from "@/components/ui/Button.astro";
+
+import plotterVid1 from "@/assets/videos/plotter 1.mp4";
+import plotterVid2 from "@/assets/videos/plotter 2.mp4";
+
+const { title, subtitle } = Astro.props;
 ---
 
-<section id="hero">
+<script>
+	document.addEventListener("astro:page-load", () => {
+		function switchVideo() {
+			const currentVideo = showingVideo1 ? video1 : video2;
+			const nextVideo = showingVideo1 ? video2 : video1;
 
+			nextVideo.currentTime = 0;
+			nextVideo.play();
+			nextVideo.style.opacity = "1";
+
+			setTimeout(() => {
+				currentVideo.style.opacity = "0";
+				currentVideo.pause();
+			}, 500);
+
+			showingVideo1 = !showingVideo1;
+		}
+
+		const video1 = document.querySelector("#video1") as HTMLVideoElement;
+		const video2 = document.querySelector("#video2") as HTMLVideoElement;
+		let showingVideo1 = true;
+
+		video1.load();
+		video2.load();
+
+		Promise.all([
+			new Promise((resolve) => video1.addEventListener("loadeddata", resolve, { once: true })),
+			new Promise((resolve) => video2.addEventListener("loadeddata", resolve, { once: true }))
+		]).then(() => {
+			setInterval(switchVideo, 5000);
+		});
+	});
+</script>
+
+<section>
+	<video id="video1" autoplay loop muted playsinline>
+		<source src={plotterVid1} type="video/mp4" />
+	</video>
+	<video id="video2" loop muted playsinline style="opacity: 0;">
+		<source src={plotterVid2} type="video/mp4" />
+	</video>
+	<div class="overlay"></div>
+
+	<div class="header-content">
+		<h1>{title}</h1>
+		<p>{subtitle}</p>
+		<Button href="/kontakt" class={"contact-button"} forward>Kontaktieren Sie uns</Button>
+	</div>
 </section>
 
-
 <style>
+	section {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 80vh;
+		width: 100vw;
+		box-shadow:
+			0 -30px 50px rgba(0, 20, 0, 0.3),
+			0 30px 50px rgba(0, 20, 0, 0.3);
+		z-index: 0; /* Ensure hero is behind nav but covers page */
+	}
 
+	video {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: 1;
+		transition: opacity 0.5s ease-in-out;
+	}
+
+	.overlay {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.4);
+		z-index: 2;
+	}
+
+	.header-content {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 3;
+		color: white;
+		text-align: center;
+		max-width: 800px;
+		line-height: 1.1;
+	}
+
+	.header-content h1 {
+		font-size: 5rem;
+		font-weight: 750;
+		margin-bottom: 1rem;
+		letter-spacing: 0.05em;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+		color: #fff;
+		/* Removed gradient and animation */
+	}
+
+	.header-content p {
+		font-size: 1.6rem;
+		margin-bottom: 2rem;
+		text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+		font-style: italic;
+		letter-spacing: 0.01em;
+	}
+
+	.header-content .button {
+		font-size: 1.4rem;
+	}
 </style>

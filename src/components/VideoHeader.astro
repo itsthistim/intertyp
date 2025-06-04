@@ -3,6 +3,8 @@ import Button from "@/components/ui/Button.astro";
 
 import plotterVid1 from "@/assets/videos/plotter 1.mp4";
 import plotterVid2 from "@/assets/videos/plotter 2.mp4";
+
+const { title, subtitle } = Astro.props;
 ---
 
 <script>
@@ -48,16 +50,15 @@ import plotterVid2 from "@/assets/videos/plotter 2.mp4";
 	</video>
 	<div class="overlay"></div>
 	<div class="header-content">
-		<h1>Schilder, Stempel, Pokale und mehr</h1>
-		<p>Wir sind Ihr Partner für individuelle Beschriftungen und Werbetechnik.</p>
-		<Button class="button" href="/kontakt" forward>Jetzt anfragen</Button>
+		<h1>{title}</h1>
+		<p>{subtitle}</p>
 	</div>
 </section>
 
 <style>
 	section {
 		position: relative;
-		height: 50vh;
+		height: 40vh;
 		width: 100vw;
 		box-shadow:
 			0 -30px 50px rgba(0, 20, 0, 0.3),
