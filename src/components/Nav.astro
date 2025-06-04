@@ -64,11 +64,12 @@ import logo from "../assets/logo.png";
 		text-decoration: none;
 		color: #fff;
 		font-weight: 500;
-		text-shadow: 0 2px 8px rgba(0,0,0,0.5); /* Add shadow for readability */
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Add shadow for readability */
+		transition: color 0.3s ease;
 	}
 
 	.links a:hover {
-		color: #ffd700;
+		color: rgba(255, 255, 255, 0.7);
 	}
 
 	.links a.active {
@@ -78,6 +79,10 @@ import logo from "../assets/logo.png";
 		text-decoration-color: rgb(var(--clr-primary));
 		text-decoration-thickness: 2px;
 		text-underline-offset: 3px;
+	}
+
+	[data-icon] {
+		color: #fff;
 	}
 
 	@media (max-width: 768px) {
