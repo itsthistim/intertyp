@@ -1,53 +1,29 @@
 ---
-import Button from "@/components/ui/Button.astro";
+import plotterVid1 from "@/assets/videos/plotter 2.mp4";
 
-import plotterVid1 from "@/assets/videos/plotter 1.mp4";
-import plotterVid2 from "@/assets/videos/plotter 2.mp4";
+interface Props {
+	title: string;
+	subtitle: string;
+	src?: string;
+}
 
-const { title, subtitle } = Astro.props;
+const { title, subtitle, src = plotterVid1 } = Astro.props;
+
+console.log("VideoHeader props:", { title, subtitle, src });
+
+const isVideo = src && (src.endsWith(".mp4") || src.endsWith(".webm") || src.endsWith(".ogg"));
 ---
 
-<script>
-	document.addEventListener("astro:page-load", () => {
-		function switchVideo() {
-			const currentVideo = showingVideo1 ? video1 : video2;
-			const nextVideo = showingVideo1 ? video2 : video1;
-
-			nextVideo.currentTime = 0;
-			nextVideo.play();
-			nextVideo.style.opacity = "1";
-
-			setTimeout(() => {
-				currentVideo.style.opacity = "0";
-				currentVideo.pause();
-			}, 500);
-
-			showingVideo1 = !showingVideo1;
-		}
-
-		const video1 = document.querySelector("#video1") as HTMLVideoElement;
-		const video2 = document.querySelector("#video2") as HTMLVideoElement;
-		let showingVideo1 = true;
-
-		video1.load();
-		video2.load();
-
-		Promise.all([
-			new Promise((resolve) => video1.addEventListener("loadeddata", resolve, { once: true })),
-			new Promise((resolve) => video2.addEventListener("loadeddata", resolve, { once: true }))
-		]).then(() => {
-			setInterval(switchVideo, 5000);
-		});
-	});
-</script>
-
 <section>
-	<video id="video1" autoplay loop muted playsinline>
-		<source src={plotterVid1} type="video/mp4" />
-	</video>
-	<video id="video2" loop muted playsinline style="opacity: 0;">
-		<source src={plotterVid2} type="video/mp4" />
-	</video>
+	{
+		isVideo ? (
+			<video id="video1" autoplay loop muted playsinline>
+				<source src={src} type="video/mp4" />
+			</video>
+		) : (
+			<img src={src} alt={title} />
+		)
+	}
 	<div class="overlay"></div>
 	<div class="header-content">
 		<h1>{title}</h1>
@@ -76,6 +52,17 @@ const { title, subtitle } = Astro.props;
 		transition: opacity 0.5s ease-in-out;
 	}
 
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: 1;
+		transition: opacity 0.5s ease-in-out;
+	}
+
 	.overlay {
 		position: absolute;
 		inset: 0;
@@ -87,10 +74,10 @@ const { title, subtitle } = Astro.props;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		transform: translate(-70%, -50%);
 		z-index: 3;
 		color: white;
-		text-align: center;
+		/* text-align: center; */
 		max-width: 800px;
 		line-height: 1.1;
 	}

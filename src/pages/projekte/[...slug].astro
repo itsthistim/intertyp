@@ -3,6 +3,7 @@ import "photoswipe/dist/photoswipe.css";
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
+import Header from "@/components/VideoHeader.astro";
 
 const { slug } = Astro.params;
 const res = await fetch(new URL("/api/projekte/" + slug, Astro.url));
@@ -13,10 +14,7 @@ if (!res.ok) {
 
 let project = await res.json();
 
-let date = null;
-if (project.project_date) {
-	date = new Date(project.project_date);
-}
+// project.project_date = new Date();
 
 let images = [];
 if (project.gallery && project.gallery.images) {
@@ -33,23 +31,22 @@ if (project.gallery && project.gallery.images) {
 
 <Layout title={`${project.title} ‐ Intertyp`}>
 	<Nav />
+	<Header title={project.title} subtitle={"Wir sind Ihr Partner für präzise und hochwertige Beschriftungs-, Beschilderungs- und Folienlösungen in Architekturprojekten. Von klaren Leitsystemen bis zur stilvollen Außenbeschriftung – wir setzen Konzepte professionell um und unterstützen Architekten bei der perfekten Umsetzung ihrer Planungen. Entdecken Sie unsere realisierten Projekte!"} src={project.cover_image.url} />
 	<main>
 		<div class="header">
-			<h1>{project.title}</h1>
 			{project.project_date && <p class="date">{new Date(project.project_date).toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}</p>}
+			<!-- <h1>{project.title}</h1> -->
+			<!-- <p class="desc">{project.description}</p> -->
 		</div>
-		<div class="content">
-			<p>{project.description}</p>
-			{images.length > 0 && (
-				<div class="gallery">
-					{images.map((img: any) => (
-						<a href={img.src} class="photoswipe-trigger" data-pswp-width={img.width} data-pswp-height={img.height}>
-							<img src={img.src} alt={img.alt} />
-						</a>
-					))}
-				</div>
-			)}
+		{images.length > 0 && (
+		<div class="gallery">
+			{images.map((img: any) => (
+				<a href={img.src} class="photoswipe-trigger" data-pswp-width={img.width} data-pswp-height={img.height}>
+					<img src={img.src} alt={img.alt} />
+				</a>
+			))}
 		</div>
+		)}
 	</main>
 	<Footer />
 </Layout>
@@ -75,51 +72,60 @@ if (project.gallery && project.gallery.images) {
 
 <style>
 	main {
+		display: flex;
+		flex-direction: column;
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 2rem;
 	}
 
 	.header {
-		text-align: center;
+		text-align: left;
 		margin: 2rem 0;
 	}
 
-	.header p {
-		font-size: 1.2rem;
-		color: rgb(var(--clr-text));
-	}
-
-	h1 {
+	.header h1 {
 		font-size: 2.5rem;
-		margin: 1rem 0;
+		text-decoration: underline;
+		text-decoration-color: rgb(var(--clr-primary));
+		text-decoration-thickness: 0.2rem;
+		text-underline-offset: 0.4rem;
 	}
 
-	p.date {
+	.header .desc {
 		font-size: 1.2rem;
 		color: rgb(var(--clr-text));
+		margin: 0.5rem 0 1rem;
 	}
 
-	.content {
-		margin-bottom: 4rem;
-	}
-
-	p {
-		font-size: 1.2rem;
-		line-height: 1.6;
-		margin-bottom: 2rem;
+	.header .date {
+		font-size: 1rem;
+		color: rgba(var(--clr-text), 0.7);
 	}
 
 	.gallery {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+		column-count: 3;
+		column-gap: 1rem;
 	}
 
 	.gallery img {
-		max-width: 350px;
-		margin-bottom: 1rem;
+		width: 100%;
+		height: auto;
+		display: block;
+		margin-bottom: 0.5rem;
 		border-radius: 0.2rem;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-		display: block;
+		break-inside: avoid;
+	}
+
+	@media (max-width: 900px) {
+		.gallery {
+			column-count: 2;
+		}
+	}
+	@media (max-width: 600px) {
+		.gallery {
+			column-count: 1;
+		}
 	}
 </style>
