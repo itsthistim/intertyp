@@ -24,8 +24,6 @@ export async function POST({ request }) {
 			html: `<p>Nachricht von <strong>${name}</strong> (<a href="mailto:${email}">${email}</a>):</p><br /><p>${message}</p>`
 		});
 
-		console.log("Message sent:", info.messageId);
-
 		return new Response(JSON.stringify({ success: true, message: "Nachricht erfolgreich gesendet." }), { status: 200, headers: { "Content-Type": "application/json" } });
 	} catch (e) {
 		console.error(e);

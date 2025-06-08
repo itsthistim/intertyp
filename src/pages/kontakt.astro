@@ -80,8 +80,6 @@ import Footer from "@/components/Footer.astro";
 					const result = await res.json();
 					status.textContent = result.message;
 
-					console.log("Form submission result:", result);
-
 					if (result.success) form.reset();
 					return false;
 				}
