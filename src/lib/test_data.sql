@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `intertypcms`.`image` ;
 
 CREATE TABLE IF NOT EXISTS `intertypcms`.`image` (
   `image_id` INT NOT NULL AUTO_INCREMENT,
-  `url` TEXT NOT NULL,
+  `url` VARCHAR(255) NOT NULL,
   `alt` VARCHAR(45) NULL,
   `width` INT NULL,
   `height` INT NULL,
