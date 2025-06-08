@@ -13,7 +13,7 @@ export async function POST({ request }) {
 			service: "gmail",
 			auth: {
 				user: getSecret("GMAIL_USER"),
-				pass: getSecret("GMAIL_PASS")
+				pass: getSecret("GMAIL_APP_PASS")
 			}
 		});
 
