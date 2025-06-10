@@ -36,9 +36,11 @@ import { Icon } from "astro-icon/components";
 
 <style>
 	.wave {
+		position: relative;
 		width: 100%;
 		line-height: 0;
 		transform: rotate(180deg) translateY(-1px);
+		z-index: -1;
 	}
 
 	.wave svg {
@@ -57,6 +59,7 @@ import { Icon } from "astro-icon/components";
 		display: flex;
 		justify-content: space-evenly;
 		flex-wrap: wrap;
+		z-index: 9000 !important;
 	}
 
 	footer ul {
