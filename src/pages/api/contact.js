@@ -10,13 +10,26 @@ export async function POST({ request }) {
 		const message = data.get("message");
 		const recaptchaToken = data.get("g-recaptcha-response");
 
-		if (validRecaptchaToken(recaptchaToken)) {
+		// Extract user agent and IP address for recaptcha validation
+		const userAgent = request.headers.get("user-agent") || "";
+		const userIpAddress = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "";
+
+		if (await validRecaptchaToken(recaptchaToken, userAgent, userIpAddress)) {
 			const transporter = nodemailer.createTransport({
 				service: "gmail",
 				auth: {
 					user: getSecret("GMAIL_USER"),
 					pass: getSecret("GMAIL_APP_PASS")
 				}
+			});
+
+			console.info("Sending email with the following details:", {
+				from: `"${name}" <${email}>`,
+				to: getSecret("GMAIL_USER"),
+				subject: subject,
+				html: `<p>Nachricht von <strong>${name}</strong> (<a href="mailto:${email}">${email}</a>):</p>
+						<br />
+						<p>${message}</p>`
 			});
 
 			await transporter.sendMail({
@@ -36,25 +49,32 @@ export async function POST({ request }) {
 	}
 }
 
-async function validRecaptchaToken() {
+async function validRecaptchaToken(recaptchaToken, userAgent, userIpAddress) {
 	if (!recaptchaToken) {
-		return new Response(JSON.stringify({ success: false, message: "reCAPTCHA fehlgeschlagen. Versuchen Sie es später erneut oder kontaktieren Sie stempel@intertyp.at" }), {
-			status: 400,
-			headers: { "Content-Type": "application/json" }
-		});
-	}
-
-	const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${getSecret("RECAPTCHA_SECRET_KEY")}&response=${recaptchaToken}`, {
-		method: "POST"
-	});
-
-	const recaptchaData = await recaptchaResponse.json();
-	console.info("reCAPTCHA data:", recaptchaData);
-
-	if (!recaptchaData.success || recaptchaData.score < 0.5) {
-		console.log("reCAPTCHA verification failed or score too low. Failing silently.", recaptchaData);
+		console.warn("No reCAPTCHA token provided. Failing silently.");
 		return false;
 	}
 
+	// Prepare form data for POST
+	const params = new URLSearchParams();
+	params.append("secret", getSecret("RECAPTCHA_SECRET_KEY"));
+	params.append("response", recaptchaToken);
+	if (userIpAddress) params.append("remoteip", userIpAddress);
+
+	const recaptchaResponse = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: params
+	});
+
+	const recaptchaData = await recaptchaResponse.json();
+	console.info("reCAPTCHA data:", recaptchaData, "userAgent:", userAgent, "userIpAddress:", userIpAddress);
+
+	if (!recaptchaData.success || recaptchaData.score < 0.5) {
+		console.warn("reCAPTCHA verification failed or score too low. Failing silently.", recaptchaData);
+		return false;
+	}
+
+	console.info("reCAPTCHA verification successful with score:", recaptchaData.score);
 	return true;
 }
