@@ -23,15 +23,6 @@ export async function POST({ request }) {
 				}
 			});
 
-			console.info("Sending email with the following details:", {
-				from: `"${name}" <${email}>`,
-				to: getSecret("GMAIL_USER"),
-				subject: subject,
-				html: `<p>Nachricht von <strong>${name}</strong> (<a href="mailto:${email}">${email}</a>):</p>
-						<br />
-						<p>${message}</p>`
-			});
-
 			await transporter.sendMail({
 				from: `"${name}" <${email}>`,
 				to: getSecret("GMAIL_USER"),
