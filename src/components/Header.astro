@@ -1,18 +1,19 @@
 ---
 import plotterVid1 from "@/assets/videos/plotter 2.mp4";
+import type { HTMLAttributes } from "astro/types";
 
-interface Props {
+interface Props extends HTMLAttributes<"section"> {
 	title: string;
 	subtitle?: string;
 	src?: string;
 }
 
-const { title, subtitle = "", src = plotterVid1 } = Astro.props;
+const { title, subtitle = "", src = plotterVid1, class: className = "", ...rest } = Astro.props;
 
 const isVideo = src && (src.endsWith(".mp4") || src.endsWith(".webm") || src.endsWith(".ogg"));
 ---
 
-<section>
+<section class:list={[className]} {...rest}>
 	{
 		isVideo ? (
 			<video id="video1" autoplay loop muted playsinline>
