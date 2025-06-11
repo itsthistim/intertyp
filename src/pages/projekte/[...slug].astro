@@ -14,8 +14,6 @@ if (!res.ok) {
 
 let project = await res.json();
 
-// project.project_date = new Date();
-
 let images = [];
 if (project.gallery && project.gallery.images) {
 	images = project.gallery.images.map((img: any) => {
@@ -29,105 +27,140 @@ if (project.gallery && project.gallery.images) {
 }
 ---
 
+<script>
+	import PhotoSwipeLightbox from "photoswipe/lightbox";
+	const initLightbox = () => {
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: ".project-gallery",
+			children: "a.gallery-item",
+			bgOpacity: 0.8,
+			pswpModule: () => import("photoswipe")
+		});
+		lightbox.init();
+	};
+
+	document.addEventListener("astro:page-load", initLightbox);
+	document.addEventListener("astro:after-swap", initLightbox);
+</script>
+
 <Layout title={`${project.title} ‐ Intertyp`}>
 	<Nav />
-	<Header
-		title={project.title}
-		src={project.cover_image?.url || "/images/placeholder.jpg"}
-	/>
+	<Header title={project.title} src={project.cover_image?.url || ""} />
 	<main>
-		<div class="header">
-			{project.project_date && <p class="date">{new Date(project.project_date).toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}</p>}
-			<p class="desc">{project.description}</p>
+		<div class="project-info">
+			{project.project_date && <p class="project-date">{new Date(project.project_date).toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}</p>}
+			<p class="project-desc">{project.description}</p>
 		</div>
-		{images.length > 0 && (
-		<div class="gallery">
-			{images.map((img: any) => (
-				<a href={img.src} class="photoswipe-trigger" data-pswp-width={img.width} data-pswp-height={img.height}>
-					<img src={img.src} alt={img.alt} />
-				</a>
-			))}
-		</div>
-		)}
+		{
+			images.length > 0 && (
+				<div class="project-gallery">
+					{images.map((img: any) => (
+						<a href={img.src} class="gallery-item" data-pswp-width={img.width} data-pswp-height={img.height}>
+							<img src={img.src} alt={img.alt} />
+						</a>
+					))}
+				</div>
+			)
+		}
 	</main>
 	<Footer />
 </Layout>
-
-{images.length > 0 && (
-	<script>
-		import PhotoSwipeLightbox from "photoswipe/lightbox";
-
-		const initLightbox = () => {
-			const lightbox = new PhotoSwipeLightbox({
-				gallery: ".gallery",
-				children: "a.photoswipe-trigger",
-				bgOpacity: 0.8,
-				pswpModule: () => import("photoswipe")
-			});
-			lightbox.init();
-		};
-
-		document.addEventListener("astro:page-load", initLightbox);
-		document.addEventListener("astro:after-swap", initLightbox);
-	</script>
-)}
 
 <style>
 	main {
 		display: flex;
 		flex-direction: column;
-		max-width: 1200px;
+		max-width: 1100px;
 		margin: 0 auto 4rem;
 		padding: 0 2rem;
 	}
 
-	.header {
+	.project-info {
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 20%, rgba(1, 126, 1, 0.1) 100%);
+		backdrop-filter: blur(2px);
+		border-radius: 1.2rem;
+		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+		padding: 2.5rem 2rem 2rem 2rem;
+		margin: 2.5rem 0 2.5rem 0;
 		text-align: left;
-		margin: 2rem 0;
+		position: relative;
+		z-index: 2;
 	}
 
-	.header h1 {
-		font-size: 2.5rem;
+	.project-info h1 {
+		font-size: 2.7rem;
+		font-weight: 800;
 		text-decoration: underline;
 		text-decoration-color: rgb(var(--clr-primary));
-		text-decoration-thickness: 0.2rem;
-		text-underline-offset: 0.4rem;
+		text-decoration-thickness: 0.22rem;
+		text-underline-offset: 0.45rem;
+		margin-bottom: 0.7rem;
 	}
 
-	.header .desc {
-		font-size: 1.2rem;
+	.project-desc {
+		font-size: 1.22rem;
 		color: rgb(var(--clr-text));
-		margin: 0.5rem 0 1rem;
+		margin: 0.7rem 0 1.2rem;
+		line-height: 1.7;
 	}
 
-	.header .date {
-		font-size: 1rem;
+	.project-date {
+		font-size: 1.05rem;
 		color: rgba(var(--clr-text), 0.7);
-	}
-
-	.gallery {
-		column-count: 3;
-		column-gap: 1rem;
-	}
-
-	.gallery img {
-		width: 100%;
-		height: auto;
-		display: block;
 		margin-bottom: 0.5rem;
-		border-radius: 0.2rem;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-		break-inside: avoid;
+	}
+
+	.project-gallery {
+		display: flex;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		margin-top: 2.5rem;
+	}
+
+	.gallery-item {
+		display: block;
+		width: calc(33.333% - 1rem);
+		min-width: 220px;
+		max-width: 340px;
+		border-radius: 0.7rem;
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+		background: #fff;
+		transition:
+			transform 0.18s,
+			box-shadow 0.18s;
+		overflow: hidden;
+	}
+
+	.gallery-item:hover {
+		transform: translateY(-6px) scale(1.03);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+		z-index: 2;
+	}
+
+	.gallery-item img {
+		width: 100%;
+		height: 210px;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+		border-radius: 0.7rem 0.7rem 0 0;
+		transition: filter 0.18s;
 	}
 
 	@media (max-width: 900px) {
-		.gallery {
-			column-count: 2;
+		.gallery-item {
+			width: calc(50% - 1rem);
 		}
 	}
 	@media (max-width: 600px) {
-		.gallery {
-			column-count: 1;
+		.gallery-item {
+			width: 100%;
+			min-width: 0;
+			max-width: 100vw;
+		}
+		.project-info {
+			padding: 1.2rem 0.7rem 1.2rem 0.7rem;
 		}
 	}
 </style>
