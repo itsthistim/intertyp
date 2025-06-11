@@ -4,6 +4,8 @@ import path from "node:path";
 import fs from "node:fs";
 import { Buffer } from "node:buffer";
 
+// #region GET Helpers
+
 async function getImageDimensions(image) {
 	// check if image is already defined with dimensions
 	if (image.width && image.height) {
@@ -113,6 +115,10 @@ async function findOrCreateLink(link, slug) {
 	throw new Error("Failed to create or find link");
 }
 
+// #endregion
+
+// #region POST Helpers
+
 async function findOrCreateImage(image) {
 	if (!image || !image?.url) return null;
 
@@ -157,6 +163,8 @@ async function findOrCreateGallery(gallery) {
 		}
 	}
 }
+
+// #endregion
 
 export async function GET({ request, params }) {
 	const slug = new URL(request.url).pathname.replace("/api", "");
@@ -239,7 +247,6 @@ export async function POST({ request, params }) {
 		}
 
 		// create new project
-
 		let newLink = await findOrCreateLink(link, slug);
 		let newCoverImage = await findOrCreateImage(cover_image);
 		let newGallery = await findOrCreateGallery(gallery);
@@ -289,4 +296,18 @@ export async function POST({ request, params }) {
 			headers: { "Content-Type": "application/json" }
 		});
 	}
+}
+
+export async function PUT({ request, params }) {
+	return new Response(JSON.stringify({ error: "Not yet implemented" }), {
+		status: 501,
+		headers: { "Content-Type": "application/json" }
+	});
+}
+
+export async function DELETE({ request, params }) {
+	return new Response(JSON.stringify({ error: "Not yet implemented" }), {
+		status: 501,
+		headers: { "Content-Type": "application/json" }
+	});
 }
