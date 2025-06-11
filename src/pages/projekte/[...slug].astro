@@ -3,7 +3,7 @@ import "photoswipe/dist/photoswipe.css";
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
-import Header from "@/components/VideoHeader.astro";
+import Header from "@/components/Header.astro";
 
 const { slug } = Astro.params;
 const res = await fetch(new URL("/api/projekte/" + slug, Astro.url));

@@ -9,8 +9,6 @@ interface Props {
 
 const { title, subtitle = "", src = plotterVid1 } = Astro.props;
 
-console.log("VideoHeader props:", { title, subtitle, src });
-
 const isVideo = src && (src.endsWith(".mp4") || src.endsWith(".webm") || src.endsWith(".ogg"));
 ---
 
