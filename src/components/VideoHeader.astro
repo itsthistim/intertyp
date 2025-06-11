@@ -3,11 +3,11 @@ import plotterVid1 from "@/assets/videos/plotter 2.mp4";
 
 interface Props {
 	title: string;
-	subtitle: string;
+	subtitle?: string;
 	src?: string;
 }
 
-const { title, subtitle, src = plotterVid1 } = Astro.props;
+const { title, subtitle = "", src = plotterVid1 } = Astro.props;
 
 console.log("VideoHeader props:", { title, subtitle, src });
 

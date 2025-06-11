@@ -31,12 +31,14 @@ if (project.gallery && project.gallery.images) {
 
 <Layout title={`${project.title} ‐ Intertyp`}>
 	<Nav />
-	<Header title={project.title} subtitle={"Wir sind Ihr Partner für präzise und hochwertige Beschriftungs-, Beschilderungs- und Folienlösungen in Architekturprojekten. Von klaren Leitsystemen bis zur stilvollen Außenbeschriftung – wir setzen Konzepte professionell um und unterstützen Architekten bei der perfekten Umsetzung ihrer Planungen. Entdecken Sie unsere realisierten Projekte!"} src={project.cover_image.url} />
+	<Header
+		title={project.title}
+		src={project.cover_image?.url || "/images/placeholder.jpg"}
+	/>
 	<main>
 		<div class="header">
 			{project.project_date && <p class="date">{new Date(project.project_date).toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}</p>}
-			<!-- <h1>{project.title}</h1> -->
-			<!-- <p class="desc">{project.description}</p> -->
+			<p class="desc">{project.description}</p>
 		</div>
 		{images.length > 0 && (
 		<div class="gallery">
@@ -75,7 +77,7 @@ if (project.gallery && project.gallery.images) {
 		display: flex;
 		flex-direction: column;
 		max-width: 1200px;
-		margin: 0 auto;
+		margin: 0 auto 4rem;
 		padding: 0 2rem;
 	}
 
