@@ -73,26 +73,51 @@ const isVideo = src && (src.endsWith(".mp4") || src.endsWith(".webm") || src.end
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-70%, -50%);
+		transform: translate(-50%, -50%);
 		z-index: 3;
 		color: white;
-		/* text-align: center; */
-		max-width: 800px;
+		max-width: 96vw;
+		width: 100%;
 		line-height: 1.1;
+		word-break: break-word;
+		padding: 0 2vw;
+		box-sizing: border-box;
+		text-align: center;
 	}
 
 	.header-content h1 {
-		font-size: 5rem;
+		font-size: clamp(2rem, 7vw, 5rem);
 		font-weight: 750;
 		margin-bottom: 1rem;
+		line-height: 1.05;
+		word-break: break-word;
+		overflow-wrap: break-word;
 	}
 
 	.header-content p {
-		font-size: 1.6rem;
+		font-size: clamp(1rem, 3vw, 1.6rem);
 		margin-bottom: 2rem;
+		word-break: break-word;
+		overflow-wrap: break-word;
 	}
 
-	.header-content .button {
-		font-size: 1.4rem;
+	@media (max-width: 900px) {
+		.header-content {
+			max-width: 98vw;
+			padding: 0 3vw;
+		}
+		section {
+			height: 28vh;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.header-content {
+			max-width: 100vw;
+			padding: 0 1vw;
+		}
+		section {
+			height: 18vh;
+		}
 	}
 </style>
