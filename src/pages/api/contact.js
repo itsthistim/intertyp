@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { getSecret } from "astro:env/server";
 
-export async function POST({ request }) {
+export async function POST({ request, clientAddress }) {
 	try {
 		const data = await request.formData();
 		const name = data.get("name");
@@ -11,10 +11,8 @@ export async function POST({ request }) {
 		const recaptchaToken = data.get("g-recaptcha-response");
 
 		// Extract user agent and IP address for recaptcha validation
-		const userAgent = request.headers.get("user-agent") || "";
-		const userIpAddress = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "";
 
-		if (await validRecaptchaToken(recaptchaToken, userAgent, userIpAddress)) {
+		if (await validRecaptchaToken(recaptchaToken, clientAddress)) {
 			const transporter = nodemailer.createTransport({
 				service: "gmail",
 				auth: {
@@ -40,7 +38,7 @@ export async function POST({ request }) {
 	}
 }
 
-async function validRecaptchaToken(recaptchaToken, userAgent, userIpAddress) {
+async function validRecaptchaToken(recaptchaToken, clientAddress) {
 	if (!recaptchaToken) {
 		console.warn("No reCAPTCHA token provided. Failing silently.");
 		return false;
@@ -50,7 +48,7 @@ async function validRecaptchaToken(recaptchaToken, userAgent, userIpAddress) {
 	const params = new URLSearchParams();
 	params.append("secret", getSecret("RECAPTCHA_SECRET_KEY"));
 	params.append("response", recaptchaToken);
-	if (userIpAddress) params.append("remoteip", userIpAddress);
+	if (clientAddress) params.append("remoteip", clientAddress);
 
 	const recaptchaResponse = await fetch("https://www.google.com/recaptcha/api/siteverify", {
 		method: "POST",
@@ -59,7 +57,6 @@ async function validRecaptchaToken(recaptchaToken, userAgent, userIpAddress) {
 	});
 
 	const recaptchaData = await recaptchaResponse.json();
-	console.info("reCAPTCHA data:", recaptchaData, "userAgent:", userAgent, "userIpAddress:", userIpAddress);
 
 	if (!recaptchaData.success || recaptchaData.score < 0.5) {
 		console.warn("reCAPTCHA verification failed or score too low. Failing silently.", recaptchaData);
