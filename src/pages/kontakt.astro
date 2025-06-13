@@ -9,9 +9,20 @@ const siteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 <script>
 	document.addEventListener("astro:page-load", () => {
 		// Load reCAPTCHA script dynamically
-		const captchaUrl = `https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}?hl=de`;
+		const captchaUrl = `https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}&hl=de`;
 		const script = document.createElement("script");
 		script.src = captchaUrl;
+		script.async = true;
+		script.defer = true;
+
+		// Wait for script to load
+		script.onload = () => {
+			console.log("reCAPTCHA script loaded successfully");
+		};
+
+		script.onerror = () => {
+			console.error("Failed to load reCAPTCHA script");
+		};
 		document.head.appendChild(script);
 
 		// Prevent form submission when reCAPTCHA is not available
@@ -150,7 +161,7 @@ const siteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 				<!-- Hidden button to trigger reCAPTCHA badge -->
 			</form>
 		</div>
-		<button class="g-recaptcha" data-sitekey={siteKey} style="display: none" tabindex="-1"></button>
+		<!-- <button class="g-recaptcha" data-sitekey={siteKey} style="display: none" tabindex="-1"></button> -->
 	</main>
 	<Footer />
 </Layout>
