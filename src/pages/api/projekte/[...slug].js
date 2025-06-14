@@ -300,22 +300,19 @@ export async function GET({ request, params }) {
 				status: 404,
 				headers: { "Content-Type": "application/json" }
 			});
-		}
-
-		const projectRow = projectRows[0];
+		}		const projectRow = projectRows[0];
 
 		let project = {
 			title: projectRow.title,
 			description: projectRow.description,
-			project_date: projectRow.project_date,
+			project_date: projectRow.date,
 			link: {
 				slug: projectRow.link_slug,
 				name: projectRow.link_name
-			}
+			},
+			cover_image: await getCoverImage(projectRow.cover_url, projectRow.cover_alt),
+			gallery: await getGallery(projectRow.gallery_id)
 		};
-
-		project.cover_image = await getCoverImage(projectRow.cover_url, projectRow.cover_alt);
-		project.gallery = await getGallery(projectRow.gallery_id);
 
 		return new Response(JSON.stringify(project), {
 			status: 200,
@@ -380,12 +377,11 @@ export async function POST({ request, params }) {
 		if (newProject[0].project_id) {
 			const [createdProjectRows] = await db.query(`SELECT * FROM project_v WHERE id = ?`, [newProject[0].project_id]);
 			if (createdProjectRows.length > 0) {
-				const createdProject = createdProjectRows[0];
-				return new Response(
+				const createdProject = createdProjectRows[0];				return new Response(
 					JSON.stringify({
 						title: createdProject.title,
 						description: createdProject.description,
-						project_date: createdProject.project_date,
+						project_date: createdProject.date,
 						link: {
 							slug: createdProject.link_slug,
 							name: createdProject.link_name
