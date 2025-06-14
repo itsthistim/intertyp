@@ -9,3 +9,36 @@ get {
   body: none
   auth: none
 }
+
+tests {
+  test("Response status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response is an array", function() {
+    const jsonData = res.getBody();
+    expect(jsonData).to.be.an('array');
+  });
+
+  test("Response time is acceptable", function() {
+    expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
+  });
+
+  test("Response has correct content type", function() {
+    const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
+    expect(contentType).to.exist;
+    expect(contentType).to.be.a('string');
+    expect(contentType).to.contain('application/json');
+  });
+
+  test("If projects exist, they have proper structure", function() {
+    const jsonData = res.getBody();
+    if (jsonData.length > 0) {
+      const firstProject = jsonData[0];
+      expect(firstProject).to.have.property('title');
+      expect(firstProject).to.have.property('link');
+      expect(firstProject.title).to.be.a('string');
+      expect(firstProject.link).to.be.an('object');
+    }
+  });
+}

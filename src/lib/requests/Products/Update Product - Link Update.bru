@@ -1,0 +1,63 @@
+meta {
+  name: Update Product - Link Update
+  type: http
+  seq: 8
+}
+
+put {
+  url: http://localhost:4321/api/produkte/stempel
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Individuelle Stempel & Siegel",
+    "link": {
+      "slug": "/produkte/stempel",
+      "name": "Stempel & Siegel Premium"
+    }
+  }
+}
+
+tests {
+  test("Response status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response contains updated title", function() {
+    const jsonData = res.getBody();
+    expect(jsonData.title).to.equal("Individuelle Stempel & Siegel");
+  });
+
+  test("Response contains updated link name", function() {
+    const jsonData = res.getBody();
+    expect(jsonData.link).to.be.an('object');
+    expect(jsonData.link.name).to.equal("Stempel & Siegel Premium");
+    expect(jsonData.link.slug).to.equal("/produkte/stempel");
+  });
+
+  test("Response preserves other fields", function() {
+    const jsonData = res.getBody();
+    expect(jsonData.description).to.be.a('string');
+  });
+
+  test("Response time is acceptable", function() {
+    expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
+  });
+
+  test("Response has correct content type", function() {
+    const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
+    expect(contentType).to.exist;
+    expect(contentType).to.be.a('string');
+    expect(contentType).to.contain('application/json');
+  });
+
+  test("Response contains expected fields", function() {
+    expect(res.getBody()).to.have.all.keys('title', 'description', 'link', 'cover_image', 'gallery');
+  });
+
+  test("Response is not empty", function() {
+    expect(res.getBody()).to.not.be.empty;
+  });
+}
