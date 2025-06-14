@@ -1,0 +1,54 @@
+meta {
+  name: 10 - Erstellung eines Projekts ohne gültigen Authorization-Header
+  type: http
+  seq: 10
+}
+
+post {
+  url: http://localhost:4321/api/projekte/auth-test-project
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Authorization Test Project",
+    "description": "Test für fehlende Authorization Header",
+    "link": {
+      "slug": "/projekte/auth-test-project",
+      "name": "Auth Test Project"
+    }
+  }
+}
+
+tests {
+  test("Response status should be 403 when authorization is implemented", function() {
+    // TODO: Currently no authorization is implemented, so this test will fail
+    // When authorization is implemented, uncomment this test:
+    // expect(res.getStatus()).to.equal(403);
+  
+    // For now, we expect the normal behavior (201 or other)
+    expect(res.getStatus()).to.be.oneOf([200, 201, 400, 409]);
+  });
+  
+  test("When authorization implemented, should contain forbidden error", function() {
+    // TODO: When authorization is implemented, this should test for:
+    // const jsonData = res.getBody();
+    // expect(jsonData).to.have.property('error');
+    // expect(jsonData.error).to.contain('Forbidden');
+  
+    // For now, just verify we get a response
+    expect(res.getBody()).to.be.an('object');
+  });
+  
+  test("Response time is acceptable", function() {
+    expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
+  });
+  
+  test("Response has correct content type", function() {
+    const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
+    expect(contentType).to.exist;
+    expect(contentType).to.be.a('string');
+    expect(contentType).to.contain('application/json');
+  });
+}

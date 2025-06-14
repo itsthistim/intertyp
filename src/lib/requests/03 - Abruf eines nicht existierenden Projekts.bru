@@ -1,43 +1,35 @@
 meta {
-  name: Update Project - Missing Slug
+  name: 03 - Abruf eines nicht existierenden Projekts
   type: http
-  seq: 9
+  seq: 3
 }
 
-put {
-  url: http://localhost:4321/api/projekte/
-  body: json
+get {
+  url: http://localhost:4321/api/projekte/nonexistent-project
+  body: none
   auth: none
 }
 
-body:json {
-  {
-    "title": "This should fail due to missing slug"
-  }
-}
-
 tests {
-  test("Response status is 400", function() {
-    expect(res.getStatus()).to.equal(400);
+  test("Response status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
   });
-
+  
   test("Response contains error message", function() {
     const jsonData = res.getBody();
-    expect(jsonData.error).to.equal("Missing project slug");
+    expect(jsonData).to.have.property('error');
+    expect(jsonData.error).to.be.a('string');
+    expect(jsonData.error).to.contain('not found');
   });
-
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;
     expect(contentType).to.be.a('string');
     expect(contentType).to.contain('application/json');
-  });
-
-  test("Response is not empty", function() {
-    expect(res.getBody()).to.not.be.empty;
   });
 }

@@ -1,0 +1,44 @@
+meta {
+  name: 04 - Abruf aller Dienstleistungen
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:4321/api/produkte
+  body: none
+  auth: none
+}
+
+tests {
+  test("Response status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response is an array", function() {
+    const jsonData = res.getBody();
+    expect(jsonData).to.be.an('array');
+  });
+  
+  test("Response time is acceptable", function() {
+    expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
+  });
+  
+  test("Response has correct content type", function() {
+    const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
+    expect(contentType).to.exist;
+    expect(contentType).to.be.a('string');
+    expect(contentType).to.contain('application/json');
+  });
+  
+  test("If products exist, they have proper structure", function() {
+    const jsonData = res.getBody();
+    if (jsonData.length > 0) {
+      const firstProduct = jsonData[0];
+      expect(firstProduct).to.have.property('title');
+      expect(firstProduct).to.have.property('link');
+      expect(firstProduct.title).to.be.a('string');
+      expect(firstProduct.link).to.be.an('object');
+    }
+  });
+}

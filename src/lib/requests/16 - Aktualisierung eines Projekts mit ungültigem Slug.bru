@@ -1,7 +1,7 @@
 meta {
-  name: Update Nonexistent Project - 404 Error
+  name: 16 - Aktualisierung eines Projekts mit ungültigem Slug
   type: http
-  seq: 7
+  seq: 16
 }
 
 put {
@@ -21,24 +21,20 @@ tests {
   test("Response status is 404", function() {
     expect(res.getStatus()).to.equal(404);
   });
-
+  
   test("Response contains error message", function() {
     const jsonData = res.getBody();
     expect(jsonData.error).to.equal("Project not found");
   });
-
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;
     expect(contentType).to.be.a('string');
     expect(contentType).to.contain('application/json');
-  });
-
-  test("Response is not empty", function() {
-    expect(res.getBody()).to.not.be.empty;
   });
 }

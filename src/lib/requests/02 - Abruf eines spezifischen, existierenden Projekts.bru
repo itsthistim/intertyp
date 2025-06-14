@@ -1,64 +1,68 @@
 meta {
-  name: Update Existing Project - Partial Fields
+  name: 02 - Abruf eines spezifischen, existierenden Projekts
   type: http
-  seq: 6
+  seq: 2
 }
 
-put {
+get {
   url: http://localhost:4321/api/projekte/gesundheit
-  body: json
+  body: none
   auth: none
-}
-
-body:json {
-  {
-    "description": "Nur die Beschreibung wird aktualisiert - alle anderen Felder bleiben unverändert.",
-    "project_date": "2025-01-01"
-  }
 }
 
 tests {
   test("Response status is 200", function() {
     expect(res.getStatus()).to.equal(200);
   });
-
-  test("Response contains updated description", function() {
+  
+  test("Response contains project data", function() {
     const jsonData = res.getBody();
-    expect(jsonData.description).to.equal("Nur die Beschreibung wird aktualisiert - alle anderen Felder bleiben unverändert.");
-  });
-
-  test("Response contains updated project_date", function() {
-    const jsonData = res.getBody();
-    expect(jsonData.project_date).to.equal("2025-01-01");
-  });
-
-  test("Response still contains title (unchanged)", function() {
-    const jsonData = res.getBody();
+    expect(jsonData).to.have.property('title');
+    expect(jsonData).to.have.property('description');
+    expect(jsonData).to.have.property('link');
     expect(jsonData.title).to.be.a('string');
-    expect(jsonData.title.length).to.be.greaterThan(0);
-  });
-
-  test("Response contains link object", function() {
-    const jsonData = res.getBody();
+    expect(jsonData.description).to.be.a('string');
     expect(jsonData.link).to.be.an('object');
+  });
+  
+  test("Response contains link with correct slug", function() {
+    const jsonData = res.getBody();
     expect(jsonData.link.slug).to.equal("/projekte/gesundheit");
   });
-
+  
+  test("Cover image has alt text if present", function() {
+    const jsonData = res.getBody();
+    if (jsonData.cover_image) {
+      expect(jsonData.cover_image).to.have.property('alt');
+      expect(jsonData.cover_image.alt).to.be.a('string');
+    }
+  });
+  
+  test("Gallery images have alt text if gallery exists", function() {
+    const jsonData = res.getBody();
+    if (jsonData.gallery && jsonData.gallery.images) {
+      jsonData.gallery.images.forEach(function(image) {
+        expect(image).to.have.property('alt');
+        expect(image.alt).to.be.a('string');
+      });
+    }
+  });
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;
     expect(contentType).to.be.a('string');
     expect(contentType).to.contain('application/json');
   });
-
+  
   test("Response contains expected fields", function() {
     expect(res.getBody()).to.have.all.keys('title', 'description', 'project_date', 'link', 'cover_image', 'gallery');
   });
-
+  
   test("Response is not empty", function() {
     expect(res.getBody()).to.not.be.empty;
   });

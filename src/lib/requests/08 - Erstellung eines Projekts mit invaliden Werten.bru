@@ -1,20 +1,24 @@
 meta {
-  name: Update Product - Invalid Cover Image
+  name: 08 - Erstellung eines Projekts mit invaliden Werten
   type: http
-  seq: 5
+  seq: 8
 }
 
-put {
-  url: http://localhost:4321/api/produkte/schilder
+post {
+  url: http://localhost:4321/api/projekte/invalid-project
   body: json
   auth: none
 }
 
 body:json {
   {
-    "title": "Updated Schilder Title",
+    "description": "Projekt ohne Titel - sollte einen 400 Fehler verursachen",
+    "link": {
+      "slug": "/projekte/invalid-project",
+      "name": "Invalid Project"
+    },
     "cover_image": {
-      "alt": "Cover image without URL should fail"
+      "alt": "Cover ohne URL - sollte Fehler verursachen"
     }
   }
 }
@@ -23,24 +27,22 @@ tests {
   test("Response status is 400", function() {
     expect(res.getStatus()).to.equal(400);
   });
-
-  test("Response contains validation error", function() {
+  
+  test("Response contains error message about missing title", function() {
     const jsonData = res.getBody();
-    expect(jsonData.error).to.equal("Cover image URL is required when setting a cover image.");
+    expect(jsonData).to.have.property('error');
+    expect(jsonData.error).to.be.a('string');
+    expect(jsonData.error).to.contain('title');
   });
-
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;
     expect(contentType).to.be.a('string');
     expect(contentType).to.contain('application/json');
-  });
-
-  test("Response is not empty", function() {
-    expect(res.getBody()).to.not.be.empty;
   });
 }

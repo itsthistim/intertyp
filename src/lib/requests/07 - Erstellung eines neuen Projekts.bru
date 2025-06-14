@@ -1,7 +1,7 @@
 meta {
-  name: New Project with Images
+  name: 07 - Erstellung eines neuen Projekts
   type: http
-  seq: 3
+  seq: 7
 }
 
 post {
@@ -51,21 +51,21 @@ tests {
   test("Response status is 201", function() {
     expect(res.getStatus()).to.equal(201);
   });
-
+  
   test("Response contains created project data", function() {
     const jsonData = res.getBody();
     expect(jsonData).to.have.property('title', 'Allgemeines Krankenhaus');
     expect(jsonData).to.have.property('description');
     expect(jsonData.description).to.contain('Kepler Universitätsklinikum');
   });
-
+  
   test("Response contains link object", function() {
     const jsonData = res.getBody();
     expect(jsonData.link).to.be.an('object');
     expect(jsonData.link.slug).to.equal("/projekte/akh");
     expect(jsonData.link.name).to.equal("Allgemeines Krankenhaus");
   });
-
+  
   test("Cover image has alt text", function() {
     const jsonData = res.getBody();
     if (jsonData.cover_image) {
@@ -73,7 +73,7 @@ tests {
       expect(jsonData.cover_image.alt).to.be.a('string');
     }
   });
-
+  
   test("Response contains gallery", function() {
     const jsonData = res.getBody();
     expect(jsonData.gallery).to.be.an('object');
@@ -81,7 +81,7 @@ tests {
     expect(jsonData.gallery.images).to.be.an('array');
     expect(jsonData.gallery.images.length).to.be.greaterThan(0);
   });
-
+  
   test("Gallery images have alt text", function() {
     const jsonData = res.getBody();
     jsonData.gallery.images.forEach(function(image) {
@@ -90,14 +90,14 @@ tests {
       // Alt text can be empty string, but must not be null or undefined
     });
   });
-
+  
   test("Gallery images have valid URLs", function() {
     const jsonData = res.getBody();
     jsonData.gallery.images.forEach(function(image) {
       expect(image.url).to.match(/^https?:\/\/.+/);
     });
   });
-
+  
   test("Gallery images have valid dimensions", function() {
     const jsonData = res.getBody();
     jsonData.gallery.images.forEach(function(image) {
@@ -105,22 +105,22 @@ tests {
       expect(image).to.have.property('height').that.is.a('number').and.is.greaterThan(0);
     });
   });
-
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;
     expect(contentType).to.be.a('string');
     expect(contentType).to.contain('application/json');
   });
-
+  
   test("Response contains expected fields", function() {
     expect(res.getBody()).to.have.all.keys('title', 'description', 'project_date', 'link', 'cover_image', 'gallery');
   });
-
+  
   test("Response is not empty", function() {
     expect(res.getBody()).to.not.be.empty;
   });

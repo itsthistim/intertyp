@@ -1,0 +1,42 @@
+meta {
+  name: 23 - Löschung eines Projekts ohne gültigen Authorization-Header
+  type: http
+  seq: 23
+}
+
+delete {
+  url: http://localhost:4321/api/projekte/gesundheit
+  body: none
+  auth: none
+}
+
+tests {
+  test("Response status - currently 501, should be 403 when auth implemented", function() {
+    // Currently DELETE returns 501 Not Implemented
+    // When both DELETE and authorization are implemented, this should be 403
+    expect(res.getStatus()).to.equal(501);
+  
+    // TODO: When both DELETE and authorization are implemented:
+    // expect(res.getStatus()).to.equal(403);
+  });
+  
+  test("Currently returns not implemented message", function() {
+    const jsonData = res.getBody();
+    expect(jsonData).to.have.property('error');
+    expect(jsonData.error).to.contain('Not yet implemented');
+  
+    // TODO: When authorization is implemented:
+    // expect(jsonData.error).to.contain('Forbidden');
+  });
+  
+  test("Response time is acceptable", function() {
+    expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
+  });
+  
+  test("Response has correct content type", function() {
+    const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
+    expect(contentType).to.exist;
+    expect(contentType).to.be.a('string');
+    expect(contentType).to.contain('application/json');
+  });
+}
