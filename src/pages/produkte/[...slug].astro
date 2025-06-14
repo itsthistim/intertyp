@@ -1,5 +1,144 @@
 ---
+import "photoswipe/dist/photoswipe.css";
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+
 const { slug } = Astro.params;
+const res = await fetch(new URL("/api/produkte/" + slug, Astro.url));
+
+if (!res.ok) {
+	return Astro.rewrite("/404");
+}
+
+let product = await res.json();
+
+let images = [];
+if (product.gallery && product.gallery.images) {
+	images = product.gallery.images.map((img: any) => {
+		return {
+			src: img.url,
+			alt: img.alt,
+			width: img.width,
+			height: img.height
+		};
+	});
+}
 ---
 
-<h1>{slug}</h1>
+<script>
+	import PhotoSwipeLightbox from "photoswipe/lightbox";
+	const initLightbox = () => {
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: ".product-gallery",
+			children: "a.gallery-item",
+			bgOpacity: 0.8,
+			pswpModule: () => import("photoswipe")
+		});
+		lightbox.init();
+	};
+
+	document.addEventListener("astro:page-load", initLightbox);
+	document.addEventListener("astro:after-swap", initLightbox);
+</script>
+
+<Layout title={`${product.title} ‐ Intertyp`}>
+	<Nav />
+	<Header title={product.title} src={product.cover_image?.url || ""} />
+	<main>		<div class="product-info">
+			<p class="product-desc">{product.description}</p>
+		</div>
+				{
+			images.length > 0 && (
+				<div class="product-gallery">
+					{images.map((img: any) => (
+						<a href={img.src} class="gallery-item" data-pswp-width={img.width} data-pswp-height={img.height}>
+							<img src={img.src} alt={img.alt} />
+						</a>
+					))}
+				</div>
+			)
+		}
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	main {
+		display: flex;
+		flex-direction: column;
+		max-width: 1100px;
+		margin: 0 auto 4rem;
+		padding: 0 2rem;
+	}
+
+	.product-info {
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 20%, rgba(1, 126, 1, 0.1) 100%);
+		backdrop-filter: blur(2px);
+		border-radius: 1.2rem;
+		box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+		padding: 2.5rem 2rem 2rem 2rem;
+		margin: 2.5rem 0 2.5rem 0;
+		text-align: left;
+		position: relative;
+		z-index: 2;
+	}
+
+	.product-desc {
+		font-size: 1.22rem;
+		color: rgb(var(--clr-text));
+		margin: 0.7rem 0 1.2rem;
+		line-height: 1.7;
+	}
+
+	.product-gallery {
+		column-count: 3;
+		column-gap: 1.5rem;
+		margin-top: 2.5rem;
+	}
+
+	@media (max-width: 900px) {
+		.product-gallery {
+			column-count: 2;
+		}
+	}
+	@media (max-width: 600px) {
+		.product-gallery {
+			column-count: 1;
+		}
+	}
+
+	.gallery-item {
+		display: block;
+		margin-bottom: 1.5rem;
+		break-inside: avoid;
+		border-radius: 0.7rem;
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+		background: #fff;
+		transition:
+			transform 0.18s,
+			box-shadow 0.18s;
+		overflow: hidden;
+		width: 100%;
+		padding: 0;
+		max-width: 100%;
+	}
+
+	.gallery-item:hover {
+		transform: translateY(-6px) scale(1.03);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+		z-index: 2;
+	}
+
+	.gallery-item img {
+		width: 100%;
+		height: auto;
+		display: block;
+		object-fit: cover;
+		object-position: center;
+		border-radius: 0.7rem 0.7rem 0 0;
+		transition: filter 0.18s;
+		background: #f8f8f8;
+	}
+</style>

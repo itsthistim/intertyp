@@ -5,14 +5,30 @@ import Products from "@/components/Products.astro";
 import Projects from "@/components/Projects.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
+
+const res = await fetch(new URL("/api/produkte", Astro.url));
+let products = await res.json();
 ---
 
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
 	<Nav />
-	<!-- <Header title="Unsere Produkte" subtitle="Hier finden Sie eine Übersicht unserer Produkte." /> -->
 	<main>
 		<Products />
-		<Projects />
+		<section id="products-list">
+			{
+				products.length > 0 ? (
+					<ul>
+						{products.map((product: any) => (
+							<li>
+								<a href={product.link.slug}>{product.link.alt}</a>
+							</li>
+						))}
+					</ul>
+				) : (
+					<p>{products.error}</p>
+				)
+			}
+		</section>
 	</main>
 	<Footer />
 </Layout>

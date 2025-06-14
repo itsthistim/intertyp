@@ -299,10 +299,160 @@ export async function POST({ request, params }) {
 }
 
 export async function PUT({ request, params }) {
-	return new Response(JSON.stringify({ error: "Not yet implemented" }), {
-		status: 501,
-		headers: { "Content-Type": "application/json" }
-	});
+	const slug = new URL(request.url).pathname.replace("/api", "");
+
+	if (!slug) {
+		return new Response(JSON.stringify({ error: "Missing project slug" }), {
+			status: 400,
+			headers: { "Content-Type": "application/json" }
+		});
+	}
+
+	try {
+		// Check if project exists
+		const [existingProject] = await db.query(`SELECT * FROM project_v WHERE link_slug = ?`, [slug]);
+
+		if (existingProject.length === 0) {
+			return new Response(JSON.stringify({ error: "Project not found" }), {
+				status: 404,
+				headers: { "Content-Type": "application/json" }
+			});
+		}
+
+		const body = await request.json();
+		const { title, description, project_date, link, cover_image, gallery } = body;
+
+		// Validate cover_image if provided
+		if (cover_image && !cover_image.url) {
+			return new Response(JSON.stringify({ error: "Cover image URL is required when setting a cover image." }), {
+				status: 400,
+				headers: { "Content-Type": "application/json" }
+			});
+		}
+
+		const existingProjectData = existingProject[0];
+		let linkId = existingProjectData.link_id;
+		let coverImageId = existingProjectData.cover_id;
+		let galleryId = existingProjectData.gallery_id;
+
+		// Update link if provided
+		if (link) {
+			let updatedLink = await findOrCreateLink(link, slug);
+			linkId = updatedLink.link_id;
+		}
+
+		// Update cover image if provided
+		if (cover_image) {
+			let updatedCoverImage = await findOrCreateImage(cover_image);
+			coverImageId = updatedCoverImage?.image_id || null;
+		}
+		// Update gallery if provided
+		if (gallery) {
+			const oldGalleryId = galleryId;
+
+			// Create new gallery first
+			let updatedGallery = await findOrCreateGallery(gallery);
+			galleryId = updatedGallery?.gallery_id || null;
+
+			// Clean up old gallery after project is updated (if it's not shared)
+			if (oldGalleryId && oldGalleryId !== galleryId) {
+				// We'll clean this up after the project update to avoid foreign key constraint issues
+				// Store the old gallery ID for later cleanup
+				var oldGalleryToCleanup = oldGalleryId;
+			}
+		}
+
+		// Build update query dynamically for only provided fields
+		let updateFields = [];
+		let updateValues = [];
+
+		if (title !== undefined) {
+			updateFields.push("title = ?");
+			updateValues.push(title);
+		}
+		if (description !== undefined) {
+			updateFields.push("description = ?");
+			updateValues.push(description);
+		}
+		if (project_date !== undefined) {
+			updateFields.push("project_date = ?");
+			updateValues.push(project_date);
+		}
+		if (link !== undefined) {
+			updateFields.push("link_id = ?");
+			updateValues.push(linkId);
+		}
+		if (cover_image !== undefined) {
+			updateFields.push("cover_image_id = ?");
+			updateValues.push(coverImageId);
+		}
+		if (gallery !== undefined) {
+			updateFields.push("gallery_id = ?");
+			updateValues.push(galleryId);
+		}
+		// Only update if there are fields to update
+		if (updateFields.length > 0) {
+			updateValues.push(existingProjectData.id);
+			await db.query(`UPDATE project SET ${updateFields.join(", ")} WHERE project_id = ?`, updateValues);
+		}
+
+		// Clean up old gallery if it was replaced and not used elsewhere
+		if (typeof oldGalleryToCleanup !== 'undefined') {
+			try {
+				// Check if the old gallery is still referenced by any products or projects
+				const [galleryRefs] = await db.query(`
+					SELECT COUNT(*) as count FROM (
+						SELECT gallery_id FROM product WHERE gallery_id = ?
+						UNION ALL
+						SELECT gallery_id FROM project WHERE gallery_id = ?
+					) refs
+				`, [oldGalleryToCleanup, oldGalleryToCleanup]);
+
+				if (galleryRefs[0].count === 0) {
+					// Safe to delete - no references exist
+					await db.query(`DELETE FROM gallery_image WHERE gallery_id = ?`, [oldGalleryToCleanup]);
+					await db.query(`DELETE FROM gallery WHERE gallery_id = ?`, [oldGalleryToCleanup]);
+				}
+			} catch (cleanupError) {
+				// Log the error but don't fail the entire request
+				console.warn(`Warning: Could not clean up old gallery ${oldGalleryToCleanup}:`, cleanupError.message);
+			}
+		}
+
+		// Return the updated project
+		const [updatedProjectRows] = await db.query(`SELECT * FROM project_v WHERE id = ?`, [existingProjectData.id]);
+		if (updatedProjectRows.length > 0) {
+			const updatedProject = updatedProjectRows[0];
+			return new Response(
+				JSON.stringify({
+					title: updatedProject.title,
+					description: updatedProject.description,
+					project_date: updatedProject.date,
+					link: {
+						slug: updatedProject.link_slug,
+						name: updatedProject.link_name
+					},
+					cover_image: await getCoverImage(updatedProject.cover_url, updatedProject.cover_alt),
+					gallery: await getGallery(updatedProject.gallery_id)
+				}),
+				{
+					status: 200,
+					headers: { "Content-Type": "application/json" }
+				}
+			);
+		} else {
+			return new Response(JSON.stringify({ error: "Failed to retrieve updated project." }), {
+				status: 500,
+				headers: { "Content-Type": "application/json" }
+			});
+		}
+	} catch (err) {
+		console.error("Error updating project:", err);
+		return new Response(JSON.stringify({ error: "Database " + err }), {
+			status: 500,
+			headers: { "Content-Type": "application/json" }
+		});
+	}
 }
 
 export async function DELETE({ request, params }) {
