@@ -166,6 +166,122 @@ async function findOrCreateGallery(gallery) {
 
 // #endregion
 
+// #region PUT Helpers
+
+function validatePutRequest(body) {
+	const { cover_image } = body;
+
+	if (cover_image && !cover_image.url) {
+		return {
+			isValid: false,
+			error: "Cover image URL is required when setting a cover image."
+		};
+	}
+
+	return { isValid: true };
+}
+
+async function updateProjectLinks(link, slug, existingLinkId) {
+	if (!link) return existingLinkId;
+
+	const updatedLink = await findOrCreateLink(link, slug);
+	return updatedLink.link_id;
+}
+
+async function updateProjectCoverImage(cover_image, existingCoverImageId) {
+	if (!cover_image) return existingCoverImageId;
+
+	const updatedCoverImage = await findOrCreateImage(cover_image);
+	return updatedCoverImage?.image_id || null;
+}
+
+async function updateProjectGallery(gallery, existingGalleryId) {
+	if (!gallery) return { galleryId: existingGalleryId, oldGalleryToCleanup: null };
+
+	const updatedGallery = await findOrCreateGallery(gallery);
+	const newGalleryId = updatedGallery?.gallery_id || null;
+
+	// Return old gallery for cleanup if it changed
+	const oldGalleryToCleanup = (existingGalleryId && existingGalleryId !== newGalleryId)
+		? existingGalleryId
+		: null;
+
+	return { galleryId: newGalleryId, oldGalleryToCleanup };
+}
+
+function buildUpdateQuery(fields) {
+	const { title, description, project_date, link, cover_image, gallery } = fields;
+	let updateFields = [];
+	let updateValues = [];
+
+	if (title !== undefined) {
+		updateFields.push("title = ?");
+		updateValues.push(title);
+	}
+	if (description !== undefined) {
+		updateFields.push("description = ?");
+		updateValues.push(description);
+	}
+	if (project_date !== undefined) {
+		updateFields.push("project_date = ?");
+		updateValues.push(project_date);
+	}
+	if (link !== undefined) {
+		updateFields.push("link_id = ?");
+		updateValues.push(fields.linkId);
+	}
+	if (cover_image !== undefined) {
+		updateFields.push("cover_image_id = ?");
+		updateValues.push(fields.coverImageId);
+	}
+	if (gallery !== undefined) {
+		updateFields.push("gallery_id = ?");
+		updateValues.push(fields.galleryId);
+	}
+
+	return { updateFields, updateValues };
+}
+
+async function cleanupOldGallery(oldGalleryId) {
+	if (!oldGalleryId) return;
+
+	try {
+		// Check if the old gallery is still referenced by any products or projects
+		const [galleryRefs] = await db.query(`
+			SELECT COUNT(*) as count FROM (
+				SELECT gallery_id FROM product WHERE gallery_id = ?
+				UNION ALL
+				SELECT gallery_id FROM project WHERE gallery_id = ?
+			) refs
+		`, [oldGalleryId, oldGalleryId]);
+
+		if (galleryRefs[0].count === 0) {
+			// Safe to delete - no references exist
+			await db.query(`DELETE FROM gallery_image WHERE gallery_id = ?`, [oldGalleryId]);
+			await db.query(`DELETE FROM gallery WHERE gallery_id = ?`, [oldGalleryId]);
+		}
+	} catch (cleanupError) {
+		// Log the error but don't fail the entire request
+		console.warn(`Warning: Could not clean up old gallery ${oldGalleryId}:`, cleanupError.message);
+	}
+}
+
+async function formatProjectResponse(projectData) {
+	return {
+		title: projectData.title,
+		description: projectData.description,
+		project_date: projectData.date,
+		link: {
+			slug: projectData.link_slug,
+			name: projectData.link_name
+		},
+		cover_image: await getCoverImage(projectData.cover_url, projectData.cover_alt),
+		gallery: await getGallery(projectData.gallery_id)
+	};
+}
+
+// #endregion
+
 export async function GET({ request, params }) {
 	const slug = new URL(request.url).pathname.replace("/api", "");
 
@@ -322,124 +438,44 @@ export async function PUT({ request, params }) {
 		const body = await request.json();
 		const { title, description, project_date, link, cover_image, gallery } = body;
 
-		// Validate cover_image if provided
-		if (cover_image && !cover_image.url) {
-			return new Response(JSON.stringify({ error: "Cover image URL is required when setting a cover image." }), {
+		// Validate request
+		const validation = validatePutRequest(body);
+		if (!validation.isValid) {
+			return new Response(JSON.stringify({ error: validation.error }), {
 				status: 400,
 				headers: { "Content-Type": "application/json" }
 			});
 		}
 
 		const existingProjectData = existingProject[0];
-		let linkId = existingProjectData.link_id;
-		let coverImageId = existingProjectData.cover_id;
-		let galleryId = existingProjectData.gallery_id;
 
-		// Update link if provided
-		if (link) {
-			let updatedLink = await findOrCreateLink(link, slug);
-			linkId = updatedLink.link_id;
-		}
+		// Update related entities
+		const linkId = await updateProjectLinks(link, slug, existingProjectData.link_id);
+		const coverImageId = await updateProjectCoverImage(cover_image, existingProjectData.cover_id);
+		const { galleryId, oldGalleryToCleanup } = await updateProjectGallery(gallery, existingProjectData.gallery_id);
 
-		// Update cover image if provided
-		if (cover_image) {
-			let updatedCoverImage = await findOrCreateImage(cover_image);
-			coverImageId = updatedCoverImage?.image_id || null;
-		}
-		// Update gallery if provided
-		if (gallery) {
-			const oldGalleryId = galleryId;
+		// Build and execute update query
+		const updateData = { ...body, linkId, coverImageId, galleryId };
+		const { updateFields, updateValues } = buildUpdateQuery(updateData);
 
-			// Create new gallery first
-			let updatedGallery = await findOrCreateGallery(gallery);
-			galleryId = updatedGallery?.gallery_id || null;
-
-			// Clean up old gallery after project is updated (if it's not shared)
-			if (oldGalleryId && oldGalleryId !== galleryId) {
-				// We'll clean this up after the project update to avoid foreign key constraint issues
-				// Store the old gallery ID for later cleanup
-				var oldGalleryToCleanup = oldGalleryId;
-			}
-		}
-
-		// Build update query dynamically for only provided fields
-		let updateFields = [];
-		let updateValues = [];
-
-		if (title !== undefined) {
-			updateFields.push("title = ?");
-			updateValues.push(title);
-		}
-		if (description !== undefined) {
-			updateFields.push("description = ?");
-			updateValues.push(description);
-		}
-		if (project_date !== undefined) {
-			updateFields.push("project_date = ?");
-			updateValues.push(project_date);
-		}
-		if (link !== undefined) {
-			updateFields.push("link_id = ?");
-			updateValues.push(linkId);
-		}
-		if (cover_image !== undefined) {
-			updateFields.push("cover_image_id = ?");
-			updateValues.push(coverImageId);
-		}
-		if (gallery !== undefined) {
-			updateFields.push("gallery_id = ?");
-			updateValues.push(galleryId);
-		}
-		// Only update if there are fields to update
 		if (updateFields.length > 0) {
 			updateValues.push(existingProjectData.id);
 			await db.query(`UPDATE project SET ${updateFields.join(", ")} WHERE project_id = ?`, updateValues);
 		}
 
-		// Clean up old gallery if it was replaced and not used elsewhere
-		if (typeof oldGalleryToCleanup !== 'undefined') {
-			try {
-				// Check if the old gallery is still referenced by any products or projects
-				const [galleryRefs] = await db.query(`
-					SELECT COUNT(*) as count FROM (
-						SELECT gallery_id FROM product WHERE gallery_id = ?
-						UNION ALL
-						SELECT gallery_id FROM project WHERE gallery_id = ?
-					) refs
-				`, [oldGalleryToCleanup, oldGalleryToCleanup]);
-
-				if (galleryRefs[0].count === 0) {
-					// Safe to delete - no references exist
-					await db.query(`DELETE FROM gallery_image WHERE gallery_id = ?`, [oldGalleryToCleanup]);
-					await db.query(`DELETE FROM gallery WHERE gallery_id = ?`, [oldGalleryToCleanup]);
-				}
-			} catch (cleanupError) {
-				// Log the error but don't fail the entire request
-				console.warn(`Warning: Could not clean up old gallery ${oldGalleryToCleanup}:`, cleanupError.message);
-			}
-		}
+		// Clean up old gallery if it was replaced
+		await cleanupOldGallery(oldGalleryToCleanup);
 
 		// Return the updated project
 		const [updatedProjectRows] = await db.query(`SELECT * FROM project_v WHERE id = ?`, [existingProjectData.id]);
 		if (updatedProjectRows.length > 0) {
 			const updatedProject = updatedProjectRows[0];
-			return new Response(
-				JSON.stringify({
-					title: updatedProject.title,
-					description: updatedProject.description,
-					project_date: updatedProject.date,
-					link: {
-						slug: updatedProject.link_slug,
-						name: updatedProject.link_name
-					},
-					cover_image: await getCoverImage(updatedProject.cover_url, updatedProject.cover_alt),
-					gallery: await getGallery(updatedProject.gallery_id)
-				}),
-				{
-					status: 200,
-					headers: { "Content-Type": "application/json" }
-				}
-			);
+			const responseData = await formatProjectResponse(updatedProject);
+
+			return new Response(JSON.stringify(responseData), {
+				status: 200,
+				headers: { "Content-Type": "application/json" }
+			});
 		} else {
 			return new Response(JSON.stringify({ error: "Failed to retrieve updated project." }), {
 				status: 500,

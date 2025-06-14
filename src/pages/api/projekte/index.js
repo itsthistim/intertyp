@@ -57,3 +57,24 @@ export async function GET() {
 		});
 	}
 }
+
+export async function POST() {
+	return new Response(JSON.stringify({ error: "Missing project slug" }), {
+		status: 400,
+		headers: { "Content-Type": "application/json" }
+	});
+}
+
+export async function PUT() {
+	return new Response(JSON.stringify({ error: "Missing project slug" }), {
+		status: 400,
+		headers: { "Content-Type": "application/json" }
+	});
+}
+
+export async function DELETE() {
+	return new Response(JSON.stringify({ error: "Missing project slug" }), {
+		status: 400,
+		headers: { "Content-Type": "application/json" }
+	});
+}
