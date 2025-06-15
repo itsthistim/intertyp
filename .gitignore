@@ -20,6 +20,8 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+**/environments/*.bru
+!**/environments/*.example.bru
 
 # IDE & OS specific files
 .DS_Store
