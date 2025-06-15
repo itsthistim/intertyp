@@ -7,54 +7,70 @@ import { Buffer } from "node:buffer";
 // #region Auth Helpers
 
 function requireBasicAuth(request) {
-	const authHeader = request.headers.get('authorization');
+  const authHeader = request.headers.get("authorization");
 
-	if (!authHeader || !authHeader.startsWith('Basic ')) {
-		return {
-			isValid: false,
-			response: new Response(JSON.stringify({ error: "Unauthorized: Basic authentication required" }), {
-				status: 401,
-				headers: {
-					"Content-Type": "application/json",
-					"WWW-Authenticate": "Basic realm=\"API\""
-				}
-			})
-		};
-	}
+  if (!authHeader || !authHeader.startsWith("Basic ")) {
+    return {
+      isValid: false,
+      response: new Response(
+        JSON.stringify({
+          error: "Unauthorized: Basic authentication required",
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+            "WWW-Authenticate": 'Basic realm="API"',
+          },
+        },
+      ),
+    };
+  }
 
-	// Extract and decode the Base64 credentials
-	try {
-		const base64Credentials = authHeader.split(' ')[1];
-		const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
-		const [username, password] = credentials.split(':');
+  try {
+    const base64Credentials = authHeader.split(" ")[1];
+    const credentials = Buffer.from(base64Credentials, "base64").toString(
+      "ascii",
+    );
+    const [username, password] = credentials.split(":");
 
-		// Simple hardcoded credentials for testing (in production, use proper auth)
-		if (username === 'admin' && password === 'password') {
-			return { isValid: true };
-		}
+    if (
+      username === import.meta.env.API_USER &&
+      password === import.meta.env.API_PASSWORD
+    ) {
+      return { isValid: true };
+    }
 
-		return {
-			isValid: false,
-			response: new Response(JSON.stringify({ error: "Unauthorized: Invalid credentials" }), {
-				status: 401,
-				headers: {
-					"Content-Type": "application/json",
-					"WWW-Authenticate": "Basic realm=\"API\""
-				}
-			})
-		};
-	} catch (error) {
-		return {
-			isValid: false,
-			response: new Response(JSON.stringify({ error: "Unauthorized: Invalid authentication format" }), {
-				status: 401,
-				headers: {
-					"Content-Type": "application/json",
-					"WWW-Authenticate": "Basic realm=\"API\""
-				}
-			})
-		};
-	}
+    return {
+      isValid: false,
+      response: new Response(
+        JSON.stringify({ error: "Unauthorized: Invalid credentials" }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+            "WWW-Authenticate": 'Basic realm="API"',
+          },
+        },
+      ),
+    };
+  } catch (error) {
+    return {
+      isValid: false,
+      response: new Response(
+        JSON.stringify({
+          error: "Unauthorized: Invalid authentication format",
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+            "WWW-Authenticate": 'Basic realm="API"',
+          },
+        },
+      ),
+    };
+  }
 }
 
 // #endregion
