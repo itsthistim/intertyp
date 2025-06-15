@@ -5,14 +5,14 @@ meta {
 }
 
 put {
-  url: http://localhost:4321/api/produkte/aussenbeschriftung
+  url: {{baseUrl}}/api/produkte/aussenbeschriftung
   body: json
   auth: basic
 }
 
 auth:basic {
-  username: admin
-  password: password
+  username: {{apiUser}}
+  password: {{apiPassword}}
 }
 
 body:json {

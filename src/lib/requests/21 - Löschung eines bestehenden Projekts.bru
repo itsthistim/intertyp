@@ -5,14 +5,14 @@ meta {
 }
 
 delete {
-  url: http://localhost:4321/api/projekte/gesundheit
+  url: {{baseUrl}}/api/projekte/gesundheit
   body: none
   auth: basic
 }
 
 auth:basic {
-  username: admin
-  password: password
+  username: {{apiUser}}
+  password: {{apiPassword}}
 }
 
 tests {

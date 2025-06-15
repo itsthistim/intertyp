@@ -5,14 +5,14 @@ meta {
 }
 
 post {
-  url: http://localhost:4321/api/produkte/pokale
+  url: {{baseUrl}}/api/produkte/pokale
   body: json
   auth: basic
 }
 
 auth:basic {
-  username: admin
-  password: password
+  username: {{apiUser}}
+  password: {{apiPassword}}
 }
 
 body:json {

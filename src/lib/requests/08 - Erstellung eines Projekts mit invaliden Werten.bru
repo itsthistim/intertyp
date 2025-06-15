@@ -5,14 +5,14 @@ meta {
 }
 
 post {
-  url: http://localhost:4321/api/projekte/invalid-project
+  url: {{baseUrl}}/api/projekte/invalid-project
   body: json
   auth: basic
 }
 
 auth:basic {
-  username: admin
-  password: password
+  username: {{apiUser}}
+  password: {{apiPassword}}
 }
 
 body:json {
