@@ -18,29 +18,20 @@ body:json {
 }
 
 tests {
-  test("Response status should be 403 when authorization is implemented", function() {
-    // TODO: Currently no authorization is implemented, so this test will fail
-    // When authorization is implemented, uncomment this test:
-    // expect(res.getStatus()).to.equal(403);
-  
-    // For now, we expect the normal behavior (200 or other)
-    expect(res.getStatus()).to.be.oneOf([200, 400, 404]);
+  test("Response status should be 401 Unauthorized", function() {
+    expect(res.getStatus()).to.equal(401);
   });
-  
-  test("When authorization implemented, should contain forbidden error", function() {
-    // TODO: When authorization is implemented, this should test for:
-    // const jsonData = res.getBody();
-    // expect(jsonData).to.have.property('error');
-    // expect(jsonData.error).to.contain('Forbidden');
-  
-    // For now, just verify we get a response
-    expect(res.getBody()).to.be.an('object');
+
+  test("Should contain unauthorized error message", function() {
+    const jsonData = res.getBody();
+    expect(jsonData).to.have.property('error');
+    expect(jsonData.error).to.contain('Unauthorized');
   });
-  
+
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-  
+
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;

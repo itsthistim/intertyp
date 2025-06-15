@@ -7,7 +7,12 @@ meta {
 put {
   url: http://localhost:4321/api/produkte/nonexistent-product
   body: json
-  auth: none
+  auth: basic
+}
+
+auth:basic {
+  username: admin
+  password: password
 }
 
 body:json {
@@ -21,16 +26,16 @@ tests {
   test("Response status is 404", function() {
     expect(res.getStatus()).to.equal(404);
   });
-  
+
   test("Response contains error message", function() {
     const jsonData = res.getBody();
     expect(jsonData.error).to.equal("Product not found");
   });
-  
+
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-  
+
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;

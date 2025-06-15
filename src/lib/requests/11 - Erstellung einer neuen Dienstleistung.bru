@@ -7,7 +7,12 @@ meta {
 post {
   url: http://localhost:4321/api/produkte/hochbeete
   body: json
-  auth: none
+  auth: basic
+}
+
+auth:basic {
+  username: admin
+  password: password
 }
 
 body:json {
@@ -45,21 +50,21 @@ tests {
   test("Response status is 201", function() {
     expect(res.getStatus()).to.equal(201);
   });
-  
+
   test("Response contains created product data", function() {
     const jsonData = res.getBody();
     expect(jsonData).to.have.property('title', 'Hochbeete');
     expect(jsonData).to.have.property('description');
     expect(jsonData.description).to.contain('Sie können mit einem Hochbeet einen optimalen Ertrag auf kleinem Raum erzielen, da Sie jeden Zentimeter effektiv ausnutzen und beeindruckende Ernten selbst auf Balkonen oder Terrassen erreichen können. Die erhöhte Position sorgt für eine bessere Drainage und Belüftung der Wurzeln, was zu gesünderem Wachstum führt. Sie können Ihr Hochbeet mit der idealen Erdmischung für Ihre Pflanzen befüllen, und diese werden es Ihnen mit kräftigem Wachstum danken. Das Gärtnern wird rückenschonender, denn die angenehme Arbeitshöhe unserer Hochbeete macht das Pflanzen, Pflegen und Ernten zu einem Vergnügen. Eine effiziente Unkrautkontrolle ist gewährleistet, da weniger Unkraut mehr Zeit für das bedeutet, was wirklich zählt: Ihre Pflanzen gedeihen zu sehen. Ihre Pflanzen sind in Hochbeeten besser vor Bodenschädlingen und Schnecken geschützt, was einen effektiven Schutz vor Schädlingen bietet. Der Boden im Hochbeet erwärmt sich schneller im Frühling und hält die Wärme länger im Herbst, was eine verlängerte Wachstumsperiode ermöglicht und somit eine frühere und längere Ernte begünstigt.');
   });
-  
+
   test("Response contains link object", function() {
     const jsonData = res.getBody();
     expect(jsonData.link).to.be.an('object');
     expect(jsonData.link.slug).to.equal("/produkte/hochbeete");
     expect(jsonData.link.name).to.equal("Hochbeete");
   });
-  
+
   test("Cover image has alt text", function() {
     const jsonData = res.getBody();
     if (jsonData.cover_image) {
@@ -68,7 +73,7 @@ tests {
       expect(jsonData.cover_image.alt).to.equal('Hochbeet in U-Form');
     }
   });
-  
+
   test("Gallery images have alt text", function() {
     const jsonData = res.getBody();
     if (jsonData.gallery && jsonData.gallery.images) {
@@ -78,18 +83,18 @@ tests {
       });
     }
   });
-  
+
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-  
+
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;
     expect(contentType).to.be.a('string');
     expect(contentType).to.contain('application/json');
   });
-  
+
   test("Response contains expected fields", function() {
     expect(res.getBody()).to.have.all.keys('title', 'description', 'link', 'cover_image', 'gallery');
   });
