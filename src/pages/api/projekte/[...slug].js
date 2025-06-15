@@ -14,7 +14,7 @@ function requireBasicAuth(request) {
       isValid: false,
       response: new Response(
         JSON.stringify({
-          error: "Unauthorized: Basic authentication required",
+          error: "Unauthorized: Missing or invalid authentication header",
         }),
         {
           status: 401,
