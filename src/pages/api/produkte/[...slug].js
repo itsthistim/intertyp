@@ -4,7 +4,62 @@ import path from "node:path";
 import fs from "node:fs";
 import { Buffer } from "node:buffer";
 
-// #region GET Helpers
+// #region Auth Helpers
+
+function requireBasicAuth(request) {
+	const authHeader = request.headers.get('authorization');
+
+	if (!authHeader || !authHeader.startsWith('Basic ')) {
+		return {
+			isValid: false,
+			response: new Response(JSON.stringify({ error: "Unauthorized: Basic authentication required" }), {
+				status: 401,
+				headers: {
+					"Content-Type": "application/json",
+					"WWW-Authenticate": "Basic realm=\"API\""
+				}
+			})
+		};
+	}
+
+	// Extract and decode the Base64 credentials
+	try {
+		const base64Credentials = authHeader.split(' ')[1];
+		const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+		const [username, password] = credentials.split(':');
+
+		// Simple hardcoded credentials for testing (in production, use proper auth)
+		if (username === 'admin' && password === 'password') {
+			return { isValid: true };
+		}
+
+		return {
+			isValid: false,
+			response: new Response(JSON.stringify({ error: "Unauthorized: Invalid credentials" }), {
+				status: 401,
+				headers: {
+					"Content-Type": "application/json",
+					"WWW-Authenticate": "Basic realm=\"API\""
+				}
+			})
+		};
+	} catch (error) {
+		return {
+			isValid: false,
+			response: new Response(JSON.stringify({ error: "Unauthorized: Invalid authentication format" }), {
+				status: 401,
+				headers: {
+					"Content-Type": "application/json",
+					"WWW-Authenticate": "Basic realm=\"API\""
+				}
+			})
+		};
+	}
+}
+
+// #endregion
+
+// #region Helpers
 
 async function getImageDimensions(image) {
   // check if image is already defined with dimensions
@@ -144,10 +199,6 @@ async function findOrCreateLink(link, slug) {
   throw new Error("Failed to create or find link");
 }
 
-// #endregion
-
-// #region POST Helpers
-
 async function findOrCreateImage(image) {
   if (!image || !image?.url) return null;
 
@@ -265,6 +316,12 @@ export async function GET({ request, params }) {
 }
 
 export async function POST({ request, params }) {
+  // Check for Basic Auth
+  const authCheck = requireBasicAuth(request);
+  if (!authCheck.isValid) {
+    return authCheck.response;
+  }
+
   const slug = new URL(request.url).pathname.replace("/api", "");
 
   const body = await request.json();
@@ -291,6 +348,12 @@ export async function POST({ request, params }) {
         headers: { "Content-Type": "application/json" },
       },
     );
+  }
+
+  // Basic Auth validation
+  const auth = requireBasicAuth(request);
+  if (!auth.isValid) {
+    return auth.response;
   }
 
   try {
@@ -375,6 +438,12 @@ export async function POST({ request, params }) {
 }
 
 export async function PUT({ request, params }) {
+  // Check for Basic Auth
+  const authCheck = requireBasicAuth(request);
+  if (!authCheck.isValid) {
+    return authCheck.response;
+  }
+
   const slug = new URL(request.url).pathname.replace("/api", "");
 
   if (!slug) {
@@ -382,6 +451,12 @@ export async function PUT({ request, params }) {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
+  }
+
+  // Basic Auth validation
+  const auth = requireBasicAuth(request);
+  if (!auth.isValid) {
+    return auth.response;
   }
 
   try {
@@ -419,34 +494,29 @@ export async function PUT({ request, params }) {
     let coverImageId = existingProductData.cover_id;
     let galleryId = existingProductData.gallery_id;
 
-    // Update link if provided
     if (link) {
       let updatedLink = await findOrCreateLink(link, slug);
       linkId = updatedLink.link_id;
     }
 
-    // Update cover image if provided
     if (cover_image) {
       let updatedCoverImage = await findOrCreateImage(cover_image);
       coverImageId = updatedCoverImage?.image_id || null;
     }
-    // Update gallery if provided
+
     if (gallery) {
       const oldGalleryId = galleryId;
 
-      // Create new gallery first
       let updatedGallery = await findOrCreateGallery(gallery);
       galleryId = updatedGallery?.gallery_id || null;
 
-      // Clean up old gallery after product is updated (if it's not shared)
       if (oldGalleryId && oldGalleryId !== galleryId) {
-        // We'll clean this up after the product update to avoid foreign key constraint issues
-        // Store the old gallery ID for later cleanup
+        // store the old gallery ID for later cleanup
         var oldGalleryToCleanup = oldGalleryId;
       }
     }
 
-    // Build update query dynamically for only provided fields
+    // only update provided fields
     let updateFields = [];
     let updateValues = [];
 
@@ -470,7 +540,7 @@ export async function PUT({ request, params }) {
       updateFields.push("gallery_id = ?");
       updateValues.push(galleryId);
     }
-    // Only update if there are fields to update
+    // only update if there are fields to update
     if (updateFields.length > 0) {
       updateValues.push(existingProductData.id);
       await db.query(
@@ -479,10 +549,10 @@ export async function PUT({ request, params }) {
       );
     }
 
-    // Clean up old gallery if it was replaced and not used elsewhere
+    // clean up old gallery if it was replaced and not used elsewhere
     if (typeof oldGalleryToCleanup !== "undefined") {
       try {
-        // Check if the old gallery is still referenced by any products or projects
+        // check if the old gallery is still referenced by any products or projects
         const [galleryRefs] = await db.query(
           `
 					SELECT COUNT(*) as count FROM (
@@ -506,13 +576,11 @@ export async function PUT({ request, params }) {
       } catch (cleanupError) {
         // Log the error but don't fail the entire request
         console.warn(
-          `Warning: Could not clean up old gallery ${oldGalleryToCleanup}:`,
-          cleanupError.message,
+          `Warning: Could not clean up old gallery ${oldGalleryToCleanup}: ${cleanupError.message}`,
         );
       }
     }
 
-    // Return the updated product
     const [updatedProductRows] = await db.query(
       `SELECT * FROM product_v WHERE id = ?`,
       [existingProductData.id],
@@ -557,8 +625,158 @@ export async function PUT({ request, params }) {
 }
 
 export async function DELETE({ request, params }) {
-  return new Response(JSON.stringify({ error: "Not yet implemented" }), {
-    status: 501,
-    headers: { "Content-Type": "application/json" },
-  });
+  const slug = new URL(request.url).pathname.replace("/api", "");
+
+  if (!slug) {
+    return new Response(JSON.stringify({ error: "Missing product slug" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  // Basic Auth validation
+  const auth = requireBasicAuth(request);
+  if (!auth.isValid) {
+    return auth.response;
+  }
+
+  try {
+    // Check if product exists and get its data before deletion
+    const [productRows] = await db.query(
+      `SELECT * FROM product_v WHERE link_slug = ? LIMIT 1`,
+      [slug],
+    );
+
+    if (!productRows.length) {
+      return new Response(JSON.stringify({ error: "Product not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const productRow = productRows[0];
+
+    // Build the product response with all data before deletion
+    let product = {
+      title: productRow.title,
+      description: productRow.description,
+      link: {
+        slug: productRow.link_slug,
+        name: productRow.link_name,
+      },
+    };
+
+    product.cover_image = await getCoverImage(
+      productRow.cover_url,
+      productRow.cover_alt,
+    );
+    product.gallery = await getGallery(productRow.gallery_id);
+
+    // Store IDs for cleanup
+    const productId = productRow.id;
+    const galleryId = productRow.gallery_id;
+    const coverImageId = productRow.cover_id;
+    const linkId = productRow.link_id;
+
+    // Delete the product first
+    await db.query(`DELETE FROM product WHERE product_id = ?`, [productId]);
+
+    // Clean up gallery if it exists and is not used elsewhere
+    if (galleryId) {
+      try {
+        const [galleryRefs] = await db.query(
+          `
+          SELECT COUNT(*) as count FROM (
+            SELECT gallery_id FROM product WHERE gallery_id = ?
+            UNION ALL
+            SELECT gallery_id FROM project WHERE gallery_id = ?
+          ) refs
+        `,
+          [galleryId, galleryId],
+        );
+
+        if (galleryRefs[0].count === 0) {
+          // Safe to delete - no references exist
+          await db.query(`DELETE FROM gallery_image WHERE gallery_id = ?`, [
+            galleryId,
+          ]);
+          await db.query(`DELETE FROM gallery WHERE gallery_id = ?`, [
+            galleryId,
+          ]);
+        }
+      } catch (cleanupError) {
+        // Log the error but don't fail the entire request
+        console.warn(
+          `Warning: Could not clean up gallery ${galleryId}: ${cleanupError.message}`,
+        );
+      }
+    }
+
+    // Clean up cover image if it exists and is not used elsewhere
+    if (coverImageId) {
+      try {
+        const [imageRefs] = await db.query(
+          `
+          SELECT COUNT(*) as count FROM (
+            SELECT cover_image_id as image_id FROM product WHERE cover_image_id = ?
+            UNION ALL
+            SELECT cover_image_id as image_id FROM project WHERE cover_image_id = ?
+            UNION ALL
+            SELECT image_id FROM gallery_image WHERE image_id = ?
+          ) refs
+        `,
+          [coverImageId, coverImageId, coverImageId],
+        );
+
+        if (imageRefs[0].count === 0) {
+          // Safe to delete - no references exist
+          await db.query(`DELETE FROM image WHERE image_id = ?`, [
+            coverImageId,
+          ]);
+        }
+      } catch (cleanupError) {
+        // Log the error but don't fail the entire request
+        console.warn(
+          `Warning: Could not clean up cover image ${coverImageId}: ${cleanupError.message}`,
+        );
+      }
+    }
+
+    // Clean up link if it exists and is not used elsewhere
+    if (linkId) {
+      try {
+        const [linkRefs] = await db.query(
+          `
+          SELECT COUNT(*) as count FROM (
+            SELECT link_id FROM product WHERE link_id = ?
+            UNION ALL
+            SELECT link_id FROM project WHERE link_id = ?
+          ) refs
+        `,
+          [linkId, linkId],
+        );
+
+        if (linkRefs[0].count === 0) {
+          // Safe to delete - no references exist
+          await db.query(`DELETE FROM link WHERE link_id = ?`, [linkId]);
+        }
+      } catch (cleanupError) {
+        // Log the error but don't fail the entire request
+        console.warn(
+          `Warning: Could not clean up link ${linkId}: ${cleanupError.message}`,
+        );
+      }
+    }
+
+    return new Response(JSON.stringify(product), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    console.error("Error deleting product:", err);
+    return new Response(JSON.stringify({ error: "Database " + err }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 }
