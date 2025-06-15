@@ -19,8 +19,8 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.*
-!.env.example
 **/environments/*.bru
+!.env.example
 !**/environments/*.example.bru
 
 # IDE & OS specific files
