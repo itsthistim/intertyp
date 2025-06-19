@@ -108,4 +108,46 @@ const { subheading = "", heading, img, side = "left", class: className = "" } = 
 		font-weight: bold;
 		margin-bottom: 16px;
 	}
+
+	@media (max-width: 900px) {
+		.detail {
+			flex-direction: column !important;
+			gap: 1.5rem;
+			align-items: center;
+			padding: 24px 0;
+		}
+		.image,
+		.content {
+			max-width: 100%;
+			max-height: none;
+		}
+		.content {
+			padding: 0 1rem;
+			text-align: center;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.detail {
+			gap: 1rem;
+			padding: 16px 0;
+		}
+		.image,
+		.content {
+			max-width: 100%;
+		}
+		.image a.photoswipe-trigger {
+			border-radius: 8px;
+		}
+		.content {
+			padding: 0 0.5rem;
+		}
+		.content .heading {
+			font-size: 1.2rem;
+			margin-bottom: 10px;
+		}
+		.content .subheading {
+			font-size: 0.9rem;
+		}
+	}
 </style>

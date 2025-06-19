@@ -8,7 +8,31 @@ import logo from "../assets/logo.png";
 ---
 
 <script>
+	// Run immediately to set body classes before content renders
+	const nav = document.querySelector("nav");
+	const body = document.body;
+
+	if (nav && nav.classList.contains("light")) {
+		body.classList.add("has-hero-nav");
+	}
+
 	document.addEventListener("astro:page-load", () => {
+		// Ensure classes are set on page transitions too
+		const nav = document.querySelector("nav");
+		const body = document.body;
+
+		// Clear existing classes
+		body.classList.remove("has-hero-nav", "has-regular-nav");
+
+		if (nav) {
+			if (nav.classList.contains("light")) {
+				body.classList.add("has-hero-nav");
+			} else {
+				body.classList.add("has-regular-nav");
+			}
+		}
+
+		// Active link highlighting
 		const currentPath = window.location.pathname;
 		const links = document.querySelectorAll("nav .links a");
 
@@ -20,6 +44,23 @@ import logo from "../assets/logo.png";
 				link.classList.remove("active");
 			}
 		});
+
+		// Mobile menu toggle
+		const menuButton = document.querySelector("nav [data-icon]");
+		const linksContainer = document.querySelector("nav .links");
+
+		if (menuButton && linksContainer) {
+			menuButton.addEventListener("click", () => {
+				linksContainer.classList.toggle("mobile-open");
+			});
+
+			// Close menu when clicking on a link
+			links.forEach((link) => {
+				link.addEventListener("click", () => {
+					linksContainer.classList.remove("mobile-open");
+				});
+			});
+		}
 	});
 </script>
 
@@ -39,8 +80,7 @@ import logo from "../assets/logo.png";
 	</Button>
 </nav>
 
-<style>
-	nav {
+<style>	nav {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -48,13 +88,22 @@ import logo from "../assets/logo.png";
 		padding: 1rem 2rem;
 		margin: 0 auto 2rem;
 		font-size: 1.2rem;
-		position: relative; /* Ensure nav is on top of other elements */
-		z-index: 10; /* Ensure nav is on top of other elements */
+		position: relative; /* Default position for regular pages */
+		z-index: 50;
+	}
+
+	/* Light mode (homepage with hero) - overlay positioning */
+	nav.light {
+		position: absolute; /* Absolute positioning to overlay hero */
+		top: 0;
+		left: 0;
+		right: 0;
+		margin: 0 auto; /* Remove bottom margin for overlay */
 	}
 
 	.logo img {
 		width: auto;
-		max-height: 100px;
+		max-height: 80px; /* Smaller logo for mobile */
 	}
 
 	.links {
@@ -92,21 +141,62 @@ import logo from "../assets/logo.png";
 
 	[data-icon] {
 		color: #111;
+		display: none; /* Hide menu icon on desktop */
 	}
 
 	nav.light [data-icon] {
 		color: #fff;
 	}
 
+	/* Mobile Navigation */
 	@media (max-width: 768px) {
 		nav {
-			flex-direction: column;
-			gap: 1rem;
+			padding: 0.8rem 1rem;
+			margin: 0;
+			position: fixed; /* Fixed position only on mobile */
+			top: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+			box-sizing: border-box;
+			background: rgba(255, 255, 255, 0.95); /* Blur background only on mobile */
+			backdrop-filter: blur(10px);
 		}
 
-		.nav-links {
-			flex-wrap: wrap;
-			justify-content: center;
+		nav.light {
+			background: rgba(0, 0, 0, 0.3); /* Dark blur for light mode on mobile */
+			backdrop-filter: blur(10px);
+		}
+
+		.logo img {
+			max-height: 60px;
+		}
+
+		.links {
+			display: none; /* Hide links on mobile, show hamburger instead */
+		}
+
+		[data-icon] {
+			display: block; /* Show hamburger menu on mobile */
+		}
+
+		/* When mobile menu is open (you'll need to add JavaScript for this) */
+		.links.mobile-open {
+			display: flex;
+			flex-direction: column;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			background: rgba(255, 255, 255, 0.95);
+			backdrop-filter: blur(10px);
+			padding: 1rem;
+			gap: 1rem;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		nav.light .links.mobile-open {
+			background: rgba(0, 0, 0, 0.9);
 		}
 	}
 </style>

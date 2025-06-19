@@ -93,3 +93,29 @@ hr {
 ::-webkit-scrollbar {
 	display: none;
 }
+
+/* Mobile navigation spacing - prevent fixed nav from overlapping content */
+@media (max-width: 768px) {
+
+	/* Add padding to all pages on mobile by default */
+	body {
+		padding-top: 100px !important;
+	}
+
+	/* Remove padding only for hero pages - multiple selectors for compatibility */
+	body:has(nav.light),
+	body.has-hero-nav {
+		padding-top: 0 !important;
+	}
+}
+
+@media (max-width: 480px) {
+	body {
+		padding-top: 90px !important;
+	}
+
+	body:has(nav.light),
+	body.has-hero-nav {
+		padding-top: 0 !important;
+	}
+}

@@ -19,13 +19,12 @@ import Hero from "@/components/Hero.astro";
 	<Footer />
 </Layout>
 
-<style>
-	main {
+<style>	main {
 		min-height: 60vh;
 		margin: 0 auto;
-		padding: 0;
+		padding: 2rem 1rem;
 		max-width: 1200px;
-		margin-top: 76vh; /* Reduce the gap below the hero section */
+		/* No margin-top needed since Hero is now in normal flow */
 	}
 
 	h2 {
@@ -38,5 +37,22 @@ import Hero from "@/components/Hero.astro";
 		color: rgb(var(--clr-text));
 		text-decoration: underline rgb(var(--clr-primary)) 2px;
 		text-underline-offset: 3px;
+	}
+
+	/* Mobile responsive adjustments */
+	@media (max-width: 768px) {
+		main {
+			padding: 1rem;
+		}
+
+		h2 {
+			font-size: 1.8rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		h2 {
+			font-size: 1.6rem;
+		}
 	}
 </style>
