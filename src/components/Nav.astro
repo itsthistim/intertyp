@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import Button from "./ui/Button.astro";
 
@@ -66,7 +67,7 @@ import logo from "../assets/logo.png";
 
 <nav class={mode === "light" ? "light" : undefined}>
 	<div class="logo">
-		<a href="/"><img src={logo.src} alt="Intertyp Logo" /></a>
+		<a href="/"><Image src={logo} alt="Intertyp Logo" /></a>
 	</div>
 	<div class="links">
 		<a href="/">Start</a>
@@ -80,7 +81,8 @@ import logo from "../assets/logo.png";
 	</Button>
 </nav>
 
-<style>	nav {
+<style>
+	nav {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;

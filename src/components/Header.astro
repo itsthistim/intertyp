@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import plotterVid1 from "@/assets/videos/plotter 2.mp4";
 import type { HTMLAttributes } from "astro/types";
 
@@ -20,7 +21,7 @@ const isVideo = src && (src.endsWith(".mp4") || src.endsWith(".webm") || src.end
 				<source src={src} type="video/mp4" />
 			</video>
 		) : (
-			<img src={src} alt={title} />
+			<Image src={src} alt={title} width={1920} height={1080} />
 		)
 	}
 	<div class="overlay"></div>

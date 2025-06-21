@@ -4,6 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
+import { Image } from "astro:assets";
 
 const { slug } = Astro.params;
 const res = await fetch(new URL("/api/produkte/" + slug, Astro.url));
@@ -46,15 +47,16 @@ if (product.gallery && product.gallery.images) {
 <Layout title={`${product.title} ‐ Intertyp`}>
 	<Nav />
 	<Header title={product.title} src={product.cover_image?.url || ""} />
-	<main>		<div class="product-info">
+	<main>
+		<div class="product-info">
 			<p class="product-desc">{product.description}</p>
 		</div>
-				{
+		{
 			images.length > 0 && (
 				<div class="product-gallery">
 					{images.map((img: any) => (
 						<a href={img.src} class="gallery-item" data-pswp-width={img.width} data-pswp-height={img.height}>
-							<img src={img.src} alt={img.alt} />
+							<Image src={img.src} alt={img.alt} />
 						</a>
 					))}
 				</div>

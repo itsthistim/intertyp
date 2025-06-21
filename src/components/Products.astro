@@ -2,139 +2,65 @@
 import Details from "@/components/Details.astro";
 import Button from "@/components/ui/Button.astro";
 
-import pylonImg from "@/assets/images/pylon_mc3.jpg";
-import innenbschrImg from "@/assets/images/innenbeschriftung.jpg";
-import pokaleImg from "@/assets/images/Pokale.jpg";
+const placeholderImage = {
+	url: "https://www.intertyp.at/wp-content/uploads/2025/02/Moos-Oesterreich.jpg",
+	alt: "Alle unsere Produkte und Dienstleistungen",
+	width: 600,
+	height: 400
+};
+
+const res = await fetch(new URL("/api/produkte", Astro.url));
+let products: any = [];
+
+if (!res.ok) {
+	console.error("Failed to fetch products:", res.statusText);
+} else {
+	products = (await res.json()).filter((product: any) => product.title !== "Sonstiges");
+	products = products.sort(() => Math.random() - 0.5).slice(0, 2);
+}
+
+const randomCoverImage = products.length > 0 ? products[Math.floor(Math.random() * products.length)].cover_image : placeholderImage;
 ---
 
 <section id="products">
 	<h2>Unsere <span>Dienstleistungen</span></h2>
-
-	<Details class="details" heading="Innen- und Außenbeschriftung" side="left" img={innenbschrImg}>
+	{
+		products.map((product: any, i: number) => (
+			<Details heading={product.title} side={i % 2 === 0 ? "left" : "right"} img={product.cover_image}>
+				{product.description // put every second sentence into a new paragraph
+					.split(/(?<=[.!?])\s+/)
+					.reduce((acc: any, sentence: any, idx: any) => {
+						if (idx % 2 === 0) {
+							acc.push(sentence);
+						} else {
+							acc[acc.length - 1] += " " + sentence;
+						}
+						return acc;
+					}, [])
+					.map((sentences: any, idx: any) => (
+						<p>{sentences}</p>
+					))}
+				<Button variant="secondary" forward href={product.link.slug}>
+					Mehr erfahren
+				</Button>
+			</Details>
+		))
+	}
+	<Details heading="Weitere Dienstleistungen" side={products.length % 2 === 0 ? "left" : "right"} img={randomCoverImage}>
 		<p>
-			Für Ihre Beschriftungen im Innen- und Außenbereich bieten wir maßgeschneiderte Lösungen in Form von Folierungen, Schildern und Buchstaben. Unsere Werbetechnik bringt Ihre
-			Unternehmensidentität sichtbar und einzigartig zur Geltung.
+			Entdecken Sie unser komplettes Sortiment an hochwertigen Produkten und maßgeschneiderten Dienstleistungen. Von innovativen Lösungen bis hin zu bewährten Klassikern – wir haben
+			für jeden Bedarf das Richtige.
 		</p>
-		<p>Wir beraten Sie gerne und erstellen Ihnen ein individuelles Angebot.</p>
-		<Button variant="secondary" forward>Mehr erfahren</Button>
-	</Details>
-
-	<Details class="details" heading="Schilder, Stempel, Pokale" side="right" img={pokaleImg}>
 		<p>
-			Von Geschoss- und Türbeschriftungen, Verkehrszeichen, ÖNORM- und Brandschutzschildern über Stempel für Büro und Werkstatt bis hin zu Pokalen – wir bieten Ihnen alles aus einer
-			Hand.
+			Lassen Sie sich von unserer Vielfalt inspirieren und finden Sie genau das, was Sie für Ihr Projekt benötigen. Unsere Experten beraten Sie gerne bei der Auswahl der optimalen
+			Lösung für Ihre Anforderungen.
 		</p>
-		<Button variant="secondary" forward>Mehr erfahren</Button>
-	</Details>
-
-	<Details class="details" heading="Pylon- und Lichtwerbung" side="left" img={pylonImg}>
-		<p>
-			Pylone setzen ein starkes Zeichen – sie dienen als Orientierungshilfe, Firmenhinweis oder Blickfang im Außenbereich. Ob ein- oder doppelseitig, freistehend oder integriert: Wir
-			gestalten und fertigen Ihre Pylone individuell nach Ihren Anforderungen.
-		</p>
-		<p>Wir machen Ihnen gerne ein individuelles Angebot.</p>
-		<Button variant="secondary" forward>Mehr erfahren</Button>
+		<Button variant="primary" forward href="/produkte"> Alle Produkte ansehen </Button>
 	</Details>
 </section>
 
 <style>
-	#products {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 3rem 1.5rem;
-	}
-
-	#products h2 {
-		text-align: center;
-		font-size: 2.4rem;
-		margin-bottom: 2.5rem;
-		font-weight: 700;
-	}
-	#products h2 span {
-		color: rgb(var(--clr-primary));
-		text-decoration: underline rgb(var(--clr-primary)) 2px;
-		text-underline-offset: 3px;
-	}
-
-	/* Responsive Details children */
-	#products .details {
-		display: flex;
-		align-items: center;
-		gap: 2.5rem;
-		margin-bottom: 3.5rem;
-		padding-bottom: 2.5rem;
-		border-bottom: 2px solid rgba(0, 0, 0, 0.07);
-	}
-
-	/* Add extra margin after each card for better separation */
-	#products .details:not(:last-child) {
-		margin-bottom: 4.5rem;
-		padding-bottom: 3.5rem;
-		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-	}
-	#products .details:last-child {
-		border-bottom: none;
-	}
-
-	#products .details .details-img {
-		flex: 1 1 350px;
-		max-width: 400px;
-		border-radius: 1.2rem;
-		box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-		object-fit: cover;
-		width: 100%;
-		height: auto;
-	}
-
-	#products .details .details-content {
-		flex: 2 1 400px;
-		min-width: 0;
-	}
-
-	@media (max-width: 900px) {
-		#products {
-			padding: 2rem 0.5rem;
-		}
-		#products .details {
-			flex-direction: column;
-			gap: 1.5rem;
-			text-align: center;
-			margin-bottom: 2.8rem;
-			padding-bottom: 2.2rem;
-		}
-		#products .details:not(:last-child) {
-			margin-bottom: 3.5rem;
-			padding-bottom: 2.5rem;
-		}
-		#products .details .details-img {
-			max-width: 90vw;
-			margin: 0 auto;
-		}
-		#products .details .details-content {
-			width: 100%;
-		}
-	}
-
-	@media (max-width: 600px) {
-		#products {
-			padding: 1.2rem 0.2rem;
-		}
-		#products h2 {
-			font-size: 1.5rem;
-			margin-bottom: 1.2rem;
-		}
-		#products .details {
-			gap: 1.2rem;
-			margin-bottom: 2.2rem;
-			padding-bottom: 1.5rem;
-		}
-		#products .details:not(:last-child) {
-			margin-bottom: 2.8rem;
-			padding-bottom: 2rem;
-		}
-		#products .details .details-img {
-			max-width: 100vw;
-			border-radius: 0.7rem;
-		}
+	p {
+		margin-bottom: 1rem;
 	}
 </style>

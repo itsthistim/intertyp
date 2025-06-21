@@ -1,45 +1,30 @@
 ---
+import { Image } from "astro:assets";
+import { promise } from "astro:schema";
+
 const res = await fetch(new URL("/api/projekte", Astro.url));
 let projects = await res.json();
 if (!Array.isArray(projects) || projects.length < 5) {
 	return null;
 }
+
+projects = projects.sort(() => Math.random() - 0.5).slice(0, 5);
 ---
 
 <section id="projects">
 	<h2>Unsere <span>Referenzen</span></h2>
 
 	<div class="bento">
-		<div class="bento-item bento-item-1">
-			<a href={projects[0].link?.slug || "#"}>
-				<img src={projects[0].cover_image?.url} alt={projects[0].cover_image?.alt || projects[0].title} />
-				<span class="bento-title">{projects[0].title}</span>
-			</a>
-		</div>
-		<div class="bento-item bento-item-2">
-			<a href={projects[1].link?.slug || "#"}>
-				<img src={projects[1].cover_image?.url} alt={projects[1].cover_image?.alt || projects[1].title} />
-				<span class="bento-title">{projects[1].title}</span>
-			</a>
-		</div>
-		<div class="bento-item bento-item-3">
-			<a href={projects[2].link?.slug || "#"}>
-				<img src={projects[2].cover_image?.url} alt={projects[2].cover_image?.alt || projects[2].title} />
-				<span class="bento-title">{projects[2].title}</span>
-			</a>
-		</div>
-		<div class="bento-item bento-item-4">
-			<a href={projects[3].link?.slug || "#"}>
-				<img src={projects[3].cover_image?.url} alt={projects[3].cover_image?.alt || projects[3].title} />
-				<span class="bento-title">{projects[3].title}</span>
-			</a>
-		</div>
-		<div class="bento-item bento-item-5">
-			<a href={projects[4].link?.slug || "#"}>
-				<img src={projects[4].cover_image?.url} alt={projects[4].cover_image?.alt || projects[4].title} />
-				<span class="bento-title">{projects[4].title}</span>
-			</a>
-		</div>
+		{
+			projects.map((project: any, i: number) => (
+				<div class={`bento-item bento-item-${i + 1}`}>
+					<a href={project.link?.slug || "#"}>
+						<Image src={project.cover_image?.url} alt={project.cover_image?.alt || project.title} inferSize />
+						<span class="bento-title">{project.title}</span>
+					</a>
+				</div>
+			))
+		}
 	</div>
 </section>
 

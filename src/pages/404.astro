@@ -3,12 +3,13 @@ import Layout from "../layouts/Layout.astro";
 
 const path = Astro.url.pathname;
 import logo from "../assets/logo.png";
+import { Image } from "astro:assets";
 ---
 
 <Layout title="404: Not found">
 	<main class="center">
 		<a href="/">
-			<img class="logo" src={logo.src} alt="Intertyp Logo" />
+			<Image class="logo" src={logo} alt="Intertyp Logo" />
 		</a>
 		<h1><span class="statusCode">404: </span> <span class="statusMessage">Not found</span></h1>
 		<p>Die URL, die Sie aufgerufen haben, ist ungültig oder ist nicht mehr verfügbar.</p>
