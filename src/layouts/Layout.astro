@@ -54,12 +54,13 @@ const { title, transitions = true } = Astro.props;
 		z-index: -99;
 		fill: rgb(var(--clr-primary), 0.1);
 		animation: float 6s ease-in-out infinite;
+		pointer-events: none;
 	}
 
 	.floater-1 {
-		top: -200px;
-		right: -50px;
-		height: 600px;
+		top: clamp(-120px, -20vw, -200px);
+		right: clamp(-30px, -5vw, -50px);
+		height: clamp(200px, 40vw, 600px);
 		width: auto;
 		animation-delay: 0s;
 	}
@@ -67,17 +68,35 @@ const { title, transitions = true } = Astro.props;
 	.floater-2 {
 		bottom: 0;
 		left: 0;
-		height: 400px;
+		height: clamp(120px, 30vw, 400px);
 		width: auto;
 		animation-delay: 1s;
 	}
 
 	.floater-3 {
-		bottom: -400px;
+		bottom: clamp(-200px, -30vw, -400px);
 		right: 0;
-		height: 600px;
+		height: clamp(200px, 40vw, 600px);
 		width: auto;
 		animation-delay: 1s;
+	}
+
+	@media (max-width: 600px) {
+		.floater-1 {
+			top: -80px;
+			right: -20px;
+			height: 180px;
+		}
+		.floater-2 {
+			bottom: -40px;
+			left: -20px;
+			height: 120px;
+		}
+		.floater-3 {
+			bottom: -120px;
+			right: -10px;
+			height: 180px;
+		}
 	}
 
 	@keyframes float {

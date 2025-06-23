@@ -56,7 +56,7 @@ if (product.gallery && product.gallery.images) {
 				<div class="product-gallery">
 					{images.map((img: any) => (
 						<a href={img.src} class="gallery-item" data-pswp-width={img.width} data-pswp-height={img.height}>
-							<Image src={img.src} alt={img.alt} />
+							<Image src={img.src} alt={img.alt} inferSize />
 						</a>
 					))}
 				</div>
