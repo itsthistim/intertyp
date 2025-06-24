@@ -2,14 +2,19 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import Button from "./ui/Button.astro";
+import logo from "../assets/logo.png";
 
 const { mode = "dark" } = Astro.props;
 
-import logo from "../assets/logo.png";
+const projectsData = await fetch(new URL("/api/projekte", Astro.url));
+const projects = await projectsData.json();
+
+const productsData = await fetch(new URL("/api/produkte", Astro.url));
+const products = await productsData.json();
 ---
 
 <script>
-	// Run immediately to set body classes before content renders
+	// Fix styling for hero component
 	const nav = document.querySelector("nav");
 	const body = document.body;
 
@@ -18,11 +23,9 @@ import logo from "../assets/logo.png";
 	}
 
 	document.addEventListener("astro:page-load", () => {
-		// Ensure classes are set on page transitions too
 		const nav = document.querySelector("nav");
 		const body = document.body;
 
-		// Clear existing classes
 		body.classList.remove("has-hero-nav", "has-regular-nav");
 
 		if (nav) {
@@ -55,7 +58,6 @@ import logo from "../assets/logo.png";
 				linksContainer.classList.toggle("mobile-open");
 			});
 
-			// Close menu when clicking on a link
 			links.forEach((link) => {
 				link.addEventListener("click", () => {
 					linksContainer.classList.remove("mobile-open");
@@ -71,8 +73,42 @@ import logo from "../assets/logo.png";
 	</div>
 	<div class="links">
 		<a href="/">Start</a>
-		<a href="/produkte">Produkte</a>
-		<a href="/projekte">Projekte</a>
+		<div class="dropdown">
+			<a href="/produkte">Produkte</a>
+			<div class="dropdown-content" id="dropdown-produkte">
+				{
+					products.length > 0 ? (
+						<ul class="dropdown-list">
+							{products.map((product: any) => (
+								<li class="dropdown-item">
+									<a href={product.link.slug}>{product.link.alt}</a>
+								</li>
+							))}
+						</ul>
+					) : (
+						<span class="dropdown-loading">Keine Produkte gefunden.</span>
+					)
+				}
+			</div>
+		</div>
+		<div class="dropdown">
+			<a href="/projekte">Projekte</a>
+			<div class="dropdown-content" id="dropdown-projekte">
+				{
+					projects.length > 0 ? (
+						<ul class="dropdown-list">
+							{projects.map((project: any) => (
+								<li class="dropdown-item">
+									<a href={project.link?.slug || "#"}>{project.title}</a>
+								</li>
+							))}
+						</ul>
+					) : (
+						<span class="dropdown-loading">Keine Projekte gefunden.</span>
+					)
+				}
+			</div>
+		</div>
 		<a href="/kontakt">Kontakt</a>
 	</div>
 
@@ -90,22 +126,21 @@ import logo from "../assets/logo.png";
 		padding: 1rem 2rem;
 		margin: 0 auto 2rem;
 		font-size: 1.2rem;
-		position: relative; /* Default position for regular pages */
+		position: relative;
 		z-index: 50;
 	}
 
-	/* Light mode (homepage with hero) - overlay positioning */
 	nav.light {
-		position: absolute; /* Absolute positioning to overlay hero */
+		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
-		margin: 0 auto; /* Remove bottom margin for overlay */
+		margin: 0 auto;
 	}
 
 	.logo img {
 		width: auto;
-		max-height: 80px; /* Smaller logo for mobile */
+		max-height: 80px;
 	}
 
 	.links {
@@ -143,11 +178,77 @@ import logo from "../assets/logo.png";
 
 	[data-icon] {
 		color: #111;
-		display: none; /* Hide menu icon on desktop */
+		display: none;
 	}
 
 	nav.light [data-icon] {
 		color: #fff;
+	} /* Dropdown */
+	.dropdown {
+		position: relative;
+	}
+
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		top: calc(100% + 5px);
+		left: 0;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+		backdrop-filter: blur(12px);
+		min-width: 220px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		border-radius: 12px;
+		padding: 0.5rem 0;
+		z-index: 1000;
+	}
+
+	/* Hover Zone */
+	.dropdown-content::before {
+		content: "";
+		position: absolute;
+		top: -10px;
+		left: 0;
+		right: 0;
+		height: 10px;
+		background: transparent;
+	}
+
+	.dropdown:hover .dropdown-content {
+		display: block;
+	}
+
+	.dropdown-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.dropdown-item {
+		margin: 0;
+		padding: 0;
+	}
+
+	.dropdown-item a {
+		display: block;
+		padding: 0.8rem 1.5rem;
+		color: #374151;
+		text-decoration: none;
+		font-size: 0.95rem;
+		font-weight: 500;
+	}
+
+	.dropdown-item a:hover {
+		background-color: rgba(59, 130, 246, 0.1);
+		color: #1f2937;
+	}
+
+	.dropdown-loading {
+		display: block;
+		padding: 0.8rem 1.5rem;
+		color: #9ca3af;
+		font-size: 0.9rem;
+		font-style: italic;
 	}
 
 	/* Mobile Navigation */
@@ -155,18 +256,18 @@ import logo from "../assets/logo.png";
 		nav {
 			padding: 0.8rem 1rem;
 			margin: 0;
-			position: fixed; /* Fixed position only on mobile */
+			position: fixed;
 			top: 0;
 			left: 0;
 			right: 0;
 			width: 100%;
 			box-sizing: border-box;
-			background: rgba(255, 255, 255, 0.95); /* Blur background only on mobile */
+			background: rgba(255, 255, 255, 0.95);
 			backdrop-filter: blur(10px);
 		}
 
 		nav.light {
-			background: rgba(0, 0, 0, 0.3); /* Dark blur for light mode on mobile */
+			background: rgba(0, 0, 0, 0.3);
 			backdrop-filter: blur(10px);
 		}
 
@@ -175,14 +276,13 @@ import logo from "../assets/logo.png";
 		}
 
 		.links {
-			display: none; /* Hide links on mobile, show hamburger instead */
+			display: none;
 		}
 
 		[data-icon] {
-			display: block; /* Show hamburger menu on mobile */
+			display: block;
 		}
 
-		/* When mobile menu is open (you'll need to add JavaScript for this) */
 		.links.mobile-open {
 			display: flex;
 			flex-direction: column;
@@ -195,10 +295,12 @@ import logo from "../assets/logo.png";
 			padding: 1rem;
 			gap: 1rem;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}		nav.light .links.mobile-open {
+			background: rgba(0, 0, 0, 0.9);
 		}
 
-		nav.light .links.mobile-open {
-			background: rgba(0, 0, 0, 0.9);
+		.dropdown-content {
+			display: none !important;
 		}
 	}
 </style>
