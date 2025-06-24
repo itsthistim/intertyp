@@ -6,6 +6,7 @@ Ziel ist es, eine moderne Landing Page mit einem individuell entwickelten Headle
 ## Technologien
 
 -   **[Astro](https://astro.build/)** – Frontend-Framework für schnelle und suchmaschinenfreundliche Seiten
+-   **MariaDB** – Datenbank zur Speicherung von Inhalten
 -   **REST API** – Für das erstellen und abrufen von Daten
 -   **JavaScript** – Für dynamische Funktionen und API-Logik
 -   **CSS** – Eigene Gestaltung ohne CSS-Framework
