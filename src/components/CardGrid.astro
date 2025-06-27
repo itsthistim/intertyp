@@ -11,6 +11,37 @@ interface Props {
 const { items, title = "Unsere Items", description = "Entdecken Sie unser komplettes Sortiment.", errorMessage = "Keine Items gefunden." } = Astro.props;
 ---
 
+<script>
+	function truncateText(text: string, maxLength: number = 120): string {
+		if (!text) return "";
+
+		if (text.length <= maxLength) return text;
+
+		const words = text.split(" ");
+		let result = "";
+
+		for (const word of words) {
+			const testLength = (result + word + " ").length;
+			if (testLength > maxLength) break;
+			result += word + " ";
+		}
+
+		const trimmed = result.trim();
+		return trimmed.length < text.length ? trimmed + "..." : trimmed;
+	}
+
+	document.addEventListener("astro:page-load", () => {
+		const descriptions = document.querySelectorAll(".card-description");
+		descriptions.forEach((desc) => {
+			const fullText = desc.getAttribute("data-full-text");
+			if (fullText) {
+				desc.textContent = truncateText(fullText, 120);
+			}
+		});
+	});
+</script>
+---
+
 <section class="card-section">
 	<div class="card-header">
 		<h1>{title}</h1>
@@ -25,7 +56,9 @@ const { items, title = "Unsere Items", description = "Entdecken Sie unser komple
 						<Image src={item.cover_image?.url} alt={item.cover_image?.alt || item.title} width={item.cover_image?.width} height={item.cover_image?.height} />
 						<div class="card-info">
 							<h2>{item.title}</h2>
-							<p>{item.link.alt || item.description}</p>
+							<p class="card-description" data-full-text={item.description}>
+								{item.description}
+							</p>
 						</div>
 					</a>
 				))
