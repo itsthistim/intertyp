@@ -37,7 +37,10 @@ export async function POST({ request, clientAddress }) {
 		return new Response(JSON.stringify({ success: true, message: "Nachricht erfolgreich gesendet." }), { status: 200, headers: { "Content-Type": "application/json" } });
 	}
 
-	return new Response(JSON.stringify({ success: false, message: "reCAPTCHA-Überprüfung fehlgeschlagen." }), { status: 400, headers: { "Content-Type": "application/json" } });
+	return new Response(JSON.stringify({ success: false, message: "reCAPTCHA-Überprüfung fehlgeschlagen." }), {
+		status: 400,
+		headers: { "Content-Type": "application/json" }
+	});
 }
 
 async function validRecaptchaToken(recaptchaToken, clientAddress) {

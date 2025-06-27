@@ -1,11 +1,11 @@
 @font-face {
-	font-family: 'Inter';
-	src: url('/fonts/Inter.ttf') format('truetype');
+	font-family: "Inter";
+	src: url("/fonts/Inter.ttf") format("truetype");
 	font-display: swap;
 }
 
 @font-face {
-	font-family: 'Nunito Sans';
-	src: url('/fonts/NunitoSans.ttf') format('truetype');
+	font-family: "Nunito Sans";
+	src: url("/fonts/NunitoSans.ttf") format("truetype");
 	font-display: swap;
 }

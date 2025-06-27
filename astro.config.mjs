@@ -8,17 +8,17 @@ import path from "path";
 export default defineConfig({
 	output: "server",
 	adapter: node({
-		mode: "standalone",
+		mode: "standalone"
 	}),
 	integrations: [icon()],
 	devToolbar: {
-		enabled: false,
+		enabled: false
 	},
 	vite: {
 		resolve: {
 			alias: {
-				"@": path.resolve("./src"),
-			},
-		},
-	},
+				"@": path.resolve("./src")
+			}
+		}
+	}
 });

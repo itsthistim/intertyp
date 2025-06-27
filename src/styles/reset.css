@@ -43,7 +43,6 @@ select {
 
 /* Remove all animations, transitions and scroll-behavior if the prefers-reduced-motion media query matches */
 @media (prefers-reduced-motion: reduce) {
-
 	*,
 	*::before,
 	*::after {

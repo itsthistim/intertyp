@@ -1,5 +1,5 @@
-@import url('reset.css');
-@import url('fonts.css');
+@import url("reset.css");
+@import url("fonts.css");
 
 :root {
 	--clr-primary: 1, 126, 1;
@@ -8,7 +8,7 @@
 	--clr-background: 246, 253, 242;
 	--clr-text: 15, 18, 13;
 
-	--ff: 'Inter', system-ui, sans-serif;
+	--ff: "Inter", system-ui, sans-serif;
 }
 
 /* Styles */
@@ -28,7 +28,7 @@ h2,
 h3,
 h4,
 h5 {
-	font-family: 'Nunito Sans';
+	font-family: "Nunito Sans";
 	font-weight: 700;
 }
 
@@ -36,9 +36,8 @@ html {
 	font-size: 100%;
 }
 
-
 h1 {
-	font-size: 4.210rem;
+	font-size: 4.21rem;
 }
 
 h2 {
@@ -58,7 +57,7 @@ h5 {
 }
 
 small {
-	font-size: 0.750rem;
+	font-size: 0.75rem;
 }
 
 a {
@@ -96,7 +95,6 @@ hr {
 
 /* Mobile navigation spacing - prevent fixed nav from overlapping content */
 @media (max-width: 768px) {
-
 	/* Add padding to all pages on mobile by default */
 	body {
 		padding-top: 100px !important;

@@ -1,26 +1,26 @@
 {
-  "name": "intertyp",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev --host",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/node": "^9.2.1",
-    "astro": "^5.9.2",
-    "astro-icon": "^1.1.5",
-    "gsap": "^3.13.0",
-    "image-size": "^2.0.2",
-    "mysql2": "^3.14.1",
-    "nodemailer": "^7.0.3",
-    "photoswipe": "^5.4.4"
-  },
-  "devDependencies": {
-    "@iconify-json/ph": "^1.2.2",
-    "prettier": "^3.5.3",
-    "prettier-plugin-astro": "^0.14.1"
-  }
+	"name": "intertyp",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev --host",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/node": "^9.2.1",
+		"astro": "^5.9.2",
+		"astro-icon": "^1.1.5",
+		"gsap": "^3.13.0",
+		"image-size": "^2.0.2",
+		"mysql2": "^3.14.1",
+		"nodemailer": "^7.0.3",
+		"photoswipe": "^5.4.4"
+	},
+	"devDependencies": {
+		"@iconify-json/ph": "^1.2.2",
+		"prettier": "^3.5.3",
+		"prettier-plugin-astro": "^0.14.1"
+	}
 }
