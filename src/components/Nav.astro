@@ -238,9 +238,20 @@ const products = await productsData.json();
 		font-weight: 500;
 	}
 
+	/* Dunkler Textfarbe für besseren Kontrast in Dropdowns */
+	nav.light .dropdown-item a {
+		color: #111;
+		font-weight: 500;
+	}
+
 	.dropdown-item a:hover {
 		background-color: rgba(59, 130, 246, 0.1);
 		color: #1f2937;
+	}
+
+	nav.light .dropdown-item a:hover {
+		color: #000;
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 
 	.dropdown-loading {

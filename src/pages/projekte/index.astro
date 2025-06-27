@@ -2,32 +2,21 @@
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
+import CardGrid from "@/components/CardGrid.astro";
 
 const res = await fetch(new URL("/api/projekte", Astro.url));
 let projects = await res.json();
 ---
 
-<Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
+<Layout title="Explore Projects | Intertyp GmbH">
 	<Nav />
 	<main>
-		<section id="header"></section>
-		<section id="products"></section>
-		<section id="projects">
-			{
-				projects.length > 0 ? (
-					<ul>
-						{projects.map((project: any) => (
-							<li>
-								<a href={project.link.slug}>{project.link.alt}</a>
-							</li>
-						))}
-					</ul>
-				) : (
-					<p>{projects.error}</p>
-				)
-			}
-		</section>
-		<section id="contact"></section>
+		<CardGrid
+			items={projects}
+			title="Explore Projects"
+			description="Browse our latest project additions and references."
+			errorMessage="Keine Projekte gefunden."
+		/>
 	</main>
 	<Footer />
 </Layout>
@@ -35,30 +24,7 @@ let projects = await res.json();
 <style>
 	main {
 		max-width: 1200px;
-		min-height: 45.1vh;
-		margin: 0 auto;
-		padding: 0 2rem;
-	}
-
-	h2 {
-		text-align: center;
-		font-size: 2.2rem;
-		margin: 2rem 0 15px;
-	}
-
-	h2 span {
-		color: rgb(var(--clr-text));
-		text-decoration: underline;
-		text-decoration-color: rgb(var(--clr-primary));
-		text-decoration-thickness: 2px;
-		text-underline-offset: 3px;
-	}
-
-	.button {
-		margin-top: 20px;
-	}
-
-	#products p {
-		margin-bottom: 0.5rem;
+		margin: 2rem auto;
+		padding: 0 1rem;
 	}
 </style>

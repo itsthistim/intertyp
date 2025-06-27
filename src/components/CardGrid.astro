@@ -1,0 +1,129 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+	items: any[];
+	title?: string;
+	description?: string;
+	errorMessage?: string;
+}
+
+const { items, title = "Unsere Items", description = "Entdecken Sie unser komplettes Sortiment.", errorMessage = "Keine Items gefunden." } = Astro.props;
+---
+
+<section class="card-section">
+	<div class="card-header">
+		<h1>{title}</h1>
+		<p>{description}</p>
+	</div>
+
+	<div class="card-grid">
+		{
+			items.length > 0 ? (
+				items.map((item: any) => (
+					<a href={item.link.slug} class="card">
+						<Image src={item.cover_image?.url} alt={item.cover_image?.alt || item.title} width={item.cover_image?.width} height={item.cover_image?.height} />
+						<div class="card-info">
+							<h2>{item.title}</h2>
+							<p>{item.link.alt || item.description}</p>
+						</div>
+					</a>
+				))
+			) : (
+				<p class="error">{errorMessage}</p>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.card-header {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.card-header h1 {
+		font-size: 2.5rem;
+		margin-bottom: 0.5rem;
+	}
+	.card-header p {
+		font-size: 1rem;
+		color: rgba(var(--clr-text), 0.7);
+		margin-bottom: 0;
+	}
+
+	.card-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
+		margin-top: 3rem;
+	}
+	.card {
+		display: flex;
+		flex-direction: column;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+		text-decoration: none;
+		color: inherit;
+		background: #fff;
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+		height: 100%;
+	}
+	.card:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+	}
+	.card img {
+		width: 100%;
+		height: 200px;
+		object-fit: cover;
+		display: block;
+		flex-shrink: 0;
+	}
+	.card-info {
+		padding: 1.5rem;
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+	}
+	.card-info h2 {
+		font-size: 1.4rem;
+		font-weight: 600;
+		margin: 0 0 0.5rem;
+		line-height: 1.3;
+		color: #333;
+	}
+	.card-info p {
+		font-size: 0.95rem;
+		color: #666;
+		line-height: 1.5;
+		margin: 0;
+		flex-grow: 1;
+	}
+
+	/* Responsive Anpassungen */
+	@media (max-width: 768px) {
+		.card-header h1 {
+			font-size: 2rem;
+		}
+		.card-grid {
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 1.5rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.card-grid {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+		.card-info {
+			padding: 1rem;
+		}
+		.card-info h2 {
+			font-size: 1.2rem;
+		}
+	}
+</style>
