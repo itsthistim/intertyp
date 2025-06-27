@@ -12,11 +12,10 @@ let products = await res.json();
 <Layout title="Alle Produkte | Intertyp GmbH">
 	<Nav />
 	<main>
-		<Products />
 		<CardGrid
-			items={products}
-			title="Alle Produkte"
+			title="Unsere Dienstleistungen"
 			description="Hier finden Sie unser komplettes Sortiment an Produkten und Dienstleistungen."
+			items={products}
 			errorMessage="Keine Produkte gefunden."
 		/>
 	</main>

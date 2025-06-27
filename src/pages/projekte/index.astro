@@ -8,13 +8,13 @@ const res = await fetch(new URL("/api/projekte", Astro.url));
 let projects = await res.json();
 ---
 
-<Layout title="Explore Projects | Intertyp GmbH">
+<Layout title="Dienstleistungen | Intertyp GmbH">
 	<Nav />
 	<main>
 		<CardGrid
+			title="Alle Projekte"
+			description="Schauen Sie sich unsere neuesten Projektzusätze und Referenzen an."
 			items={projects}
-			title="Explore Projects"
-			description="Browse our latest project additions and references."
 			errorMessage="Keine Projekte gefunden."
 		/>
 	</main>
