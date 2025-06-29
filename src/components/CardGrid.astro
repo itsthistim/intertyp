@@ -53,7 +53,7 @@ const { items, title = "Unsere Items", description = "Entdecken Sie unser komple
 			items.length > 0 ? (
 				items.map((item: any) => (
 					<a href={item.link.slug} class="card">
-						<Image src={item.cover_image?.url} alt={item.cover_image?.alt || item.title} width={item.cover_image?.width} height={item.cover_image?.height} />
+						<Image src={item.cover_image?.url} alt={item.cover_image?.alt || item.title || ""} width={item.cover_image?.width} height={item.cover_image?.height} />
 						<div class="card-info">
 							<h2>{item.title}</h2>
 							<p class="card-description" data-full-text={item.description}>

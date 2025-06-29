@@ -58,7 +58,7 @@ if (project.gallery && project.gallery.images) {
 				<div class="project-gallery">
 					{images.map((img: any) => (
 						<a href={img.src} class="gallery-item" data-pswp-width={img.width} data-pswp-height={img.height}>
-							<Image src={img.src} alt={img.alt} width={img.width} height={img.height} />
+							<Image src={img.src} alt={img.alt || ""} width={img.width} height={img.height} />
 						</a>
 					))}
 				</div>

@@ -16,7 +16,7 @@ let { subheading = "", heading, side = "left", img, class: className = "" } = As
 <div class:list={[`detail ${side === "left" ? "detail-left" : "detail-right"}`, className]}>
 	<div class="image">
 		<a href={img.url} class="photoswipe-trigger" data-pswp-width={img.width} data-pswp-height={img.height} target="_blank">
-			<Image src={img.url} alt={img.alt} width={img.width} height={img.height} />
+			<Image src={img.url} alt={img.alt || ""} width={img.width} height={img.height} />
 		</a>
 	</div>
 	<div class="content">
