@@ -26,7 +26,12 @@ const randomCoverImage = products.length > 0 ? products[Math.floor(Math.random()
 	<h2>Unsere <span>Dienstleistungen</span></h2>
 	{
 		products.map((product: any, i: number) => (
-			<Details heading={product.title} side={i % 2 === 0 ? "left" : "right"} img="/images/Intertyp-WKO.jpg">
+			<Details heading={product.title} side={i % 2 === 0 ? "left" : "right"} img={product.cover_image || {
+				url: "/images/placeholder.jpg",
+				alt: "Placeholder image",
+				width: 800,
+				height: 600
+			}}>
 				{product.description // put every second sentence into a new paragraph
 					.split(/(?<=[.!?])\s+/)
 					.reduce((acc: any, sentence: any, idx: any) => {
@@ -46,7 +51,12 @@ const randomCoverImage = products.length > 0 ? products[Math.floor(Math.random()
 			</Details>
 		))
 	}
-	<Details heading="Weitere Dienstleistungen" side={products.length % 2 === 0 ? "left" : "right"} img="/images/Intertyp-WKO.jpg">
+	<Details heading="Weitere Dienstleistungen" side={products.length % 2 === 0 ? "left" : "right"} img={{
+		url: "/images/placeholder.jpg",
+		alt: "Weitere Dienstleistungen",
+		width: 800,
+		height: 600
+	}}>
 		<p>
 			Entdecken Sie unser komplettes Sortiment an hochwertigen Produkten und maßgeschneiderten Dienstleistungen. Von innovativen Lösungen bis hin zu bewährten Klassikern
 			– wir haben für jeden Bedarf das Richtige.
