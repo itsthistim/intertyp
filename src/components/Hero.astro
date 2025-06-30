@@ -8,181 +8,182 @@ const { title, subtitle } = Astro.props;
 ---
 
 <script>
-    document.addEventListener("astro:page-load", () => {
-        function switchVideo() {
-            const currentVideo = showingVideo1 ? video1 : video2;
-            const nextVideo = showingVideo1 ? video2 : video1;
+	document.addEventListener("astro:page-load", () => {
+		function switchVideo() {
+			const currentVideo = showingVideo1 ? video1 : video2;
+			const nextVideo = showingVideo1 ? video2 : video1;
 
-            nextVideo.currentTime = 0;
-            nextVideo.play();
-            nextVideo.style.opacity = "1";
+			nextVideo.currentTime = 0;
+			nextVideo.play();
+			nextVideo.style.opacity = "1";
 
-            setTimeout(() => {
-                currentVideo.style.opacity = "0";
-                currentVideo.pause();
-            }, 500);
+			setTimeout(() => {
+				currentVideo.style.opacity = "0";
+				currentVideo.pause();
+			}, 500);
 
-            showingVideo1 = !showingVideo1;
-        }
+			showingVideo1 = !showingVideo1;
+		}
 
-        const video1 = document.querySelector("#video1") as HTMLVideoElement;
-        const video2 = document.querySelector("#video2") as HTMLVideoElement;
-        let showingVideo1 = true;
+		const video1 = document.querySelector("#video1") as HTMLVideoElement;
+		const video2 = document.querySelector("#video2") as HTMLVideoElement;
+		let showingVideo1 = true;
 
-        video1.load();
-        video2.load();
+		video1.load();
+		video2.load();
 
-        Promise.all([
-            new Promise((resolve) => video1.addEventListener("loadeddata", resolve, { once: true })),
-            new Promise((resolve) => video2.addEventListener("loadeddata", resolve, { once: true }))
-        ]).then(() => {
-            setInterval(switchVideo, 5000);
-        });
-    });
+		Promise.all([
+			new Promise((resolve) => video1.addEventListener("loadeddata", resolve, { once: true })),
+			new Promise((resolve) => video2.addEventListener("loadeddata", resolve, { once: true }))
+		]).then(() => {
+			setInterval(switchVideo, 5000);
+		});
+	});
 </script>
 
 <section>
-    <video id="video1" autoplay loop muted playsinline>
-        <source src={plotterVid1} type="video/mp4" />
-    </video>
-    <video id="video2" loop muted playsinline style="opacity: 0;">
-        <source src={plotterVid2} type="video/mp4" />
-    </video>
-    <div class="overlay"></div>
+	<video id="video1" autoplay loop muted playsinline>
+		<source src={plotterVid1} type="video/mp4" />
+	</video>
+	<video id="video2" loop muted playsinline style="opacity: 0;">
+		<source src={plotterVid2} type="video/mp4" />
+	</video>
+	<div class="overlay"></div>
 
-    <div class="header-content">
-        <h1>{title}</h1>
-        <p>{subtitle}</p>
-        <Button href="/kontakt" class={"contact-button"} forward>Kontaktieren Sie uns</Button>
-    </div>
+	<div class="header-content">
+		<h1>{title}</h1>
+		<p>{subtitle}</p>
+		<Button href="/kontakt" class={"contact-button"} forward>Kontaktieren Sie uns</Button>
+	</div>
 </section>
 
-<style>    section {
-        position: relative; /* Changed from absolute to relative */
-        height: 80vh; /* Reduced from 100vh to give more space for content below */
-        width: 100%;
-        max-width: 100vw; /* Prevent horizontal overflow */
-        overflow: hidden; /* Prevent any overflow */
-        box-shadow:
-            0 -30px 50px rgba(0, 20, 0, 0.3),
-            0 30px 50px rgba(0, 20, 0, 0.3);
-        z-index: 1;
-        margin-top: 0; /* Remove any top margin since nav is absolute */
-    }
+<style>
+	section {
+		position: relative;
+		height: 50vh;
+		width: 100%;
+		max-width: 100vw;
+		overflow: hidden;
+		box-shadow:
+			0 -30px 50px rgba(0, 20, 0, 0.3),
+			0 30px 50px rgba(0, 20, 0, 0.3);
+		z-index: 1;
+		margin-top: 0;
+	}
 
-    video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 2;
-        transition: opacity 0.5s ease-in-out;
-    }
+	video {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: 2;
+		transition: opacity 0.5s ease-in-out;
+	}
 
-    .overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 3;
-    }
+	.overlay {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.4);
+		z-index: 3;
+	}
 
-    .header-content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 4;
-        color: white;
-        text-align: center;
-        max-width: min(800px, 90vw); /* Responsive max-width */
-        width: 100%;
-        line-height: 1.1;
-        padding: 0 1rem;
-    }
+	.header-content {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 4;
+		color: white;
+		text-align: center;
+		max-width: min(800px, 90vw);
+		width: 100%;
+		line-height: 1.1;
+		padding: 0 1rem;
+	}
 
-    .header-content h1 {
-        font-size: clamp(2.5rem, 8vw, 5rem); /* Responsive font size */
-        font-weight: 750;
-        margin-bottom: 1rem;
-        letter-spacing: 0.05em;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-        color: #fff;
-    }
+	.header-content h1 {
+		font-size: clamp(2.5rem, 8vw, 5rem);
+		font-weight: 750;
+		margin-bottom: 1rem;
+		letter-spacing: 0.05em;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+		color: #fff;
+	}
 
-    .header-content p {
-        font-size: clamp(1rem, 4vw, 1.6rem); /* Responsive font size */
-        margin-bottom: 2rem;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.4);
-        font-style: italic;
-        letter-spacing: 0.01em;
-    }
+	.header-content p {
+		font-size: clamp(1rem, 4vw, 1.6rem);
+		margin-bottom: 2rem;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+		font-style: italic;
+		letter-spacing: 0.01em;
+	}
 
-    .header-content .button {
-        font-size: clamp(1rem, 3vw, 1.4rem); /* Responsive button size */
-    }    /* Mobile Optimizations */
-    @media (max-width: 768px) {
-        section {
-            height: 70vh; /* Smaller height on mobile for better text-to-image ratio */
-            padding-top: 80px; /* Account for fixed nav on mobile only */
-        }
+	.header-content .button {
+		font-size: clamp(1rem, 3vw, 1.4rem);
+	}
 
-        .header-content {
-            max-width: 90%;
-            padding: 0 1.5rem;
-            top: calc(50% + 40px); /* Adjust for nav height on mobile */
-        }
+	@media (max-width: 768px) {
+		section {
+			height: 45vh;
+			padding-top: 80px;
+		}
 
-        .header-content h1 {
-            margin-bottom: 0.8rem;
-            line-height: 1.1;
-        }
+		.header-content {
+			max-width: 90%;
+			padding: 0 1.5rem;
+			top: calc(50% + 40px);
+		}
 
-        .header-content p {
-            margin-bottom: 1.5rem;
-            line-height: 1.3;
-        }
-    }
+		.header-content h1 {
+			margin-bottom: 0.8rem;
+			line-height: 1.1;
+		}
 
-    /* Extra small mobile devices */
-    @media (max-width: 480px) {
-        section {
-            height: 60vh; /* Even smaller on very small screens */
-            padding-top: 70px; /* Smaller nav on very small screens */
-        }
+		.header-content p {
+			margin-bottom: 1.5rem;
+			line-height: 1.3;
+		}
+	}
 
-        .header-content {
-            top: calc(50% + 35px);
-        }
+	@media (max-width: 480px) {
+		section {
+			height: 40vh;
+			padding-top: 70px;
+		}
 
-        .header-content h1 {
-            margin-bottom: 0.6rem;
-        }
+		.header-content {
+			top: calc(50% + 35px);
+		}
 
-        .header-content p {
-            margin-bottom: 1.2rem;
-        }
-    }
+		.header-content h1 {
+			margin-bottom: 0.6rem;
+		}
 
-    /* Landscape mobile orientation */
-    @media (max-width: 768px) and (orientation: landscape) {
-        section {
-            height: 85vh; /* Reduced from 100vh in landscape for better proportions */
-            padding-top: 60px;
-        }
+		.header-content p {
+			margin-bottom: 1.2rem;
+		}
+	}
 
-        .header-content {
-            top: calc(50% + 30px);
-        }
+	/* Landscape mobile orientation */
+	@media (max-width: 768px) and (orientation: landscape) {
+		section {
+			height: 60vh;
+			padding-top: 60px;
+		}
 
-        .header-content h1 {
-            font-size: clamp(2rem, 6vw, 2.8rem);
-        }
+		.header-content {
+			top: calc(50% + 30px);
+		}
 
-        .header-content p {
-            font-size: clamp(0.9rem, 3vw, 1.1rem);
-            margin-bottom: 1rem;
-        }
-    }
+		.header-content h1 {
+			font-size: clamp(2rem, 6vw, 2.8rem);
+		}
+
+		.header-content p {
+			font-size: clamp(0.9rem, 3vw, 1.1rem);
+			margin-bottom: 1rem;
+		}
+	}
 </style>
