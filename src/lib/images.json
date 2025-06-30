@@ -1,0 +1,175 @@
+{
+	"gallery": {
+		"title": "All Images",
+		"images": [
+			{
+				"url": "/images/altenheim-peuerbach.jpg",
+				"alt": "Altenheim Peuerbach"
+			},
+			{
+				"url": "/images/industriellenvereinigung.jpg",
+				"alt": "Industriellenvereinigung Außenbeschriftung"
+			},
+			{
+				"url": "/images/berufs-feuerwehr-linz.jpg",
+				"alt": "Berufsfeuerwehr Linz"
+			},
+			{
+				"url": "/images/Verkehrszeichen-Holz.jpg",
+				"alt": "Verkehrszeichen Holz"
+			},
+			{
+				"url": "/images/bildung-Kindergarten-Krabbelstube.jpg",
+				"alt": "Kindergarten Krabbelstube"
+			},
+			{
+				"url": "/images/bildung-wegweiser.jpg",
+				"alt": "Bildung Wegweiser"
+			},
+			{
+				"url": "/images/bodenbeschriftung-augen-hno.jpg",
+				"alt": "Bodenbeschriftung Augen HNO"
+			},
+			{
+				"url": "/images/bürgermeisterschildchen.jpg",
+				"alt": "Bürgermeisterschildchen"
+			},
+			{
+				"url": "/images/Cella-Apotheke-scaled.jpg",
+				"alt": "Cella Apotheke"
+			},
+			{
+				"url": "/images/einfahrt-verboten-schild.jpg",
+				"alt": "Einfahrt Verboten Schild"
+			},
+			{
+				"url": "/images/firmen-green-finance.jpg",
+				"alt": "Firmen Green Finance"
+			},
+			{
+				"url": "/images/garderobe.jpg",
+				"alt": "Garderobe"
+			},
+			{
+				"url": "/images/gesundheit-physio.jpg",
+				"alt": "Gesundheit Physio"
+			},
+			{
+				"url": "/images/glaswand-folierung.jpg",
+				"alt": "Glaswand Folierung"
+			},
+			{
+				"url": "/images/hotel-rezeption-frühstück.jpg",
+				"alt": "Hotel Rezeption Frühstück"
+			},
+			{
+				"url": "/images/hotels-toiletten.jpg",
+				"alt": "Hotels Toiletten"
+			},
+			{
+				"url": "/images/Intertyp-WKO.jpg",
+				"alt": "Intertyp WKO"
+			},
+			{
+				"url": "/images/klapprahmen.jpg",
+				"alt": "Klapprahmen"
+			},
+			{
+				"url": "/images/lionfit.jpg",
+				"alt": "Lionfit"
+			},
+			{
+				"url": "/images/magnete.jpg",
+				"alt": "Magnete"
+			},
+			{
+				"url": "/images/Magnettafel.jpg",
+				"alt": "Magnettafel"
+			},
+			{
+				"url": "/images/MC3-kleiner-pylon.jpg",
+				"alt": "MC3 kleiner Pylon"
+			},
+			{
+				"url": "/images/pokale.jpg",
+				"alt": "Pokale"
+			},
+			{
+				"url": "/images/pylon-firmenschilder.jpg",
+				"alt": "Pylon Firmenschilder"
+			},
+			{
+				"url": "/images/pylon-ISG.jpg",
+				"alt": "Pylon ISG"
+			},
+			{
+				"url": "/images/Schaukasten.jpg",
+				"alt": "Schaukasten"
+			},
+			{
+				"url": "/images/schild-eingang-kapelle.jpg",
+				"alt": "Schild Eingang Kapelle"
+			},
+			{
+				"url": "/images/stadtoase-kolping.jpg",
+				"alt": "Stadtoase Kolping"
+			},
+			{
+				"url": "/images/stempel-griff-stativ.png",
+				"alt": "Stempel Griff Stativ"
+			},
+			{
+				"url": "/images/stempel-printy.png",
+				"alt": "Stempel Printy"
+			},
+			{
+				"url": "/images/stempel-trodat-datum.png",
+				"alt": "Stempel Trodat Datum"
+			},
+			{
+				"url": "/images/stempelbeispiel-griff-stempel.jpg",
+				"alt": "Stempelbeispiel Griff Stempel"
+			},
+			{
+				"url": "/images/stempelbeispiel-printy-stempel.jpg",
+				"alt": "Stempelbeispiel Printy Stempel"
+			},
+			{
+				"url": "/images/stempelbeispiel-trodat-datum-stempel.jpg",
+				"alt": "Stempelbeispiel Trodat Datum Stempel"
+			},
+			{
+				"url": "/images/stempelbeispiel-trodat-stativ-stempel.jpg",
+				"alt": "Stempelbeispiel Trodat Stativ Stempel"
+			},
+			{
+				"url": "/images/stiegenhaus-EG.jpg",
+				"alt": "Stiegenhaus EG"
+			},
+			{
+				"url": "/images/türenbeschriftung-LKUF.jpg",
+				"alt": "Türenbeschriftung LKUF"
+			},
+			{
+				"url": "/images/verkehrsspiegel-2.jpg",
+				"alt": "Verkehrsspiegel 2"
+			},
+			{
+				"url": "/images/verkehrsspiegel.jpg",
+				"alt": "Verkehrsspiegel"
+			},
+			{
+				"url": "/images/welcome-beschriftung-glas-front.png",
+				"alt": "Welcome Beschriftung Glas Front"
+			},
+			{
+				"url": "/images/öffentl-seniorenzentrum-pichling.jpg",
+				"alt": "Öffentliches Seniorenzentrum Pichling"
+			},
+			{
+				"url": "/images/österreichkarte.jpg",
+				"alt": "Österreichkarte"
+			}
+		]
+	}
+}

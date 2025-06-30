@@ -19,7 +19,12 @@ projects = projects.sort(() => Math.random() - 0.5).slice(0, 5);
 			projects.map((project: any, i: number) => (
 				<div class={`bento-item bento-item-${i + 1}`}>
 					<a href={project.link?.slug || "#"}>
-						<Image src={project.cover_image?.url} alt={project.cover_image?.alt || project.title || ""} width={project.cover_image?.width} height={project.cover_image?.height} />
+						<Image
+							src={project.cover_image?.url}
+							alt={project.cover_image?.alt || project.title || ""}
+							width={project.cover_image?.width}
+							height={project.cover_image?.height}
+						/>
 						<span class="bento-title">{project.title}</span>
 					</a>
 				</div>

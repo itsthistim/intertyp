@@ -156,7 +156,15 @@ async function getGallery(galleryId) {
 }
 
 async function getCoverImage(coverUrl, coverAlt) {
-	if (!coverUrl) return null;
+	if (!coverUrl) {
+		// Use placeholder image when no cover image is set
+		return {
+			url: "/images/placeholder.jpg",
+			alt: "Placeholder image",
+			width: 800,
+			height: 600
+		};
+	}
 	let coverImage = {
 		url: coverUrl,
 		alt: coverAlt === null || coverAlt === undefined ? "" : coverAlt // Ensure alt is never null/undefined, but allow empty string

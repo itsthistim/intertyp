@@ -17,7 +17,17 @@ export async function GET() {
 				product.link = linkRows[0];
 
 				const [coverImageRows] = await db.query(`SELECT url, alt, width, height FROM image WHERE image_id = ?`, [productRow.cover_image_id]);
-				product.cover_image = coverImageRows[0];
+				if (coverImageRows.length > 0) {
+					product.cover_image = coverImageRows[0];
+				} else {
+					// Use placeholder image when no cover image is set
+					product.cover_image = {
+						url: "/images/placeholder.jpg",
+						alt: "Placeholder image",
+						width: 800,
+						height: 600
+					};
+				}
 
 				const [galleryRows] = await db.query(`SELECT * FROM gallery WHERE gallery_id = ?`, [productRow.gallery_id]);
 

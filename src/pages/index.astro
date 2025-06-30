@@ -10,22 +10,24 @@ import Hero from "@/components/Hero.astro";
 
 <Layout title="Intertyp GmbH – Ihr Spezialist für Außenwerbung">
 	<Nav mode="light" />
-	 <Hero title="InterTyp" subtitle="Ihr Spezialist für Außenwerbung" />
+	<Hero title="InterTyp" subtitle="Ihr Spezialist für Außenwerbung" />
 	<main>
 		<About />
-		<Products />
+		<!-- <Products /> -->
 		<Projects />
 	</main>
 	<Footer />
 </Layout>
 
-<style>	main {
+<style>
+	main {
 		min-height: 60vh;
 		margin: 0 auto;
 		padding: 2rem 1rem;
 		max-width: 1200px;
 		/* No margin-top needed since Hero is now in normal flow */
-	}	h2 {
+	}
+	h2 {
 		text-align: center;
 		font-size: 1.8rem !important;
 		margin-top: 2rem;
