@@ -1,11 +1,9 @@
 ---
-import "photoswipe/dist/photoswipe.css";
-import { Image } from "astro:assets";
-
 import Layout from "@/layouts/Layout.astro";
 import Nav from "@/components/Nav.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
+import Gallery from "@/components/Gallery.astro";
 
 const { slug } = Astro.params;
 const res = await fetch(new URL("/api/projekte/" + slug, Astro.url));
@@ -29,21 +27,7 @@ if (project.gallery && project.gallery.images) {
 }
 ---
 
-<script>
-	import PhotoSwipeLightbox from "photoswipe/lightbox";
-	const initLightbox = () => {
-		const lightbox = new PhotoSwipeLightbox({
-			gallery: ".project-gallery",
-			children: "a.gallery-item",
-			bgOpacity: 0.8,
-			pswpModule: () => import("photoswipe")
-		});
-		lightbox.init();
-	};
 
-	document.addEventListener("astro:page-load", initLightbox);
-	document.addEventListener("astro:after-swap", initLightbox);
-</script>
 
 <Layout title={`${project.title} ‐ Intertyp`}>
 	<Nav />
@@ -53,17 +37,7 @@ if (project.gallery && project.gallery.images) {
 			{project.project_date && <p class="project-date">{new Date(project.project_date).toLocaleDateString("de-DE", { year: "numeric", month: "long", day: "numeric" })}</p>}
 			<p class="project-desc">{project.description}</p>
 		</div>
-		{
-			images.length > 0 && (
-				<div class="project-gallery">
-					{images.map((img: any) => (
-						<a href={img.src} class="gallery-item" data-pswp-width={img.width} data-pswp-height={img.height}>
-							<Image src={img.src} alt={img.alt || ""} width={img.width} height={img.height} />
-						</a>
-					))}
-				</div>
-			)
-		}
+		<Gallery images={images} galleryClass="project-gallery" />
 	</main>
 	<Footer />
 </Layout>
@@ -111,15 +85,7 @@ if (project.gallery && project.gallery.images) {
 		margin-bottom: 0.5rem;
 	}
 
-	.project-gallery {
-		column-count: 3;
-		column-gap: 1.5rem;
-		margin-top: 2.5rem;
-	}
 	@media (max-width: 900px) {
-		.project-gallery {
-			column-count: 2;
-		}
 		.project-info h1 {
 			font-size: 1.6rem !important;
 		}
@@ -132,11 +98,8 @@ if (project.gallery && project.gallery.images) {
 			font-size: 0.9rem !important;
 		}
 	}
-	@media (max-width: 600px) {
-		.project-gallery {
-			column-count: 1;
-		}
 
+	@media (max-width: 600px) {
 		.project-info {
 			padding: 2rem 1.5rem 1.5rem 1.5rem;
 			margin: 2rem 0;
@@ -175,38 +138,5 @@ if (project.gallery && project.gallery.images) {
 		.project-date {
 			font-size: 0.8rem !important;
 		}
-	}
-
-	.gallery-item {
-		display: block;
-		margin-bottom: 1.5rem;
-		break-inside: avoid;
-		border-radius: 0.7rem;
-		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-		background: #fff;
-		transition:
-			transform 0.18s,
-			box-shadow 0.18s;
-		overflow: hidden;
-		width: 100%;
-		padding: 0;
-		max-width: 100%;
-	}
-
-	.gallery-item:hover {
-		transform: translateY(-6px) scale(1.03);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-		z-index: 2;
-	}
-
-	.gallery-item img {
-		width: 100%;
-		height: auto;
-		display: block;
-		object-fit: cover;
-		object-position: center;
-		border-radius: 0.7rem 0.7rem 0 0;
-		transition: filter 0.18s;
-		background: #f8f8f8;
 	}
 </style>

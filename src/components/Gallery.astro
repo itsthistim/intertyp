@@ -1,0 +1,97 @@
+---
+import "photoswipe/dist/photoswipe.css";
+import { Image } from "astro:assets";
+
+interface Props {
+	images: Array<{
+		src: string;
+		alt: string;
+		width: number;
+		height: number;
+	}>;
+	galleryClass?: string;
+}
+
+const { images, galleryClass = "gallery" } = Astro.props;
+---
+
+<script>
+	import PhotoSwipeLightbox from "photoswipe/lightbox";
+	const initLightbox = () => {
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: `.${document.querySelector('.gallery-container')?.getAttribute('data-gallery-class') || 'gallery'}`,
+			children: "a.gallery-item",
+			bgOpacity: 0.8,
+			pswpModule: () => import("photoswipe")
+		});
+		lightbox.init();
+	};
+
+	document.addEventListener("astro:page-load", initLightbox);
+	document.addEventListener("astro:after-swap", initLightbox);
+</script>
+
+{
+	images.length > 0 && (
+		<div class={`gallery-container ${galleryClass}`} data-gallery-class={galleryClass}>
+			{images.map((img) => (
+				<a href={img.src} class="gallery-item" data-pswp-width={img.width} data-pswp-height={img.height}>
+					<Image src={img.src} alt={img.alt || ""} width={img.width} height={img.height} />
+				</a>
+			))}
+		</div>
+	)
+}
+
+<style>
+	.gallery-container {
+		column-count: 3;
+		column-gap: 1.5rem;
+		margin-top: 2.5rem;
+	}
+
+	@media (max-width: 900px) {
+		.gallery-container {
+			column-count: 2;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.gallery-container {
+			column-count: 1;
+		}
+	}
+
+	.gallery-item {
+		display: block;
+		margin-bottom: 1.5rem;
+		break-inside: avoid;
+		border-radius: 0.7rem;
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+		background: #fff;
+		transition:
+			transform 0.18s,
+			box-shadow 0.18s;
+		overflow: hidden;
+		width: 100%;
+		padding: 0;
+		max-width: 100%;
+	}
+
+	.gallery-item:hover {
+		transform: translateY(-6px) scale(1.03);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+		z-index: 2;
+	}
+
+	.gallery-item img {
+		width: 100%;
+		height: auto;
+		display: block;
+		object-fit: cover;
+		object-position: center;
+		border-radius: 0.7rem 0.7rem 0 0;
+		transition: filter 0.18s;
+		background: #f8f8f8;
+	}
+</style>
