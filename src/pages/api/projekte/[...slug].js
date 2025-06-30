@@ -215,6 +215,7 @@ async function findOrCreateGallery(gallery) {
 		return null;
 	}
 
+	// Create the gallery first
 	const [newGalleryResult] = await db.query(`INSERT INTO gallery (title) VALUES (?)`, [gallery.title]);
 
 	if (newGalleryResult.insertId) {
@@ -223,12 +224,21 @@ async function findOrCreateGallery(gallery) {
 		if (newGalleryRows.length > 0) {
 			const newGallery = newGalleryRows[0];
 
-			await Promise.all(
-				gallery.images.map(async (img) => {
+			// Process images and handle potential duplicates
+			for (const img of gallery.images) {
+				try {
 					let image = await findOrCreateImage(img);
-					await db.query(`INSERT INTO gallery_image (gallery_id, image_id) VALUES (?, ?)`, [newGallery.gallery_id, image.image_id]);
-				})
-			);
+					// Check if this gallery-image combination already exists
+					const [existingRelation] = await db.query(`SELECT 1 FROM gallery_image WHERE gallery_id = ? AND image_id = ?`, [newGallery.gallery_id, image.image_id]);
+
+					// Only insert if the relation doesn't exist
+					if (existingRelation.length === 0) {
+						await db.query(`INSERT INTO gallery_image (gallery_id, image_id) VALUES (?, ?)`, [newGallery.gallery_id, image.image_id]);
+					}
+				} catch (error) {
+					console.warn(`Warning: Could not process image for gallery ${newGallery.gallery_id}:`, error.message);
+				}
+			}
 
 			return newGallery;
 		}
@@ -458,14 +468,18 @@ export async function POST({ request, params }) {
 		let newCoverImage = await findOrCreateImage(cover_image);
 		let newGallery = await findOrCreateGallery(gallery);
 
-		const [newProject] = await db.query(
-			`INSERT INTO project (title, description, project_date, cover_image_id, link_id, gallery_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING project_id`,
-			[title, description || null, project_date || null, newCoverImage?.image_id || null, newLink.link_id, newGallery?.gallery_id || null]
-		);
+		const [newProject] = await db.query(`INSERT INTO project (title, description, project_date, cover_image_id, link_id, gallery_id) VALUES (?, ?, ?, ?, ?, ?)`, [
+			title,
+			description || null,
+			project_date || null,
+			newCoverImage?.image_id || null,
+			newLink.link_id,
+			newGallery?.gallery_id || null
+		]);
 
 		// return the created project
-		if (newProject[0].project_id) {
-			const [createdProjectRows] = await db.query(`SELECT * FROM project_v WHERE id = ?`, [newProject[0].project_id]);
+		if (newProject.insertId) {
+			const [createdProjectRows] = await db.query(`SELECT * FROM project_v WHERE id = ?`, [newProject.insertId]);
 			if (createdProjectRows.length > 0) {
 				const createdProject = createdProjectRows[0];
 				return new Response(
