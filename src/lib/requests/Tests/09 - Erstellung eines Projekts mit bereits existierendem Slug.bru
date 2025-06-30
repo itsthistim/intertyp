@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/api/projekte/gesundheit
+  url: {{baseUrl}}/api/projekte/firmen
   body: json
   auth: basic
 }
@@ -17,11 +17,11 @@ auth:basic {
 
 body:json {
   {
-    "title": "Duplicate Gesundheitsprojekt",
-    "description": "Versuch ein Projekt mit bereits existierendem Slug zu erstellen - sollte 409 Conflict verursachen",
+    "title": "Duplicate Firmen",
+    "description": "Versuch ein Projekt mit bereits existierendem Slug zu erstellen - sollte 409 Conflict verursachen!",
     "link": {
-      "slug": "/projekte/gesundheit",
-      "name": "Duplicate Gesundheit"
+      "slug": "/projekte/firmen",
+      "name": "Duplicate Firmen"
     }
   }
 }
@@ -30,18 +30,18 @@ tests {
   test("Response status is 409", function() {
     expect(res.getStatus()).to.equal(409);
   });
-
+  
   test("Response contains conflict error message", function() {
     const jsonData = res.getBody();
     expect(jsonData).to.have.property('error');
     expect(jsonData.error).to.be.a('string');
     expect(jsonData.error).to.contain('already exists');
   });
-
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;

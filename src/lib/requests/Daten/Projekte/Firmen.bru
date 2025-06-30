@@ -1,0 +1,76 @@
+meta {
+  name: Firmen
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/projekte/firmen
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Firmen",
+    "description": "Jedes Unternehmen braucht eine starke Außenwirkung. Wir haben zahlreiche Firmen mit individuellen Lösungen unterstützt. Ob Schilder, Fassadenbeschriftungen oder Glasfolierungen – wir unterstützen Unternehmen dabei, ihre Räumlichkeiten professionell zu gestalten. Mit hochwertigen Materialien und präziser Umsetzung sorgen wir für eine klare, professionelle Gestaltung.",
+    "link": {
+      "slug": "/projekte/firmen",
+      "name": "Firmen"
+    },
+    "cover_image": {
+      "url": "/images/österreichkarte.jpg",
+      "alt": "Österreichkarte"
+    },
+    "gallery": {
+      "title": "Referenzen für Unternehmen",
+      "images": [
+        {
+          "url": "/images/firmen-green-finance.jpg",
+          "alt": "Green Finance"
+        },
+        {
+          "url": "/images/Cella-Apotheke-scaled.jpg",
+          "alt": "Cella Apotheke"
+        },
+        {
+          "url": "/images/bodenbeschriftung-augen-hno.jpg",
+          "alt": "Bodenbeschriftung Augen HNO"
+        },
+        {
+          "url": "/images/österreichkarte.jpg"
+        },
+        {
+          "url": "/images/berufs-feuerwehr-linz.jpg",
+          "alt": "Berufs Feuerwehr Linz"
+        },
+        {
+          "url": "/images/pylon-firmenschilder.jpg"
+        },
+        {
+          "url": "/images/garderobe.jpg"
+        },
+        {
+          "url": "/images/industriellenvereinigung.jpg"
+        },
+        {
+          "url": "/images/lionfit.jpg",
+          "alt": "Lionfit"
+        },
+        {
+          "url": "/images/MC3-kleiner-pylon.jpg",
+          "alt": "Pylon MC3"
+        },
+        {
+          "url": "/images/türenbeschriftung-LKUF.jpg"
+        }
+      ]
+    }
+  }
+  
+}

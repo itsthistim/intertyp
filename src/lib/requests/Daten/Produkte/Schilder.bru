@@ -1,0 +1,69 @@
+meta {
+  name: Schilder
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/produkte/schilder
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Schilder",
+    "description": "Von Firmenschildern bis zu Informations- und Hinweisschildern – wir bieten maßgeschneiderte Lösungen für Innen- und Außenbereiche.",
+    "link": {
+      "slug": "/produkte/schilder",
+      "name": "Schilder"
+    },
+    "cover_image": {
+      "url": "/images/Verkehrszeichen-Holz.jpg",
+      "alt": "Verkehrszeichen Holz"
+    },
+    "gallery": {
+      "images": [
+        {
+          "url": "/images/pylon-ISG.jpg"
+        },
+        {
+          "url": "/images/Verkehrszeichen-Holz.jpg"
+        },
+        {
+          "url": "/images/verkehrsspiegel.jpg",
+          "alt": "Verkehrsspiegel"
+        },
+        {
+          "url": "/images/verkehrsspiegel-2.jpg",
+          "alt": "Verkehrsspiegel"
+        },
+        {
+          "url": "/images/einfahrt-verboten-schild.jpg",
+          "alt": "Einfahrt Verboten Schild"
+        },
+        {
+          "url": "/images/schild-eingang-kapelle.jpg"
+        },
+        {
+          "url": "/images/hotel-rezeption-frühstück.jpg"
+        },
+        {
+          "url": "/images/firmen-green-finance.jpg"
+        },
+        {
+          "url": "/images/bürgermeisterschildchen.jpg"
+        },
+        {
+          "url": "/images/toiletten.jpg"
+        }
+      ]
+    }
+  }
+  
+}

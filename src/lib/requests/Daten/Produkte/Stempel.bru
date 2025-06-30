@@ -1,0 +1,63 @@
+meta {
+  name: Stempel
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/produkte/stempel
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Stempel",
+    "description": "Individuelle Stempel für Büro, Unternehmen oder den privaten Gebrauch – präzise, langlebig und in verschiedenen Ausführungen erhältlich.",
+    "link": {
+      "slug": "/produkte/stempel",
+      "name": "Stempel"
+    },
+    "cover_image": {
+      "url": "/images/stempel-printy.png",
+      "alt": "Stempel Printy"
+    },
+    "gallery": {
+      "images": [
+        {
+          "url": "/images/stempel-griff-stativ.png",
+          "alt": "Stempel Griff Stativ"
+        },
+        {
+          "url": "/images/stempel-trodat-datum.png",
+          "alt": "Stempel Trodat Datum"
+        },
+        {
+          "url": "/images/stempel-printy.png"
+        },
+        {
+          "url": "/images/stempelbeispiel-griff-stempel.jpg",
+          "alt": "Stempelbeispiel Griff Stempel"
+        },
+        {
+          "url": "/images/stempelbeispiel-printy-stempel.jpg",
+          "alt": "Stempelbeispiel Printy Stempel"
+        },
+        {
+          "url": "/images/stempelbeispiel-trodat-datum-stempel.jpg",
+          "alt": "Stempelbeispiel Trodat Datum Stempel"
+        },
+        {
+          "url": "/images/stempelbeispiel-trodat-stativ-stempel.jpg",
+          "alt": "Stempelbeispiel Trodat Stativ Stempel"
+        }
+      ]
+    }
+  }
+  
+}

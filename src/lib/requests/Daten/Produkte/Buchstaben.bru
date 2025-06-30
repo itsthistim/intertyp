@@ -1,0 +1,56 @@
+meta {
+  name: Buchstaben
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/produkte/buchstaben
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Buchstaben",
+    "description": "Ob einzelne Buchstaben oder komplette Schriftzüge – wir fertigen hochwertige Buchstaben und Einzelbuchstaben aus verschiedenen Materialien für eine prägnante Beschriftung auf jeder Oberfläche.",
+    "link": {
+      "slug": "/produkte/buchstaben",
+      "name": "Buchstaben"
+    },
+    "cover_image": {
+      "url": "/images/Cella-Apotheke-scaled.jpg"
+    },
+    "gallery": {
+      "images": [
+        {
+          "url": "/images/altenheim-peuerbach.jpg"
+        },
+        {
+          "url": "/images/berufs-feuerwehr-linz.jpg"
+        },
+        {
+          "url": "/images/Cella-Apotheke-scaled.jpg"
+        },
+        {
+          "url": "/images/firmen-green-finance.jpg"
+        },
+        {
+          "url": "/images/garderobe.jpg"
+        },
+        {
+          "url": "/images/gesundheit-physio.jpg"
+        },
+        {
+          "url": "/images/industriellenvereinigung.jpg"
+        }
+      ]
+    }
+  }
+  
+}

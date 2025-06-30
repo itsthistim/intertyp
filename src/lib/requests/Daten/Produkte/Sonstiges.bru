@@ -1,0 +1,57 @@
+meta {
+  name: Sonstiges
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/produkte/sonstiges
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Sonstiges",
+    "description": "Ob Magnettafeln, Klapprahmen, Schaukästen oder Verkehrsspiegel – hier finden Sie praktische und funktionale Produkte für verschiedenste Einsatzzwecke.",
+    "link": {
+      "slug": "/produkte/sonstiges",
+      "name": "Sonstiges"
+    },
+    "cover_image": {
+      "url": "/images/pokale.jpg",
+      "alt": "Pokale"
+    },
+    "gallery": {
+      "images": [
+        {
+          "url": "/images/magnete.jpg"
+        },
+        {
+          "url": "/images/Schaukasten.jpg"
+        },
+        {
+          "url": "/images/bürgermeisterschildchen.jpg"
+        },
+        {
+          "url": "/images/österreichkarte.jpg"
+        },
+        {
+          "url": "/images/Magnettafel.jpg"
+        },
+        {
+          "url": "/images/pokale.jpg"
+        },
+        {
+          "url": "/images/Klapprahmen.jpg"
+        }
+      ]
+    }
+  }
+  
+}

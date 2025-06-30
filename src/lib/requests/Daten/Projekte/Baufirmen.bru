@@ -1,0 +1,72 @@
+meta {
+  name: Baufirmen
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/projekte/baufirmen
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Baufirmen",
+    "description": "Unsere langjährige Erfahrung im Bereich Folierung und Objektbeschriftung macht uns zum verlässlichen Partner für Baufirmen. Wir haben zahlreiche Projekte erfolgreich begleitet – von Baustellenbeschilderungen über Objektbeschriftungen bis hin zu hochwertigen Fenster- und Fassadenfolierungen.",
+    "link": {
+      "slug": "/projekte/baufirmen",
+      "name": "Baufirmen"
+    },
+    "cover_image": {
+      "url": "/images/seniorenzentrum-pichling.jpg"
+    },
+    "gallery": {
+      "title": "Referenzen für Baufirmen",
+      "images": [
+        {
+          "url": "/images/industriellenvereinigung.jpg",
+          "alt": "Hauseck Industriellenvereinigung"
+        },
+        {
+          "url": "/images/pylon-ISG.jpg",
+          "alt": "Pylon ISG"
+        },
+        {
+          "url": "/images/altenheim-peuerbach.jpg",
+          "alt": "Altenheim Peuerbach"
+        },
+        {
+          "url": "/images/stadtoase-kolping.jpg",
+          "alt": "Stadtoase Kolping"
+        },
+        {
+          "url": "/images/glaswand-folierung.jpg",
+          "alt": "Glaswand Folierung"
+        },
+        {
+          "url": "/images/türenbeschriftung-LKUF.jpg",
+          "alt": "Türenbeschriftung LKUF"
+        },
+        {
+          "url": "/images/pylon-firmenschilder.jpg",
+          "alt": "Firmenschilder Pylon"
+        },
+        {
+          "url": "/images/welcome-beschriftung-glas-front.png",
+          "alt": "Glas Front Welcome Beschriftung"
+        },
+        {
+          "url": "/images/seniorenzentrum-pichling.jpg",
+          "alt": "Seniorenzentrum Pichling"
+        }
+      ]
+    }
+  }
+  
+}

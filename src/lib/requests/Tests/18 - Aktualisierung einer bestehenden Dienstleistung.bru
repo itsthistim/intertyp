@@ -1,0 +1,100 @@
+meta {
+  name: 18 - Aktualisierung einer bestehenden Dienstleistung
+  type: http
+  seq: 18
+}
+
+put {
+  url: {{baseUrl}}/api/produkte/hochbeete
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "gallery": {
+      "title": "Hochbeete",
+      "images": [
+        {
+          "url": "https://hochbeet-hans.at/wp-content/uploads/2025/01/U-Marie.jpg"
+        },
+        {
+          "url": "https://www.baunetzwissen.de/imgs/2/9/7/4/0/7/1/suju_hochbeet_web_IMG_0088-9294843886e3040d.jpg"
+        },
+        {
+          "url": "https://www.krautundrueben.de/sites/krautundrueben.de/files/styles/5_2_heroteaser_xs_2x/public/2024-04/hochbeet-vorteile-204601530-48109123.jpg?h=88b5da25&itok=1hVJjHQU"
+        },
+        {
+          "url": "https://www.hellweg.at/media/2a/5b/9a/1708247709/532572_Hochbeet_Bausatz_95567_01.jpg"
+        }
+      ]
+    }
+  }
+}
+
+tests {
+  test("Response status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response contains updated product data", function() {
+    const jsonData = res.getBody();
+    expect(jsonData).to.have.property('title');
+    expect(jsonData.title).to.be.a('string').and.not.be.empty;
+    expect(jsonData).to.have.property('description');
+    expect(jsonData.description).to.be.a('string').and.not.be.empty;
+  });
+
+  test("Gallery was updated", function() {
+    const jsonData = res.getBody();
+    expect(jsonData).to.have.property('gallery');
+    expect(jsonData.gallery).to.be.an('object');
+    expect(jsonData.gallery).to.have.property('images');
+    expect(jsonData.gallery.images).to.be.an('array');
+    expect(jsonData.gallery.images.length).to.be.greaterThan(0);
+  });
+
+  test("Gallery images have valid structure", function() {
+    const jsonData = res.getBody();
+    jsonData.gallery.images.forEach(function(image) {
+      expect(image).to.have.property('url');
+      expect(image.url).to.be.a('string').and.not.be.empty;
+    });
+  });
+
+  test("Response contains valid link object", function() {
+    const jsonData = res.getBody();
+    if (jsonData.link) {
+      expect(jsonData.link).to.be.an('object');
+      expect(jsonData.link).to.have.property('slug');
+      expect(jsonData.link.slug).to.be.a('string').and.not.be.empty;
+    }
+  });
+
+  test("Response time is acceptable", function() {
+    expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
+  });
+
+  test("Response has correct content type", function() {
+    const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
+    expect(contentType).to.exist;
+    expect(contentType).to.be.a('string');
+    expect(contentType).to.contain('application/json');
+  });
+
+  test("Response contains required fields", function() {
+    const jsonData = res.getBody();
+    expect(jsonData).to.have.property('title');
+    expect(jsonData).to.have.property('description');
+    expect(jsonData).to.have.property('gallery');
+  });
+
+  test("Response is not empty", function() {
+    expect(res.getBody()).to.not.be.empty;
+  });
+}

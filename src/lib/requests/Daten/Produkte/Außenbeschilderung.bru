@@ -1,0 +1,65 @@
+meta {
+  name: Außenbeschilderung
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/produkte/aussenbeschilderung
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Außenbeschilderung",
+    "description": "Präsentieren Sie Ihr Unternehmen sichtbar und wirkungsvoll – mit Leuchtwerbung, Pylonen und großflächigen Außenbeschriftungen. In der heutigen schnelllebigen Welt ist der erste Eindruck entscheidend. Um sich von der Konkurrenz abzuheben und die Aufmerksamkeit potenzieller Kunden zu gewinnen, braucht Ihr Unternehmen eine Präsenz, die nicht zu übersehen ist. Genau hier kommen moderne Werbelösungen ins Spiel, die Ihre Marke ins rechte Licht rücken und eine nachhaltige Wirkung erzielen.",
+    "link": {
+      "slug": "/produkte/aussenbeschilderung",
+      "name": "Außenbeschilderung"
+    },
+    "cover_image": {
+      "url": "/images/seniorenzentrum-pichling.jpg"
+    },
+    "gallery": {
+      "images": [
+        {
+          "url": "/images/altenheim-peuerbach.jpg"
+        },
+        {
+          "url": "/images/Cella-Apotheke-scaled.jpg"
+        },
+        {
+          "url": "/images/industriellenvereinigung.jpg"
+        },
+        {
+          "url": "/images/MC3-kleiner-pylon.jpg"
+        },
+        {
+          "url": "/images/seniorenzentrum-pichling.jpg"
+        },
+        {
+          "url": "/images/stadtoase-kolping.jpg"
+        },
+        {
+          "url": "/images/pylon-ISG.jpg"
+        },
+        {
+          "url": "/images/schild-eingang-kapelle.jpg"
+        },
+        {
+          "url": "/images/pylon-firmenschilder.jpg"
+        },
+        {
+          "url": "/images/Klapprahmen.jpg"
+        }
+      ]
+    }
+  }
+  
+}

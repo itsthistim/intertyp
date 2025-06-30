@@ -1,0 +1,69 @@
+meta {
+  name: Bildung
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/projekte/bildung
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Bildungseinrichtungen",
+    "description": "Moderne Beschriftungen und langlebige Folierungen tragen zur Struktur und Gestaltung von Schulen bei. Wir haben zahlreiche Bildungseinrichtungen mit Türschildern, Fassadenbeschriftungen und dekorativen Folien ausgestattet. Unsere Lösungen sind funktional, hochwertig und individuell angepasst.",
+    "link": {
+      "slug": "/projekte/bildung",
+      "name": "Bildung"
+    },
+    "cover_image": {
+      "url": "/images/Kindergarten-Krabbelstube.jpg",
+      "alt": "Kindergarten Krabbelstube"
+    },
+    "gallery": {
+      "title": "Referenzen für Bildungseinrichtungen",
+      "images": [
+        {
+          "url": "/images/bildung-wegweiser.jpg",
+          "alt": "Wegweiser"
+        },
+        {
+          "url": "/images/pokale.jpg",
+          "alt": "Pokale"
+        },
+        {
+          "url": "/images/toiletten.jpg",
+          "alt": "Toilettenbeschilderung"
+        },
+        {
+          "url": "/images/Magnettafel.jpg",
+          "alt": "Magnettafel"
+        },
+        {
+          "url": "/images/garderobe.jpg",
+          "alt": "Wandbeschriftungen"
+        },
+        {
+          "url": "/images/Schaukasten.jpg",
+          "alt": "Schaukasten"
+        },
+        {
+          "url": "/images/magnete.jpg",
+          "alt": "Magnete"
+        },
+        {
+          "url": "/images/bürgermeisterschildchen.jpg",
+          "alt": "Türschilder"
+        }
+      ]
+    }
+  }
+  
+}

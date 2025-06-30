@@ -1,0 +1,66 @@
+meta {
+  name: Öffentliche Gebäude
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/projekte/öffentliche-gebäude
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Öffentliche Gebäude",
+    "description": "Öffentliche Gebäude und Einrichtungen benötigen durchdachte Beschilderungen für eine klare Orientierung. Wir haben Gemeinden mit individuell gestalteten Beschilderungen, Infotafeln und Fassadenbeschriftungen ausgestattet. Ob Rathäuser, Gemeindezentren oder andere kommunale Einrichtungen – unsere langlebigen Lösungen verbinden Funktionalität mit ansprechendem Design.",
+    "link": {
+      "slug": "/projekte/öffentliche-gebäude",
+      "name": "Öffentliche Gebäude"
+    },
+    "cover_image": {
+      "url": "/images/altenheim-peuerbach.jpg"
+    },
+    "gallery": {
+      "title": "Referenzen für Unternehmen",
+      "images": [
+        {
+          "url": "/images/berufs-feuerwehr-linz.jpg"
+        },
+        {
+          "url": "/images/Kindergarten-Krabbelstube.jpg"
+        },
+        {
+          "url": "/images/altenheim-peuerbach.jpg"
+        },
+        {
+          "url": "/images/bildung-wegweiser.jpg"
+        },
+        {
+          "url": "/images/bodenbeschriftung-augen-hno.jpg"
+        },
+        {
+          "url": "/images/gesundheit-physio.jpg"
+        },
+        {
+          "url": "/images/österreichkarte.jpg"
+        },
+        {
+          "url": "/images/pylon-firmenschilder.jpg"
+        },
+        {
+          "url": "/images/stiegenhaus-EG.jpg"
+        },
+        {
+          "url": "/images/Linz_Med_Uni_Campus_III-4967.jpg"
+        }
+      ]
+    }
+  }
+  
+}

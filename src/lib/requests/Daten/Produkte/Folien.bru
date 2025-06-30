@@ -1,0 +1,56 @@
+meta {
+  name: Folien
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/produkte/folien
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Folien",
+    "description": "Vielseitig einsetzbar und individuell gestaltbar – unsere Folien bieten Schutz, Sichtschutz oder dekorative Gestaltung für unterschiedlichste Anwendungen.",
+    "link": {
+      "slug": "/produkte/folien",
+      "name": "Folien"
+    },
+    "cover_image": {
+      "url": "/images/welcome-beschriftung-glas-front.png"
+    },
+    "gallery": {
+      "images": [
+        {
+          "url": "/images/lionfit.jpg"
+        },
+        {
+          "url": "/images/welcome-beschriftung-glas-front.png"
+        },
+        {
+          "url": "/images/glaswand-folierung.jpg"
+        },
+        {
+          "url": "/images/bodenbeschriftung-augen-hno.jpg"
+        },
+        {
+          "url": "/images/berufs-feuerwehr-linz.jpg"
+        },
+        {
+          "url": "/images/Kindergarten-Krabbelstube.jpg"
+        },
+        {
+          "url": "/images/türenbeschriftung-LKUF.jpg"
+        }
+      ]
+    }
+  }
+  
+}

@@ -1,0 +1,55 @@
+meta {
+  name: Hotels
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/projekte/hotelsa
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Hotels & Wellness",
+    "description": "Ein stimmiges Design und eine klare Beschriftung tragen maßgeblich zur Atmosphäre eines Hotels oder einer Wellnesseinrichtung bei. Ob dezente Wegweiser, stilvolle Außenbeschriftungen, hochwertige Folierungen – wir haben bereits zahlreiche Hotels und Thermen mit durchdachten Lösungen ausgestattet. Lassen Sie sich von unseren Projekten inspirieren und entdecken Sie, wie Beschriftung und Design perfekt zusammenspielen, um Ihren Gästen ein unvergessliches Erlebnis zu bieten!",
+    "link": {
+      "slug": "/projekte/hotels",
+      "name": "Hotels & Wellness"
+    },
+    "cover_image": {
+      "url": "/images/stadtoase-kolping.jpg"
+    },
+    "gallery": {
+      "title": "Referenzen für Hotels & Wellness",
+      "images": [
+        {
+          "url": "/images/bildung-wegweiser.jpg"
+        },
+        {
+          "url": "/images/stiegenhaus-EG.jpg"
+        },
+        {
+          "url": "/images/hotel-rezeption-frühstück.jpg",
+          "alt": "Hotel Rezeption Frühstück"
+        },
+        {
+          "url": "/images/toiletten.jpg"
+        },
+        {
+          "url": "/images/stadtoase-kolping.jpg"
+        },
+        {
+          "url": "/images/garderobe.jpg"
+        }
+      ]
+    }
+  }
+  
+}

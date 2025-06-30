@@ -5,14 +5,14 @@ meta {
 }
 
 put {
-  url: {{baseUrl}}/api/projekte/gesundheit
+  url: {{baseUrl}}/api/projekte/schilder
   body: json
   auth: none
 }
 
 body:json {
   {
-    "title": "Updated Gesundheitsprojekt ohne Auth",
+    "title": "Updated Schilder ohne Auth",
     "description": "Test für fehlende Authorization bei PUT Requests"
   }
 }
@@ -21,17 +21,17 @@ tests {
   test("Response status should be 401 Unauthorized", function() {
     expect(res.getStatus()).to.equal(401);
   });
-
+  
   test("Should contain unauthorized error message", function() {
     const jsonData = res.getBody();
     expect(jsonData).to.have.property('error');
     expect(jsonData.error).to.contain('Unauthorized');
   });
-
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;

@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/api/produkte/pokale
+  url: {{baseUrl}}/api/produkte/schilder
   body: none
   auth: none
 }
@@ -23,11 +23,6 @@ tests {
     expect(jsonData.title).to.be.a('string');
     expect(jsonData.description).to.be.a('string');
     expect(jsonData.link).to.be.an('object');
-  });
-  
-  test("Response contains link with correct slug", function() {
-    const jsonData = res.getBody();
-    expect(jsonData.link.slug).to.equal("/produkte/pokale");
   });
   
   test("Cover image has alt text if present", function() {

@@ -1,11 +1,11 @@
 meta {
-  name: 24 - Löschung einer bestehenden Dienstleistung
+  name: 21 - Löschung eines bestehenden Projekts
   type: http
-  seq: 24
+  seq: 21
 }
 
 delete {
-  url: {{baseUrl}}/api/produkte/pokale
+  url: {{baseUrl}}/api/projekte/wifi
   body: none
   auth: basic
 }
@@ -20,28 +20,29 @@ tests {
     // DELETE is now implemented, so we expect 200 OK
     expect(res.getStatus()).to.equal(200);
   });
-
-  test("Response contains deleted product data", function() {
+  
+  test("Response contains deleted project data", function() {
     const jsonData = res.getBody();
     expect(jsonData).to.have.property('title');
     expect(jsonData).to.have.property('link');
     expect(jsonData.link).to.have.property('slug');
     expect(jsonData.link).to.have.property('name');
     expect(jsonData).to.have.property('description');
+    expect(jsonData).to.have.property('project_date');
   });
-
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;
     expect(contentType).to.be.a('string');
     expect(contentType).to.contain('application/json');
   });
-
-  test("Product title matches expected value", function() {
+  
+  test("Project title matches expected value", function() {
     const jsonData = res.getBody();
     expect(jsonData.title).to.be.a('string');
     expect(jsonData.title.length).to.be.greaterThan(0);

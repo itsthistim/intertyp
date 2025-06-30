@@ -1,0 +1,60 @@
+meta {
+  name: Gesundheit
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/projekte/gesundheit
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{apiUser}}
+  password: {{apiPassword}}
+}
+
+body:json {
+  {
+    "title": "Gesundheitsbereich",
+    "description": "Klare Orientierung und ansprechende Gestaltung spielen im Gesundheitsbereich eine zentrale Rolle. Mit hochwertigen Beschriftungen, Leitsystemen und Glasfolierungen haben wir Arztpraxen, Kliniken und Ordinationen ausgestattet. Ob Informationsschilder, Türbeschriftungen oder Sichtschutzfolien – unsere Lösungen sind funktional, langlebig und individuell angepasst.",
+    "link": {
+      "slug": "/projekte/gesundheit",
+      "name": "Gesundheitsbereich"
+    },
+    "cover_image": {
+      "url": "/images/gesundheit-physio.jpg",
+      "alt": "Wandbeschriftung Physiotherapie"
+    },
+    "gallery": {
+      "title": "Referenzen für den Gesundheitsbereich",
+      "images": [
+        {
+          "url": "/images/Kindergarten-Krabbelstube.jpg"
+        },
+        {
+          "url": "/images/lageplan-mc3.png",
+          "alt": "Lageplan MC3"
+        },
+        {
+          "url": "/images/bodenbeschriftung-augen-hno.jpg"
+        },
+        {
+          "url": "/images/Cella-Apotheke-scaled.jpg"
+        },
+        {
+          "url": "/images/gesundheit-physio.jpg"
+        },
+        {
+          "url": "/images/MC3-kleiner-pylon.jpg"
+        },
+        {
+          "url": "/images/Linz_Med_Uni_Campus_III-4967.jpg",
+          "alt": "Linz Med Uni Campus 3"
+        }
+      ]
+    }
+  }
+  
+}
