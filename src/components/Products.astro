@@ -2,16 +2,6 @@
 import Details from "@/components/Details.astro";
 import Button from "@/components/ui/Button.astro";
 
-const res = await fetch(new URL("/api/produkte", Astro.url));
-let products: any = [];
-
-if (!res.ok) {
-	console.error("Failed to fetch products:", res.statusText);
-} else {
-	products = (await res.json()).filter((product: any) => product.title !== "Sonstiges");
-	products = products.slice(0, 2);
-}
-
 const placeholderImage = {
 	url: "https://www.intertyp.at/wp-content/uploads/2025/02/Moos-Oesterreich.jpg",
 	alt: "Alle unsere Produkte und Dienstleistungen",
@@ -19,7 +9,19 @@ const placeholderImage = {
 	height: 400
 };
 
-const randomCoverImage = products.length > 0 ? products[Math.floor(Math.random() * products.length)].cover_image : placeholderImage;
+let randomCoverImage;
+
+const res = await fetch(new URL("/api/produkte", Astro.url));
+let products: any = [];
+
+if (!res.ok) {
+	console.error("Failed to fetch products:", res.statusText);
+} else {
+	randomCoverImage = products.length > 0 ? products[Math.floor(Math.random() * products.length)].cover_image : placeholderImage;
+
+	products = (await res.json()).filter((product: any) => product.title !== "Sonstiges");
+	products = products.slice(0, 2);
+}
 ---
 
 <section id="products">
@@ -57,14 +59,8 @@ const randomCoverImage = products.length > 0 ? products[Math.floor(Math.random()
 		))
 	}
 	<Details heading="Weitere Dienstleistungen" side={products.length % 2 === 0 ? "left" : "right"} img={randomCoverImage}>
-		<p>
-			Entdecken Sie unser komplettes Sortiment an hochwertigen Produkten und maßgeschneiderten Dienstleistungen. Von innovativen Lösungen bis hin zu bewährten Klassikern
-			– wir haben für jeden Bedarf das Richtige.
-		</p>
-		<p>
-			Lassen Sie sich von unserer Vielfalt inspirieren und finden Sie genau das, was Sie für Ihr Projekt benötigen. Unsere Experten beraten Sie gerne bei der Auswahl der
-			optimalen Lösung für Ihre Anforderungen.
-		</p>
+		<p>Entdecken Sie unser komplettes Sortiment an hochwertigen Produkten und maßgeschneiderten Dienstleistungen. Wir haben für jeden Bedarf das Richtige.</p>
+		<p>Lassen Sie sich von unserer Vielfalt inspirieren und finden Sie genau das, was Sie für Ihr Projekt benötigen.</p>
 		<Button variant="primary" forward href="/produkte">Alle Produkte ansehen</Button>
 	</Details>
 </section>
