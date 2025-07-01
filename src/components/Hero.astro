@@ -36,7 +36,7 @@ const { title, subtitle } = Astro.props;
 			new Promise((resolve) => video1.addEventListener("loadeddata", resolve, { once: true })),
 			new Promise((resolve) => video2.addEventListener("loadeddata", resolve, { once: true }))
 		]).then(() => {
-			setInterval(switchVideo, 5000);
+			setInterval(switchVideo, 9000);
 		});
 	});
 </script>
