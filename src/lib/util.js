@@ -202,7 +202,7 @@ export async function findOrCreateImage(image) {
 		return existingImage;
 	}
 
-	const [newImageResult] = await db.query(`INSERT INTO image (url, alt) VALUES (?, ?)`, [image.url, image.alt || null]);
+	const [newImageResult] = await db.query(`INSERT INTO image (url, alt) VALUES (?, ?)`, [image.url, image.alt || ""]);
 	if (newImageResult.insertId) {
 		const [newImageRows] = await db.query(`SELECT * FROM image WHERE image_id = ?`, [newImageResult.insertId]);
 		if (newImageRows.length > 0) {
