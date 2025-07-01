@@ -81,7 +81,7 @@ const products = await productsData.json();
 						<ul class="dropdown-list">
 							{products.map((product: any) => (
 								<li class="dropdown-item">
-									<a href={product.link.slug}>{product.link.name}</a>
+									<a href={product.link.slug}>{product.link.name ?? product.title}</a>
 								</li>
 							))}
 						</ul>
@@ -99,7 +99,7 @@ const products = await productsData.json();
 						<ul class="dropdown-list">
 							{projects.map((project: any) => (
 								<li class="dropdown-item">
-									<a href={project.link.slug || "#"}>{project.link.name}</a>
+									<a href={project.link.slug || "#"}>{project.link.name ?? project.title}</a>
 								</li>
 							))}
 						</ul>
