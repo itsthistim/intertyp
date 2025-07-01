@@ -11,6 +11,8 @@ const projects = await projectsData.json();
 
 const productsData = await fetch(new URL("/api/produkte", Astro.url));
 const products = await productsData.json();
+
+console.log(products[0]);
 ---
 
 <script>
@@ -81,7 +83,7 @@ const products = await productsData.json();
 						<ul class="dropdown-list">
 							{products.map((product: any) => (
 								<li class="dropdown-item">
-									<a href={product.link.slug}>{product.link.alt}</a>
+									<a href={product.link.slug}>{product.link.name}</a>
 								</li>
 							))}
 						</ul>
@@ -99,7 +101,7 @@ const products = await productsData.json();
 						<ul class="dropdown-list">
 							{projects.map((project: any) => (
 								<li class="dropdown-item">
-									<a href={project.link?.slug || "#"}>{project.title}</a>
+									<a href={project.link.slug || "#"}>{project.link.name}</a>
 								</li>
 							))}
 						</ul>
@@ -306,7 +308,9 @@ const products = await productsData.json();
 			padding: 1rem;
 			gap: 1rem;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		}		nav.light .links.mobile-open {
+		}
+
+		nav.light .links.mobile-open {
 			background: rgba(0, 0, 0, 0.9);
 		}
 

@@ -13,7 +13,7 @@ export async function GET() {
 					description: productRow.description
 				};
 
-				const [linkRows] = await db.query(`SELECT slug, name "alt" FROM link WHERE link_id = ?`, [productRow.link_id]);
+				const [linkRows] = await db.query(`SELECT slug, name FROM link WHERE link_id = ?`, [productRow.link_id]);
 				product.link = linkRows[0];
 
 				const [coverImageRows] = await db.query(`SELECT url, alt, width, height FROM image WHERE image_id = ?`, [productRow.cover_image_id]);

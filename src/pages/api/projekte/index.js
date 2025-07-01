@@ -14,7 +14,7 @@ export async function GET() {
 					project_date: projectRow.project_date
 				};
 
-				const [linkRows] = await db.query(`SELECT slug, name "alt" FROM link WHERE link_id = ?`, [projectRow.link_id]);
+				const [linkRows] = await db.query(`SELECT slug, name FROM link WHERE link_id = ?`, [projectRow.link_id]);
 				project.link = linkRows[0];
 
 				const [coverImageRows] = await db.query(`SELECT url, alt, width, height FROM image WHERE image_id = ?`, [projectRow.cover_image_id]);
