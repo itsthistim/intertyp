@@ -13,21 +13,6 @@ interface Props {
 let { subheading = "", heading, side = "left", img, class: className = "" } = Astro.props;
 ---
 
-<div class:list={[`detail ${side === "left" ? "detail-left" : "detail-right"}`, className]}>
-	<div class="image">
-		<a href={img.url} class="photoswipe-trigger" data-pswp-width={img.width} data-pswp-height={img.height} target="_blank">
-			<Image src={img.url} alt={img.alt || ""} width={img.width} height={img.height} />
-		</a>
-	</div>
-	<div class="content">
-		<p class="subheading">{subheading}</p>
-		<h3 class="heading">{heading}</h3>
-		<div class="text">
-			<slot />
-		</div>
-	</div>
-</div>
-
 <script>
 	import PhotoSwipeLightbox from "photoswipe/lightbox";
 
@@ -43,6 +28,21 @@ let { subheading = "", heading, side = "left", img, class: className = "" } = As
 		}
 	});
 </script>
+
+<div class:list={[`detail ${side === "left" ? "detail-left" : "detail-right"}`, className]}>
+	<div class="image">
+		<a href={img.url} class="photoswipe-trigger" data-pswp-width={img.width} data-pswp-height={img.height} target="_blank">
+			<Image src={img.url} alt={img.alt || ""} width={img.width} height={img.height} />
+		</a>
+	</div>
+	<div class="content">
+		<p class="subheading">{subheading}</p>
+		<h3 class="heading">{heading}</h3>
+		<div class="text">
+			<slot />
+		</div>
+	</div>
+</div>
 
 <style>
 	.detail {
