@@ -6,6 +6,7 @@ import path from "path";
 
 // https://astro.build/config
 export default defineConfig({
+	site: "https://intertyp.net",
 	output: "server",
 	adapter: node({
 		mode: "standalone"
@@ -13,6 +14,9 @@ export default defineConfig({
 	integrations: [icon()],
 	devToolbar: {
 		enabled: false
+	},
+	security: {
+		checkOrigin: false
 	},
 	vite: {
 		resolve: {
