@@ -362,3 +362,15 @@ export async function formatProjectResponse(projectData) {
 		gallery: await getGallery(projectData.gallery_id)
 	};
 }
+
+// #region Security Helpers
+export function sanitizeInput(str) {
+	if (!str) return "";
+	return str
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#039;");
+}
+// #endregion

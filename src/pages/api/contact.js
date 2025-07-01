@@ -1,12 +1,13 @@
 import nodemailer from "nodemailer";
 import { getSecret } from "astro:env/server";
+import { sanitizeInput } from "@/lib/util.js";
 
 export async function POST({ request, clientAddress }) {
 	const data = await request.formData();
-	const name = data.get("name");
+	const name = sanitizeInput(data.get("name"));
 	const email = data.get("email");
-	const subject = data.get("subject");
-	const message = data.get("message");
+	const subject = sanitizeInput(data.get("subject"));
+	const message = sanitizeInput(data.get("message"));
 	const recaptchaToken = data.get("g-recaptcha-response");
 
 	let recaptchaResult;
@@ -34,6 +35,7 @@ export async function POST({ request, clientAddress }) {
 						<br />
 						<p>${message}</p>`
 		});
+
 		return new Response(JSON.stringify({ success: true, message: "Nachricht erfolgreich gesendet." }), { status: 200, headers: { "Content-Type": "application/json" } });
 	}
 
