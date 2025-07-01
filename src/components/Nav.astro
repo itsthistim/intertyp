@@ -11,8 +11,6 @@ const projects = await projectsData.json();
 
 const productsData = await fetch(new URL("/api/produkte", Astro.url));
 const products = await productsData.json();
-
-console.log(products[0]);
 ---
 
 <script>
