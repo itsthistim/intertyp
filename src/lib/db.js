@@ -4,10 +4,10 @@ import { getSecret } from "astro:env/server";
 let pool;
 try {
 	pool = mysql.createPool({
-		host: getSecret("DB_HOST"),
-		user: getSecret("DB_USER"),
-		password: getSecret("DB_PASSWORD"),
-		database: getSecret("DB_NAME"),
+		host: getSecret("MYSQL_HOST"),
+		user: getSecret("MYSQL_USER"),
+		password: getSecret("MYSQL_PASSWORD"),
+		database: getSecret("MYSQL_DATABASE"),
 		waitForConnections: true,
 		connectionLimit: 50
 	});
