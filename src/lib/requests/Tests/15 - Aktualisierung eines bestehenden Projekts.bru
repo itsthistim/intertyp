@@ -17,6 +17,7 @@ auth:basic {
 
 body:json {
   {
+    "title": "WIFI OÖ",
     "project_date": "2025-07-02",
     "description": "Das WIFI Oberösterreich ist ein Aus- und Weiterbildungszentrum insbesondere für Berufstätige. Im Kursjahr 2019/2020 wurden über 83.000 TeilnehmerInnen in mehr als 8.800 Kursen unterrichtet und geprüft. An 13 Standorten in Linz und Oberösterreich stehen insgesamt 367 Kurs- und Seminarräume, 72 EDV-Schulungsräume und 83 Werkstätten zur Verfügung. 235 fix angestellte Mitarbeiter und 2.700 Trainer betreuen die Kursteilnehmer."
   }
@@ -26,7 +27,7 @@ tests {
   test("Response status is 200", function() {
     expect(res.getStatus()).to.equal(200);
   });
-
+  
   test("Response contains updated project data", function() {
     const jsonData = res.getBody();
     expect(jsonData).to.have.property('title');
@@ -34,14 +35,14 @@ tests {
     expect(jsonData).to.have.property('description');
     expect(jsonData.description).to.be.a('string').and.not.be.empty;
   });
-
+  
   test("Description was updated", function() {
     const jsonData = res.getBody();
     expect(jsonData.description).to.be.a('string').and.not.be.empty;
     // Check that description contains some content but don't validate specific text
     expect(jsonData.description.length).to.be.greaterThan(10);
   });
-
+  
   test("Response contains valid link object", function() {
     const jsonData = res.getBody();
     expect(jsonData.link).to.be.an('object');
@@ -50,25 +51,25 @@ tests {
     expect(jsonData.link).to.have.property('name');
     expect(jsonData.link.name).to.be.a('string').and.not.be.empty;
   });
-
+  
   test("Response time is acceptable", function() {
     expect(res.getResponseTime()).to.be.lessThan(2000); // 2 seconds
   });
-
+  
   test("Response has correct content type", function() {
     const contentType = res.getHeader('Content-Type') || res.getHeader('content-type');
     expect(contentType).to.exist;
     expect(contentType).to.be.a('string');
     expect(contentType).to.contain('application/json');
   });
-
+  
   test("Response contains required fields", function() {
     const jsonData = res.getBody();
     expect(jsonData).to.have.property('title');
     expect(jsonData).to.have.property('description');
     expect(jsonData).to.have.property('link');
   });
-
+  
   test("Response is not empty", function() {
     expect(res.getBody()).to.not.be.empty;
   });
