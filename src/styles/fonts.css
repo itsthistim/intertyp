@@ -9,3 +9,15 @@
 	src: url("/fonts/NunitoSans.ttf") format("truetype");
 	font-display: swap;
 }
+
+@font-face {
+	font-family: "Alexandria";
+	src: url("/fonts/Alexandria.ttf") format("truetype");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "JetBrains Mono";
+	src: url("/fonts/JetBrainsMono.ttf") format("truetype");
+	font-display: swap;
+}
