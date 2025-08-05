@@ -17,6 +17,10 @@ DROP DATABASE IF EXISTS `intertypcms`;
 CREATE DATABASE IF NOT EXISTS `intertypcms` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_uca1400_ai_ci */;
 USE `intertypcms`;
 
+GRANT ALL PRIVILEGES ON intertypcms.* TO 'intertyp'@'%';
+FLUSH PRIVILEGES;
+COMMIT;
+
 -- Dumping structure for table intertypcms.gallery
 DROP TABLE IF EXISTS `gallery`;
 CREATE TABLE IF NOT EXISTS `gallery` (
