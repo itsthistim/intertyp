@@ -11,6 +11,8 @@ try {
 		waitForConnections: true,
 		connectionLimit: 50
 	});
+
+	console.log("Database pool created successfully with host:", getSecret("MYSQL_HOST"));
 } catch (error) {
 	console.error("Failed to create database pool:", error);
 	process.exit(1);
