@@ -1,17 +1,26 @@
 @font-face {
 	font-family: "Inter";
-	src: url("/fonts/Inter.ttf") format("truetype");
+	src: url("/fonts/Inter.woff2") format("woff2"),
+	     url("/fonts/Inter.ttf") format("truetype");
 	font-display: swap;
+	font-weight: normal;
+	font-style: normal;
 }
 
 @font-face {
 	font-family: "Nunito Sans";
-	src: url("/fonts/NunitoSans.ttf") format("truetype");
+	src: url("/fonts/NunitoSans.woff2") format("woff2"),
+	     url("/fonts/NunitoSans.ttf") format("truetype");
 	font-display: swap;
+	font-weight: normal;
+	font-style: normal;
 }
 
 @font-face {
 	font-family: "JetBrains Mono";
-	src: url("/fonts/JetBrainsMono.ttf") format("truetype");
+	src: url("/fonts/JetBrainsMono.woff2") format("woff2"),
+	     url("/fonts/JetBrainsMono.ttf") format("truetype");
 	font-display: swap;
+	font-weight: normal;
+	font-style: normal;
 }

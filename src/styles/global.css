@@ -5,7 +5,7 @@
 	--clr-background: 246, 253, 242;
 	--clr-text: 15, 18, 13;
 
-	--ff: "Inter", system-ui, sans-serif;
+	--ff: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
 /* Styles */
@@ -18,6 +18,8 @@ body {
 	font-family: var(--ff);
 	font-weight: 400;
 	font-size: 1.2rem;
+	text-rendering: optimizeSpeed;
+	-webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -25,7 +27,7 @@ h2,
 h3,
 h4,
 h5 {
-	font-family: "Nunito Sans";
+	font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	font-weight: 700;
 }
 
