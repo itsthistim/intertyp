@@ -36,7 +36,7 @@ const { images, galleryClass = "gallery" } = Astro.props;
 		<div class={`gallery-container ${galleryClass}`} data-gallery-class={galleryClass}>
 			{images.map((img) => (
 				<a href={img.src} class="gallery-item" data-pswp-width={img.width} data-pswp-height={img.height}>
-					<Image src={img.src} alt={img.alt || ""} width={img.width} height={img.height} />
+					<Image src={img.src} alt={img.alt || ""} width={img.width} height={img.height} loading="lazy" />
 				</a>
 			))}
 		</div>
