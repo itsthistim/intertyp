@@ -27,6 +27,8 @@ const { title, transitions = true } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<meta name="darkreader-lock" />
 		<link rel="icon" type="image/svg+xml" href={logo.src} sizes="192x192"/>
+		<link rel="preload" href="/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/NunitoSans.woff2" as="font" type="font/woff2" crossorigin />
 		<title>{title}</title>
 	</head>
 	<body>
