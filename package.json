@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "astro dev --host",
 		"build": "astro build",
+		"optimize": "node convert-fonts.js",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
@@ -21,6 +22,8 @@
 	"devDependencies": {
 		"@iconify-json/ph": "^1.2.2",
 		"prettier": "^3.5.3",
-		"prettier-plugin-astro": "^0.14.1"
+		"prettier-plugin-astro": "^0.14.1",
+		"terser": "^5.44.0",
+		"ttf2woff2": "^8.0.0"
 	}
 }
