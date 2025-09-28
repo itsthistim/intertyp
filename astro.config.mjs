@@ -23,9 +23,21 @@ export default defineConfig({
 			alias: {
 				"@": path.resolve("./src")
 			}
+		},
+		build: {
+			minify: "terser",
+			cssMinify: true
+		},
+		ssr: {
+			noExternal: ["photoswipe"]
 		}
 	},
 	server: {
 		host: "0.0.0.0"
+	},
+	image: {
+		service: {
+			entrypoint: "astro/assets/services/sharp"
+		}
 	}
 });
