@@ -10,20 +10,20 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/node": "^9.2.2",
-		"astro": "^5.10.2",
+		"@astrojs/node": "^10.0.0",
+		"astro": "^6.0.2",
 		"astro-icon": "^1.1.5",
-		"gsap": "^3.13.0",
+		"gsap": "^3.14.2",
 		"image-size": "^2.0.2",
-		"mysql2": "^3.14.1",
-		"nodemailer": "^7.0.3",
+		"mysql2": "^3.19.1",
+		"nodemailer": "^7.0.13",
 		"photoswipe": "^5.4.4"
 	},
 	"devDependencies": {
 		"@iconify-json/ph": "^1.2.2",
-		"prettier": "^3.5.3",
+		"prettier": "^3.8.1",
 		"prettier-plugin-astro": "^0.14.1",
-		"terser": "^5.44.0",
-		"ttf2woff2": "^8.0.0"
+		"terser": "^5.46.0",
+		"ttf2woff2": "^8.0.1"
 	}
 }
